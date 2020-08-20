@@ -1,54 +1,36 @@
 <!DOCTYPE html>
-<html lnag="ja">
-
+<html lang="ja">
     <head>
+        <title>training</title>
         <meta charset="utf-8"/>
-        <title>TITLE</title>
-        <style type="text/css">
-
-        </style>
+        <link rel="stylesheet" type="text/css" href="hoge.css">
     </head>
     <body>
-        <h1>
-        やった〜〜〜<br>
-        入れたーーーーーー<br>a
-       ぽあ<br>
-        ぽあするぞ<br>
-        嬉しみがある<br>
-        パリピになった<br>
-        ↑アゲすぎて揚げ<br>
-        とりあえずヨシ！<br>
-        ストロングゼロ<br>
-        アゲすぎて揚げ<br>
-        </h1>
-
+        <p id="kind"></p>
+        <p id="goal"></p>
         <!--筋トレの現在の回数目標回数を表示する機能--> <!--これJSで値受け渡すやつやな(悟り)(JSわかんない)-->
         <div id="target">0</div>
         <br>
         <!--筋トレの回数を入力する-->
         <!--トレーニング終-->
-
     </body>
 
-    <script>
-        const target = document.getElementById('target');
-        const jump = document.getElementById('jump_result');
-        const GOAL = 10; //とりあえず目標10回ってことで、あとでstart.htmlで
-
-        target.addEventListener('click', () => {
-            target.textContent = count++;
-        }, false);
-
-        if(target >= GOAL){
-
-        //targetがGOALを超えたとき、リザルト画面のURLを開く
-                    jump_result.innerHTML = <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div>${substance}</div>
-            window.open( 'http://www.htmq.com/' );
-        //targetがGOALを超えたとき、リザルト画面のURLを開く
-        if(target >= GOAL){
-            window.open( 'http://www.htmq.com/' );
+    <script type="text/javascript">
+        function get(){
+            //パラメータ受け取って分割
+            var pair = location.search.substring(1).split('&');
+            //連想配列生成工場
+            var param = new Array();
+            var temp;
+            for (let index in pair){
+                temp = pair[index].split("=");
+                param[temp[0]] = temp[1];
+            }
+            //筋トレを表示
+            document.getElementById("kind").innerHTML = "内容：" + param["menu"];
+            //目標回数を表示
+            document.getElementById("goal").innerHTML = "目標回数：" + param["number"];
         }
-
+        window.onload = get();
     </script>
 </html>
