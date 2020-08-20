@@ -6,10 +6,10 @@ class MyServer extends Server {
     api(path, req) {
         console.log(path); //要求されたpathをコンソールに表示
         if (path === "/api/") {
-            return { res: };
+            return { res: "" };
         }
-        else if (path === ) {
-            return {res: };
+        else if (path === "/kinniku/") {
+            return { res: "" };
         }
         return null;
     }
