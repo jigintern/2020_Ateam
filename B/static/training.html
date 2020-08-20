@@ -39,7 +39,7 @@
             target.textContent = count++;
 
             if (target.textContent >= GOAL) {
-                location.href='./result.html';
+                location.href='./result.html?' + 'number='+GOAL;
             }
         }, false);
 

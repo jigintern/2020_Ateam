@@ -8,16 +8,24 @@
     <body>
         <p>
             <div class = "calorie">
-                <div style ="text-align:center;"> 
+                <div style ="text-align:center;">
                     <span>消費したカロリー</span><br>
                     <span>
                     <!--ここで回数を受け取り、カロリーを計算する-->
                     <script>
-                    var number = 10;
-                    //document.write(decodeURIComponent(window.location.hash.slice(1)));
-                    //↑になる予定
-                    var kalorie = number * 10;
-                    document.write(kalorie,"kcal");
+                        //パラメータ受け取って分割
+                        var pair = location.search.substring(1).split('&');
+                        //連想配列生成工場
+                        var param = new Array();
+                        var temp;
+                        for (let index in pair){
+                            temp = pair[index].split("=");
+                            param[temp[0]] = temp[1];
+                        }
+                        var number = param["number"];
+                        var kalorie = number * 10;
+                        document.write(kalorie,"kcal");
+
                     </script>
                     <br>
                     </span>
