@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <title>training</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="hoge.css">
+    </head>
+    <body>
+        <form id="start">
+            <!--筋トレメニュー選択する機能-->
+            <p>どの筋トレする？</p>
+                <input type="radio" name="menu" value="hukkin" checked="checked">腹筋
+                <input type="radio" name="menu" value="haikin">背筋
+                <input type="radio" name="menu" value="udetate">腕立て
+            <br>
+            <!--筋トレの回数を入力する-->
+            <p>回数を入力してね</p>
+            <input type="number" id="num" name="count" value="10" min="1" max="20" step="1">
+            <br>
+            <!--スタートボタン-->
+            <input type="button" onclick="send()" value="トレーニング画面飛ぶやで">
+        </form>
+    </body>
+    <script type="text/javascript">
+        function send() {
+          location.href='./training.html?' + 'menu='+document.getElementById("start").menu.value + '&number='+document.getElementById("num").value;
+        }
+    </script>
+</html>
