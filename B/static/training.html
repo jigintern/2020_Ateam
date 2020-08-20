@@ -5,7 +5,18 @@
     <meta charset="utf-8" />
     <title>TRAINING</title>
     <style type="text/css">
-
+        div {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #0091EA;
+            border-radius: 20px;
+            margin: 10px 0;
+            font-size: 1.5rem;
+            color: #FFF;
+        }
     </style>
 </head>
 
@@ -23,14 +34,15 @@
 <script>
     const target = document.getElementById('target');
     const GOAL = 10; //とりあえず目標10回ってことで、あとでstart.htmlで
+    let count = 0;
 
     target.addEventListener('click', () => {
         target.textContent = count++;
-    }, false);
 
-    if (target.textContent >= GOAL) {
-        window.open('http://www.htmq.com/');
-    }
+        if (target.textContent >= GOAL) {
+            window.open('./result.html');
+        }
+    }, false);
 
 </script>
 
