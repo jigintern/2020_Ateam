@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="ja">
     <head>
-        <title>training</title>
+        <title>start</title>
         <meta charset="utf-8">
         <link rel="stylesheet" type="text/css" href="hoge.css">
     </head>
     <body>
         <form id="start">
+            <!--名前の入力-->
+            <p>名前を入力してね</p>
+            <input type="text" id="nam" name="name" size="10" value="忍者">
+            <br>
             <!--筋トレメニュー選択する機能-->
             <p>どの筋トレする？</p>
                 <input type="radio" name="menu" value="hukkin" checked="checked">腹筋
@@ -29,10 +33,10 @@
         btn.onclick = async () => {
             //サーバーへのユーザーIDと筋トレ回数の送信
             const id = "A";
-            const req = { id: id, num: num.value }
+            const req = { id: nam.value, num: num.value }
             const res = await fetchJSON("http://localhost:8881/api/data", req);
             //html間のデータ送受
-            const path = './training.html?' + 'menu=' + start.menu.value +'&number=' + num.value
+            const path = './training.html?' + 'name=' + nam.value + '&menu=' + start.menu.value +'&number=' + num.value;
             console.log(path);
             location.href = path;
         };
