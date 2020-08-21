@@ -1,41 +1,102 @@
+
+/*全体に適応されるやつ*/
 body{
     text-align: center;
     background-color: #7fc2c2;
+    margin: auto;
+    font-family: "M PLUS Rounded 1c", 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 900;
 }
 
-*,
-*:before,
-*:after {
-    -webkit-box-sizing: inherit;
-    box-sizing: inherit;
-    }
+/*ボタンの装飾*/
+#btn{
+    font-size: 1.4em;
+    font-weight: bold;
+    padding: 10px 30px; 
+    background-color:#E1774B;
+    color: #F4DB60;
+    border-radius: 100vh;
+    border-style: none;
+}
+/*ボタンにカーソルを合わせたときの装飾*/
+#btn:hover{
+    background:#e48a64;
+    color: #f3e189;
+}
+/*名前と回数の入力の装飾*/
+#num, #nam {
+    font-size: 1.4em;
+    font-weight: bold;
+    padding: 10px 30px; 
+    color: #999999;
+    border-radius: 100vh;
+    border-style: none;
 
-html {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    font-size: 62.5%;/*rem算出をしやすくするために*/
 }
 
-.btn,
-a.btn,
-button.btn {
-    font-size: 1.6rem;
-    font-weight: 700;
-    line-height: 1.5;
-    position: relative;
-    display: inline-block;
-    padding: 1rem 4rem;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-transition: all 0.3s;
-    transition: all 0.3s;
-    text-align: center;
-    vertical-align: middle;
-    text-decoration: none;
-    letter-spacing: 0.1em;
-    color: #212529;
-    border-radius: 0.5rem;
+
+/*---index.html内部----*/
+
+/*アプリ名の装飾*/
+#appname{
+    font-family: "Nico Moji",'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+    font-size: 120px;
+    padding-top: 30px;
+    padding-bottom: 32px;
+    color: #F4DB60;
 }
+
+/*---training.html内部----*/
+.wrap_center{
+    padding-top: 100px;
+    align-items: center;
+}
+
+.wrap{
+    display: flex;
+    justify-content: center;
+}
+
+
+#goal{
+    color: #F4DB60;
+    font-size: 100px;
+    font-weight: 900;
+    /*
+    padding-top: 5px;
+    padding-bottom: 10px;
+    */
+}
+
+#slash{
+    color: #F4DB60;
+    font-size: 100px;
+    font-weight: 900;
+}
+
+#kind{
+    color: #F4DB60;
+    font-size: 25px;
+    font-weight: 900;
+    padding-top: 20px;
+    padding-bottom: 5px;
+}
+
+#target {
+/*
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0091EA;
+    border-radius: 20px;
+    margin: 10px 0;
+    font-size: 1.5rem;
+*/
+    font-size: 100px;
+
+    color:#E1774B;
+
+}
+
+
