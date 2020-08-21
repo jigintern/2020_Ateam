@@ -28,16 +28,13 @@
     </body>
     <script type="module">
         import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-        //import { senddata } from "../senddata.js";
 
         btn.onclick = async () => {
             //サーバーへのユーザーIDと筋トレ回数の送信
-            const id = "A";
             const req = { id: nam.value, num: num.value }
             const res = await fetchJSON("http://localhost:8881/api/data", req);
             //html間のデータ送受
             const path = './training.html?' + 'name=' + nam.value + '&menu=' + start.menu.value +'&number=' + num.value;
-            console.log(path);
             location.href = path;
         };
     </script>
