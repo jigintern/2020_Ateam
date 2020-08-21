@@ -1,46 +1,44 @@
 <!DOCTYPE html>
 <html lang="ja">
-
-<head>
+  <head>
     <title>start</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="./hoge.css">
     <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
     <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
-</head>
-
-<body>
+  </head>
+  <body>
     <h1 id="appname">きんにくアプリ</h1>
     <form id="start">
-        <!--名前の入力-->
-        <p>名前を入力してね</p>
-        <input type="text" id="nam" name="name" size="10" value="忍者">
-        <br>
-        <!--筋トレメニュー選択する機能-->
-        <p>どの筋トレする？</p>
-        <input type="radio" name="menu" id="hukkin" value="hukkin" checked="checked"><label for="hukkin" class="label1">腹筋</label>
-        <input type="radio" name="menu" id="haikin" value="haikin"><label for="haikin" class="label1">背筋</label>
-        <input type="radio" name="menu" id="udetate" value="udetate"><label for="udetate" class="label2">腕立て</label>
-        <br>
-        <!--筋トレの回数を入力する-->
-        <p>回数を入力してね</p>
-        <input type="number" id="num" name="count" value="10" min="1" max="20" step="1">
-        <br>
-        <!--スタートボタン-->
-        <!--<input type="button" onclick="send()" value="トレーニング画面飛ぶやで">-->
-        <button id="btn">トレーニング画面飛ぶやで</button>
+      <!--名前の入力-->
+      <p>名前を入力してね</p>
+      <input type="text" id="nam" name="name" size="10" value="忍者">
+      <br>
+      <!--筋トレメニュー選択する機能-->
+      <p>どの筋トレする？</p>
+      <input type="radio" name="menu" id="hukkin" value="hukkin" checked="checked"><label for="hukkin" class="label1">腹筋</label>
+      <input type="radio" name="menu" id="haikin" value="haikin"><label for="haikin" class="label1">背筋</label>
+      <input type="radio" name="menu" id="udetate" value="udetate"><label for="udetate" class="label2">腕立て</label>
+      <br>
+      <!--筋トレの回数を入力する-->
+      <p>回数を入力してね</p>
+      <input type="number" id="num" name="count" value="10" min="1" max="20" step="1">
+      <br>
+      <!--スタートボタン-->
+      <!--<input type="button" onclick="send()" value="トレーニング画面飛ぶやで">-->
+      <button id="btn">トレーニング画面飛ぶやで</button>
     </form>
-</body>
-    <script type="module">
-        import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+  </body>
+  <script type="module">
+    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
-        btn.onclick = async () => {
-            //サーバーへのユーザーIDと筋トレ回数の送信
-            const req = { id: nam.value, num: num.value }
-            const res = await fetchJSON("http://localhost:8881/api/data", req);
-            //html間のデータ送受
-            const path = './training.html?' + 'name=' + nam.value + '&menu=' + start.menu.value +'&number=' + num.value;
-            location.href = path;
-        };
-    </script>
+    btn.onclick = async () => {
+      //サーバーへのユーザーIDと筋トレ回数の送信
+      const req = { id: nam.value, num: num.value }
+      const res = await fetchJSON("/api/data", req);
+      //html間のデータ送受
+      const path = './training.html?' + 'name=' + nam.value + '&menu=' + start.menu.value +'&number=' + num.value;
+      location.href = path;
+    };
+  </script>
 </html>
