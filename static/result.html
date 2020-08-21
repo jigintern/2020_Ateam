@@ -12,7 +12,15 @@
                     <span>消費したカロリー</span><br>
                     <span>
                     <!--ここで回数を受け取り、カロリーを計算する-->
-                    <script>
+                    <script type="module">
+                        import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+
+                        //JSONdataを受け取り、成功したカウント？
+                        window.onload = async () => {
+                            var res = await (await fetch("/api/result")).json();
+                            console.log(res);
+                        };
+
                         //パラメータ受け取って分割
                         var pair = location.search.substring(1).split('&');
                         //連想配列生成工場
@@ -26,6 +34,8 @@
                         var kalorie = number * 10;
                         document.write(kalorie,"kcal");
 
+                        //nam(ID)とnum(目標回数)の表示
+                        //console.log(res);
                     </script>
                     <br>
                     </span>
