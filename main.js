@@ -41,17 +41,32 @@ class MyServer extends Server {
             }
             return null;
         }
+        //result.html->Server
         else if(path === "/api/result") {
             const json = JSON.parse(Deno.readTextFileSync("./data.json"));
             var cnt;
-            if(json.cnt === undefined){
-                json.cnt = 1;
+            let j = 0;
+            while(json.length){
+                //data.json内で一致するユーザーデータを検出
+                if(req.id === json[j].id){
+                    //目標達成が初めての場合cutを追加し、1を代入
+                    if(json[j].cnt === undefined){
+                        console.log("！初目標達成！");
+                        json[j].cnt = 1;
+                    }
+                    //そうでなければcntの値を+1して再代入
+                    else{
+                        let tmp = ++json[j].cnt;
+                        console.log("目標達成 - " + tmp + "回目");
+                        json[j].cnt = tmp;
+                    }
+                    break;
+                }
+                j++;
             }
-            else{
-                json.cnt = json.cnt++;
-            }
+            //data.jsonの更新
             Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
-            return json;
+            return json[j].cnt;
         }
         else if (path === "/kinniku/") {
             return null;

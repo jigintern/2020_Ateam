@@ -1,64 +1,60 @@
 <!DOCTYPE html>
 <html lang="ja">
-
-<head>
+  <head>
     <title>training</title>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="hoge.css">
     <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
     <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
-</head>
-
-<body>
-
+  </head>
+  <body>
     <!--子要素全体を左右中央揃えで表示するwrap_center-->
     <div class="wrap_center">
-        <!--targetとgoalを横並びに表示するwrap-->
-        <div class="wrap">
-            <!--筋トレの現在の回数を表示する-->
-            <div id="target">0</div>
+      <!--targetとgoalを横並びに表示するwrap-->
+      <div class="wrap">
+        <!--筋トレの現在の回数を表示する-->
+        <div id="target">0</div>
 
-            <div id="slash">　/　</div>
+        <div id="slash">　/　</div>
 
-            <!--筋トレの目標回数を表示する-->
-            <div id="goal"></div>
-        </div>
-        <div id="kind"></div>
+        <!--筋トレの目標回数を表示する-->
+        <div id="goal"></div>
+      </div>
+      <div id="kind"></div>
     </div>
-
-
     <!--トレーニング終-->
-</body>
+  </body>
 
-<script type="text/javascript">
+  <script type="text/javascript">
+    //HTMLパラメータの連想配列
+    let param = new Array();
     const target = document.getElementById('target');
     var GOAL;
     let count = 0;
 
     target.addEventListener('click', () => {
-        target.textContent = count++;
+      target.textContent = count++;
 
-        if (target.textContent >= GOAL) {
-            location.href = './result.html?' + 'number=' + GOAL;
-        }
+      if (target.textContent >= GOAL) {
+        location.href='./result.html?' + 'name=' + param["name"] + '&number='+ GOAL;
+      }
     }, false);
 
-    function get() {
-        //パラメータ受け取って分割
-        var pair = location.search.substring(1).split('&');
-        //連想配列生成工場
-        var param = new Array();
-        var temp;
-        for (let index in pair) {
-            temp = pair[index].split("=");
-            param[temp[0]] = temp[1];
-        }
-        //筋トレを表示
-        document.getElementById("kind").innerHTML = "内容：" + param["menu"];
-        //目標回数を表示
-        document.getElementById("goal").innerHTML = "目標回数：" + param["number"];
-        GOAL = parseInt(param["number"]);
-    }
+    function get(){
+      //パラメータ受け取って分割
+      var pair = location.search.substring(1).split('&');
+      //連想配列生成工場
+      var temp;
+      for (let index in pair){
+        temp = pair[index].split("=");
+        param[temp[0]] = temp[1];
+      }
+      //筋トレを表示
+      document.getElementById("kind").innerHTML = "内容：" + param["menu"];
+      //目標回数を表示
+      document.getElementById("goal").innerHTML = "目標回数：" + param["number"];
+      GOAL = parseInt(param["number"]);
+    };
     window.onload = get;
-</script>
+  </script>
 </html>
