@@ -31,6 +31,8 @@
     </body>
 
     <script type="text/javascript">
+        //HTMLパラメータの連想配列
+        let param = new Array();
         const target = document.getElementById('target');
         var GOAL;
         let count = 0;
@@ -39,7 +41,7 @@
             target.textContent = count++;
 
             if (target.textContent >= GOAL) {
-                location.href='./result.html?' + 'number='+GOAL;
+                location.href='./result.html?' + 'name=' + param["name"] + '&number='+ GOAL;
             }
         }, false);
 
@@ -47,7 +49,6 @@
             //パラメータ受け取って分割
             var pair = location.search.substring(1).split('&');
             //連想配列生成工場
-            var param = new Array();
             var temp;
             for (let index in pair){
                 temp = pair[index].split("=");

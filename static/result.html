@@ -9,42 +9,20 @@
         <p>
             <div class = "calorie">
                 <div style ="text-align:center;">
-                    <span>消費したカロリー</span><br>
                     <span>
-                    <!--ここで回数を受け取り、カロリーを計算する-->
-                    <script type="module">
-                        import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-
-                        //JSONdataを受け取り、成功したカウント？
-                        window.onload = async () => {
-                            var res = await (await fetch("/api/result")).json();
-                            console.log(res);
-                        };
-
-                        //パラメータ受け取って分割
-                        var pair = location.search.substring(1).split('&');
-                        //連想配列生成工場
-                        var param = new Array();
-                        var temp;
-                        for (let index in pair){
-                            temp = pair[index].split("=");
-                            param[temp[0]] = temp[1];
-                        }
-                        var number = param["number"];
-                        var kalorie = number * 10;
-                        document.write(kalorie,"kcal");
-
-                        //nam(ID)とnum(目標回数)の表示
-                        //console.log(res);
-                    </script>
-                    <br>
+                        <p id="nam">      さんの消費したカロリー</p><br>
+                        <!--カロリーを表示する-->
+                        <p id="kalorie">0kcal</p><br>
                     </span>
                     <br>
                 </div>
             </div>
             <div style="text-align:center;">
-                <span>おつかれさま</span><br>
-                <span>よくがんばりました(｡`･ω･´｡)</span><br>
+                <span>
+                    <p id="cnt">目標達成   回目です！</p><br>
+                    おつかれさま<br>
+                    よくがんばりました(｡`･ω･´｡)
+                </span>
                 <form>
                     <!--戻るボタン-->
                     <input type="button" onclick="location.href='./index.html'" value="戻るやで">
@@ -52,4 +30,33 @@
             </div>
         </p>
     </body>
+    <script type="module">
+        import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+
+        //HTMLパラメータの連想配列
+        let param = new Array();
+
+        //JSONdataを受け取り、成功したカウント？
+        window.onload = async () => {
+            //パラメータ受け取って分割
+            var pair = location.search.substring(1).split('&');
+            //連想配列生成工場
+            var temp;
+            for (let index in pair){
+                temp = pair[index].split("=");
+                param[temp[0]] = temp[1];
+            }
+            var number = param["number"];
+            var kalorie = number * 10;
+            var name = decodeURI(param["name"]);
+
+            document.getElementById("kalorie").innerHTML = kalorie + "kacl";
+            document.getElementById("nam").innerHTML = name + " さんの消費したカロリー";
+
+            // -> server
+            const req = { id: name };
+            var res = await fetchJSON("/api/result", req);
+            document.getElementById("cnt").innerHTML = "目標達成 "+ res +" 回目です！";
+        };
+    </script>
 </html>
