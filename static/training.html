@@ -1,64 +1,65 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <title>training</title>
-        <meta charset="utf-8"/>
-        <link rel="stylesheet" type="text/css" href="hoge.css">
-        <style type="text/css">
-            div {
-                width: 100px;
-                height: 100px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background-color: #0091EA;
-                border-radius: 20px;
-                margin: 10px 0;
-                font-size: 1.5rem;
-                color: #FFF;
-            }
-        </style>
-    </head>
-    <body>
-        <p id="kind"></p>
-        <p id="goal"></p>
-        <!--筋トレの現在の回数目標回数を表示する機能-->
-        <!--これJSで値受け渡すやつやな(悟り)(JSわかんない)-->
-        <div id="target">0</div>
-        <br>
-        <!--筋トレの回数を入力する-->
-        <!--トレーニング終-->
-    </body>
 
-    <script type="text/javascript">
-        const target = document.getElementById('target');
-        var GOAL;
-        let count = 0;
+<head>
+    <title>training</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="hoge.css">
+    <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
+</head>
 
-        target.addEventListener('click', () => {
-            target.textContent = count++;
+<body>
 
-            if (target.textContent >= GOAL) {
-                location.href='./result.html?' + 'number='+GOAL;
-            }
-        }, false);
+    <!--子要素全体を左右中央揃えで表示するwrap_center-->
+    <div class="wrap_center">
+        <!--targetとgoalを横並びに表示するwrap-->
+        <div class="wrap">
+            <!--筋トレの現在の回数を表示する-->
+            <div id="target">0</div>
 
-        function get(){
-            //パラメータ受け取って分割
-            var pair = location.search.substring(1).split('&');
-            //連想配列生成工場
-            var param = new Array();
-            var temp;
-            for (let index in pair){
-                temp = pair[index].split("=");
-                param[temp[0]] = temp[1];
-            }
-            //筋トレを表示
-            document.getElementById("kind").innerHTML = "内容：" + param["menu"];
-            //目標回数を表示
-            document.getElementById("goal").innerHTML = "目標回数：" + param["number"];
-            GOAL = parseInt(param["number"]);
+            <div id="slash">　/　</div>
+
+            <!--筋トレの目標回数を表示する-->
+            <div id="goal"></div>
+        </div>
+        <div id="kind"></div>
+    </div>
+
+
+    <!--トレーニング終-->
+</body>
+
+<script type="text/javascript">
+    const target = document.getElementById('target');
+    var GOAL;
+    let count = 0;
+
+    target.addEventListener('click', () => {
+        target.textContent = count++;
+
+        if (target.textContent >= GOAL) {
+            location.href = './result.html?' + 'number=' + GOAL;
         }
-        window.onload = get();
-    </script>
+    }, false);
+
+    function get() {
+        //パラメータ受け取って分割
+        var pair = location.search.substring(1).split('&');
+        //連想配列生成工場
+        var param = new Array();
+        var temp;
+        for (let index in pair) {
+            temp = pair[index].split("=");
+            param[temp[0]] = temp[1];
+        }
+        //筋トレを表示
+        document.getElementById("kind").innerHTML = "内容：" + param["menu"];
+        //目標回数を表示
+        document.getElementById("goal").innerHTML = "目標回数：" + param["number"];
+        GOAL = parseInt(param["number"]);
+    }
+    window.onload = get();
+</script>
+
 </html>
