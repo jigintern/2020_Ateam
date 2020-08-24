@@ -35,7 +35,7 @@
       btn.onclick = async () => {
         //サーバーへのユーザーIDと筋トレ回数の送信
         const req = { id: nam.value, num: num.value }
-        const res = await fetchJSON("/api/data", req);
+        await fetchJSON("/api/data", req);
         //html間のデータ送受
         const path = './training.html?' + 'name=' + nam.value + '&menu=' + start.menu.value +'&number=' + num.value;
         location.href = path;
