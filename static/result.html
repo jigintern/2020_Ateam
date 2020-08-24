@@ -34,6 +34,18 @@
       </div>
     </p>
   </body>
+  <script>
+    //更新検知
+    var hash = decodeURIComponent(location.hash.slice(1));
+    if (hash == "reload") {
+      
+      location.href = "./index.html";
+    }
+    else {
+      location.hash = "reload";
+    }
+  </script>
+
   <script type="module">
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
@@ -63,12 +75,5 @@
       document.getElementById("cnt").innerHTML = "目標達成 "+ res +" 回目です！";
     };
 
-    window.addEventListener('beforeunload',
-      function(e){
-        //更新される直前にindex.htmlに戻す
-        location.href = "./index.html";
-        console.log('reload -> back');
-      }
-    );
   </script>
 </html>
