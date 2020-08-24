@@ -57,9 +57,7 @@ class MyServer extends Server {
                     }
                     //そうでなければcntの値を+1して再代入
                     else{
-                        let tmp = ++json[i].cnt;
-                        console.log("目標達成 - " + tmp + "回目");
-                        json[i].cnt = tmp;
+                        json[i].cnt = ++json[i].cnt;
                     }
                     break;
                 }
@@ -68,6 +66,34 @@ class MyServer extends Server {
             //data.jsonの更新
             Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
             return json[i].cnt;
+        }
+        //ratioのJSON取り込み
+        else if (path === "/api/ratio") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./data.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                //data.json内で一致するユーザーデータを検出
+                if(req.id === json[i].id){
+                    //レートが無い場合にレートを追加(初期値0)
+                    if(json[i].ratio === undefined) {
+                        console.log("！初期レート！");
+                        json[i].ratio = req.kal;
+                    }
+                    //そうでなければratioの値を加算して再代入
+                    else {
+                        console.log("レート更新");
+                        json[i].ratio += req.kal;
+                        console.log(json[i].ratio);
+                    }
+                    break;
+                }
+                i++;
+            }
+            //data.jsonの更新
+            Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
+            return json[i].ratio;
         }
         //index.thml(ranking) -> Server
         else if (path === "/api/ranking") {

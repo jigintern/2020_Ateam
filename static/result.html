@@ -37,7 +37,9 @@
       </div>
     </p>
   </body>
-  <script>
+  <script type="module">
+    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+
     //更新検知
     var hash = decodeURIComponent(location.hash.slice(1));
     if (hash == "reload") {
@@ -47,10 +49,6 @@
     else {
       location.hash = "reload";
     }
-  </script>
-
-  <script type="module">
-    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
     //HTMLパラメータの連想配列
     let param = new Array();
@@ -73,11 +71,11 @@
       document.getElementById("nam").innerHTML = name + " さんの消費したカロリー";
 
       // -> server
-      const req = { id: name };
-      var res = await fetchJSON("/api/result", req);
-      const req = { id: name, ratio: res * kalorie };
-      var ratio = await fetch("/api/ratio", req);
+      var req = { id: name };
+      const res = await fetchJSON("/api/result", req);
       document.getElementById("cnt").innerHTML = "目標達成 "+ res +" 回目です！";
+      req = { id: name, kal: kalorie };
+      var ratio = await fetchJSON("/api/ratio", req);
       document.getElementById("ratio").innerHTML = "あなたのマッスルレート： "+ ratio;
     };
 
