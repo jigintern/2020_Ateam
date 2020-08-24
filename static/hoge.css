@@ -9,31 +9,74 @@ body{
 }
 
 /*ボタンの装飾*/
-#btn{
+#btn, input[type="button"]{
+    width: 360px;
     font-size: 1.4em;
     font-weight: bold;
     padding: 10px 30px; 
     background-color:#E1774B;
     color: #F4DB60;
+    cursor: pointer;
     border-radius: 100vh;
     border-style: none;
 }
+
 /*ボタンにカーソルを合わせたときの装飾*/
-#btn:hover{
+#btn:hover, input[type="button"]:hover{
     background:#e48a64;
     color: #f3e189;
 }
-/*名前と回数の入力の装飾*/
-#num, #nam {
+
+/*ラジオボタンの非表示*/
+#hukkin, #haikin, #udetate{
+    display: none;
+}
+
+/*ラジオのラベルの装飾*/
+.label1 {
     font-size: 1.4em;
     font-weight: bold;
-    padding: 10px 30px; 
+    padding-left: 33px;
+    padding-right: 33px;
+    background-color: #E1774B;
+    color: #F4DB60;
+    cursor: pointer;
+    border-radius: 100vh;
+}
+.label2 {
+    font-size: 1.4em;
+    font-weight: bold;
+    padding-left: 28px;
+    padding-right: 28px;
+    background-color: #E1774B;
+    color: #F4DB60;
+    cursor: pointer;
+    border-radius: 100vh;
+}
+
+/*ラジオボタンにカーソルを合わせたときの装飾*/
+.label:hover {
+    background:#e48a64;
+    color: #f3e189;
+}
+
+/*ラジオボタンを選択した時の装飾*/
+input[type="radio"]:checked + label {
+    background: #e79f7f;
+    color: #ece0a4;
+}
+
+/*formの装飾*/
+#num, #nam {
+    width: 320px;
+    font-size: 1.4em;
+    font-weight: bold;
+    padding: 5px 15px;
     color: #999999;
     border-radius: 100vh;
     border-style: none;
 
 }
-
 
 /*---index.html内部----*/
 
