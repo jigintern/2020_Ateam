@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
     <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
   </head>
-  <body>
+  <body id="touch">
     <!--子要素全体を左右中央揃えで表示するwrap_center-->
     <div class="wrap_center">
       <!--targetとgoalを横並びに表示するwrap-->
@@ -32,7 +32,7 @@
     var GOAL;
     let count = 0;
 
-    target.addEventListener('click', () => {
+    touch.addEventListener('click', () => {
       target.textContent = count++;
 
       if (target.textContent >= GOAL) {
