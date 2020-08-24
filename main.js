@@ -27,9 +27,9 @@ class MyServer extends Server {
                     console.log("新しいユーザーの登録");
                     //data.jsonの配列の末尾にreqデータ(json形式)を挿入
                     json[json.length] = req;
-                    //data.jsonのファイルを書きだして更新 <- 書き出さないと内部変数が変更されているだけで、ファイルは変わらない!!
-                    Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
                 }
+                //data.jsonのファイルを書きだして更新 <- 書き出さないと内部変数が変更されているだけで、ファイルは変わらない!!
+                Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
                 //fixをfalseに初期化
                 fix = false;
             }
