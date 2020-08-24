@@ -10,22 +10,30 @@
   <body>
     <h1 id="appname">ランキング</h1>
     <!-- ランキングの表示 -->
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <table id="t" border="1" align="center">
+      <!--<tr><th>ランク</th><th>名前</th><th>クリア回数<th></tr>-->
+    </table>
+
+      <script type="module">
+        window.onload = async () => {
+          const json = await (await fetch("/api/ranking")).json();
+          for(let i = 0; json.length > i; i++) {
+            var td = document.createElement("td");
+            td.textContent = i + 1;
+            t.appendChild(td);
+            var td = document.createElement("td");
+            td.textContent = json[i].id;
+            t.appendChild(td); 
+            var td = document.createElement("td");
+            td.textContent = json[i].cnt;
+            t.appendChild(td);
+            var tr = document.createElement("tr");
+            t.appendChild(tr);
+          }
+        };
+      </script>
+    
+    <br>
     <input type="button" onclick="location.href='./index.html'" value="スタートに戻る">
   </body>
-  <!-- <script type="module">
-    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-
-    btn.onclick = async () => {
-      //サーバーへのユーザーIDと筋トレ回数の送信
-      const req = { id: nam.value, num: num.value }
-      const res = await fetchJSON("/api/data", req);
-      //html間のデータ送受
-      const path = './training.html?' + 'name=' + nam.value + '&menu=' + start.menu.value +'&number=' + num.value;
-      location.href = path;
-    };
-    btn_r.onclick = function()/*async () =>*/ {
-      location.href = './ranking.html?';
-    };
-  </script> -->
 </html>

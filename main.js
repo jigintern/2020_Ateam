@@ -41,35 +41,56 @@ class MyServer extends Server {
             }
             return null;
         }
-        //result.html->Server
+        //result.html -> Server
         else if(path === "/api/result") {
+            //json読み込み
             const json = JSON.parse(Deno.readTextFileSync("./data.json"));
-            var cnt;
-            let j = 0;
-            while(json.length){
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
                 //data.json内で一致するユーザーデータを検出
-                if(req.id === json[j].id){
+                if(req.id === json[i].id){
                     //目標達成が初めての場合cutを追加し、1を代入
-                    if(json[j].cnt === undefined){
+                    if(json[i].cnt === undefined){
                         console.log("！初目標達成！");
-                        json[j].cnt = 1;
+                        json[i].cnt = 1;
                     }
                     //そうでなければcntの値を+1して再代入
                     else{
-                        let tmp = ++json[j].cnt;
+                        let tmp = ++json[i].cnt;
                         console.log("目標達成 - " + tmp + "回目");
-                        json[j].cnt = tmp;
+                        json[i].cnt = tmp;
                     }
                     break;
                 }
-                j++;
+                i++;
             }
             //data.jsonの更新
             Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
-            return json[j].cnt;
+            return json[i].cnt;
         }
-        else if (path === "/kinniku/") {
-            return null;
+        //index.thml(ranking) -> Server
+        else if (path === "/api/ranking") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./data.json"));
+
+            //比較関数
+            /*--- レートが完成したらここで.cntを対応するものに変える ---*/
+            function compare( a, b ) {
+                var r = 0;
+                if( a.cnt < b.cnt ) {
+                    r = -1;
+                }
+                else if( a.cnt > b.cnt ) {
+                    r = 1;
+                }
+                return ( -1 * r );
+            }
+            //比較関数によって大きい順にソート & 書き出し
+            json.sort(compare);
+            Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
+
+            return json;
         }
         return null;
     }

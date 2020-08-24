@@ -62,5 +62,13 @@
       var res = await fetchJSON("/api/result", req);
       document.getElementById("cnt").innerHTML = "目標達成 "+ res +" 回目です！";
     };
+
+    window.addEventListener('beforeunload',
+      function(e){
+        //更新される直前にindex.htmlに戻す
+        location.href = "./index.html";
+        console.log('reload -> back');
+      }
+    );
   </script>
 </html>
