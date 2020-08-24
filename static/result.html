@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="hoge.css">
     <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
     <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
+    <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
     <p>
@@ -28,42 +29,20 @@
         </span>
         <form>
           <!--戻るボタン-->
-          <input type="button" onclick="location.href='./index.html'" value="戻るやで">
+          <input type="button" onclick="move('index','name')" value="戻るやで">
           <br><br>
           <!--ランキングボタン -->
-          <input type="button" onclick="location.href='./ranking.html'" value="ランキング見るやで">
+          <input type="button" onclick="move('ranking','name')" value="ランキング見るやで">
         </form>
       </div>
     </p>
   </body>
-  <script>
-    //更新検知
-    var hash = decodeURIComponent(location.hash.slice(1));
-    if (hash == "reload") {
-      
-      location.href = "./index.html";
-    }
-    else {
-      location.hash = "reload";
-    }
-  </script>
-
   <script type="module">
+    //HTMLパラメータ取得
+    window.onload=ParameterGet();
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-
-    //HTMLパラメータの連想配列
-    let param = new Array();
-
     //JSONdataを受け取り、成功したカウント？
     window.onload = async () => {
-      //パラメータ受け取って分割
-      var pair = location.search.substring(1).split('&');
-      //連想配列生成工場
-      var temp;
-      for (let index in pair){
-        temp = pair[index].split("=");
-        param[temp[0]] = temp[1];
-      }
       var number = param["number"];
       var kalorie = number * 10;
       var name = decodeURI(param["name"]);
@@ -76,6 +55,15 @@
       var res = await fetchJSON("/api/result", req);
       document.getElementById("cnt").innerHTML = "目標達成 "+ res +" 回目です！";
     };
+
+    //更新検知
+    var hash = decodeURIComponent(location.hash.slice(1));
+    if (hash == "reload") {
+      move("index", "name");
+    }
+    else {
+      location.hash = "reload";
+    }
 
   </script>
 </html>

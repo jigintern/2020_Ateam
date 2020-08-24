@@ -6,6 +6,7 @@
   <link rel="stylesheet" type="text/css" href="./hoge.css">
   <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
   <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
+  <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
 
   <style type="text/css">
     /*ランキング表を装飾*/
@@ -58,6 +59,8 @@
   </table>
 
   <script type="module">
+    //HTMLパラメータ取得
+    window.onload=ParameterGet();
     window.onload = async () => {
       const json = await (await fetch("/api/ranking")).json();
       for (let i = 0; json.length > i; i++) {
@@ -77,7 +80,7 @@
   </script>
 
   <br>
-  <input type="button" onclick="location.href='./index.html'" value="スタートに戻る">
+  <input type="button" onclick="move('index', 'name')" value="スタートに戻る">
 </body>
 
 </html>
