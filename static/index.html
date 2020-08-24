@@ -6,13 +6,15 @@
     <link rel="stylesheet" type="text/css" href="./hoge.css">
     <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
     <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
+    <script src="./js/sweetalert2.all.min.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
+    <p id="outname" style="position:absolute; top:0%; right:0%;">お名前：未設定　</p>
     <h1 id="appname">きんにくアプリ</h1>
     <form id="start">
-      <!--名前の入力-->
-      <p>名前を入力してね</p>
-      <input type="text" id="nam" name="name" size="10" value="忍者">
+      <!--プロフィール設定-->
+      <p>プロフィールを設定してね</p>
+      <input type="button" id="probtn" value="画面開くやで">
       <br>
       <!--筋トレメニュー選択する機能-->
       <p>どの筋トレする？</p>
@@ -26,20 +28,96 @@
       <br>
       <!--スタートボタン-->
       <!--<input type="button" onclick="send()" value="トレーニング画面飛ぶやで">-->
-      <button id="btn">トレーニング画面飛ぶやで</button>
-      <!--ランキングボタン -->
-      <input type="button" onclick="location.href='./ranking.html'" value="ランキング見るやで">
+      <button id="btn" style="visibility:hidden;">トレーニング画面飛ぶやで</button>
     </form>
   </body>
   <script type="module">
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+    let name,gender,age,weight;
+
+    //プロフィール画面表示
+    probtn.onclick = async () => {
+      const { value: profile } = await Swal.fire({
+        title: 'プロフィール',
+        //入力フォームHTML
+        html:
+          '<br>名前' +
+          '<input class="swal2-input" placeholder="Name" id="name">' +
+          '<br>性別' +
+          '<div calss="swal2-radio">' +
+            '<form id="radi">' +
+            '<label>' +
+              '<input type="radio" name="swal2radio" value="man" checked="checked">' +
+              '<span class="swal2-label">男性</span>' +
+            '</label>' +
+            '<label>' +
+              '<input type="radio" name="swal2radio" value="woman">' +
+              '<span class="swal2-label">女性</span>' +
+            '</label>' +
+            '</form>' +
+          '</div>' +
+          '<br>年齢' +
+          '<div calss="swal2-range">' +
+            '<input type="range" value="20" min="10" max="60" step="1" oninput="out1.value=this.value" id="rang1">' +
+            '<output id="out1">20</output>歳' +
+          '</div>' +
+          '<br>体重' +
+          '<div calss="swal2-range">' +
+            '<input type="range" value="50" min="20" max="120" step="1" oninput="out2.value=this.value" id="rang2">' +
+            '<output id="out2">50</output>kg' +
+          '</div>' ,
+        confirmButtonText: '保存',
+        //allowOutsideClick : false,
+        preConfirm: () => {
+          return [
+            document.getElementById('name').value,
+            document.getElementById('radi').swal2radio.value,
+            document.getElementById('rang1').value,
+            document.getElementById('rang2').value
+          ]
+        },
+      })
+      //取得値表示
+      if (profile) {
+        name = profile[0];
+        gender = profile[1];
+        age = profile[2];
+        weight = profile[3];
+        if (!profile[0]) {
+          const { value: morename } = await Swal.fire({
+            icon: 'error',
+            title: '名前を入力してください。',
+            input: 'text',
+            allowOutsideClick : false,
+            inputValidator: (value) => {
+              if (!value) {
+                return '見えません...'
+              }
+              name = value;
+            }
+          })
+        }
+        Swal.fire({
+          icon: 'success',
+          title: 'わかった！',
+          showConfirmButton: false,
+          timer: 1000
+        })
+        outname.innerHTML = "お名前：" + name + "　";
+        btn.style.visibility = 'visible';
+        //console.log(name,gender,age,weight);
+      }
+      //Swal.fire(JSON.stringify(profile))
+    }
+
 
     btn.onclick = async () => {
       //サーバーへのユーザーIDと筋トレ回数の送信
-      const req = { id: nam.value, num: num.value }
-      await fetchJSON("/api/data", req);
+      const req = { id: name, num: num.value }
+      const res = await fetchJSON("/api/data", req);
+      
       //html間のデータ送受
-      const path = './training.html?' + 'name=' + nam.value + '&menu=' + start.menu.value +'&number=' + num.value;
+      const path = './training.html?' + 'name=' + name + '&menu=' + start.menu.value +'&number=' + num.value;
       location.href = path;
     };
   </script>
