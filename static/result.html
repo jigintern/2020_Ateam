@@ -11,6 +11,7 @@
     <p>
       <div class = "calorie">
         <div style ="text-align:center;">
+          <br>
           <span>
             <p id="nam">      さんの消費したカロリー</p><br>
             <!--カロリーを表示する-->
@@ -22,12 +23,13 @@
       <div style="text-align:center;">
         <span>
           <p id="cnt">目標達成   回目です！</p><br>
-            おつかれさま<br>
-            よくがんばりました(｡`･ω･´｡)
+          <p id="comment">おつかれさま<br>
+          よくがんばりました(｡`･ω･´｡)</p>
         </span>
         <form>
           <!--戻るボタン-->
           <input type="button" onclick="location.href='./index.html'" value="戻るやで">
+          <br><br>
           <!--ランキングボタン -->
           <input type="button" onclick="location.href='./ranking.html'" value="ランキング見るやで">
         </form>
@@ -66,7 +68,7 @@
       var kalorie = number * 10;
       var name = decodeURI(param["name"]);
 
-      document.getElementById("kalorie").innerHTML = kalorie + "kacl";
+      document.getElementById("kalorie").innerHTML = "<span id='kcal'>" + kalorie + " " + "</span>" + "kcal" + "<span id='kcal'>" + " 🎉" + "</span>";
       document.getElementById("nam").innerHTML = name + " さんの消費したカロリー";
 
       // -> server
