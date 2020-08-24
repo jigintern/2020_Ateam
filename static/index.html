@@ -67,7 +67,7 @@
             '<output id="out2">50</output>kg' +
           '</div>' ,
         confirmButtonText: '保存',
-        allowOutsideClick : false,
+        //allowOutsideClick : false,
         preConfirm: () => {
           return [
             document.getElementById('name').value,
@@ -79,6 +79,10 @@
       })
       //取得値表示
       if (profile) {
+        name = profile[0];
+        gender = profile[1];
+        age = profile[2];
+        weight = profile[3];
         if (!profile[0]) {
           const { value: morename } = await Swal.fire({
             icon: 'error',
@@ -89,6 +93,7 @@
               if (!value) {
                 return '見えません...'
               }
+              name = value;
             }
           })
         }
@@ -98,10 +103,6 @@
           showConfirmButton: false,
           timer: 1000
         })
-        name = profile[0];
-        gender = profile[1];
-        age = profile[2];
-        weight = profile[3];
         outname.innerHTML = "お名前：" + name + "　";
         btn.style.visibility = 'visible';
         //console.log(name,gender,age,weight);
