@@ -48,11 +48,11 @@
           '<div calss="swal2-radio">' +
             '<form id="radi">' +
             '<label>' +
-              '<input type="radio" name="swal2radio" value="man" checked="checked">' +
+              '<input type="radio" name="swal2radio" value="male" checked="checked">' +
               '<span class="swal2-label">男性</span>' +
             '</label>' +
             '<label>' +
-              '<input type="radio" name="swal2radio" value="woman">' +
+              '<input type="radio" name="swal2radio" value="female">' +
               '<span class="swal2-label">女性</span>' +
             '</label>' +
             '</form>' +
@@ -104,6 +104,10 @@
           showConfirmButton: false,
           timer: 1000
         })
+        //サーバーへのプロフィールの送信
+        const req = { id: name, ftm: gender, age: age, wt: weight };
+        const res = await fetchJSON("/api/user", req);
+        //HTML更新
         outname.innerHTML = "お名前：" + name + "　";
         document.cookie = "name=" + name;//cookie保存
         btn.style.visibility = 'visible';
@@ -115,7 +119,7 @@
 
     btn.onclick = async () => {
       //サーバーへのユーザーIDと筋トレ回数の送信
-      const req = { id: name, num: num.value }
+      const req = { id: name, num: num.value };
       const res = await fetchJSON("/api/data", req);
 
       //html間のデータ送受
