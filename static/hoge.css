@@ -9,7 +9,7 @@ body{
 }
 
 /*ボタンの装飾*/
-#btn{
+#btn, input[type="button"]{
     width: 360px;
     font-size: 1.4em;
     font-weight: bold;
@@ -22,7 +22,7 @@ body{
 }
 
 /*ボタンにカーソルを合わせたときの装飾*/
-#btn:hover{
+#btn:hover, input[type="button"]:hover{
     background:#e48a64;
     color: #f3e189;
 }
