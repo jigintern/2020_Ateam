@@ -8,6 +8,11 @@ body{
     font-weight: 900;
 }
 
+p{
+    text-align: center;
+    font-size: 1.4em;
+}
+
 /*ボタンの装飾*/
 #btn, input[type="button"]{
     width: 360px;
@@ -15,7 +20,7 @@ body{
     font-weight: bold;
     padding: 10px 30px; 
     background-color:#E1774B;
-    color: #F4DB60;
+    color: #ffffff;
     cursor: pointer;
     border-radius: 100vh;
     border-style: none;
@@ -24,7 +29,7 @@ body{
 /*ボタンにカーソルを合わせたときの装飾*/
 #btn:hover, input[type="button"]:hover{
     background:#e48a64;
-    color: #f3e189;
+    color: #ffffff;
 }
 
 /*ラジオボタンの非表示*/
@@ -39,7 +44,7 @@ body{
     padding-left: 33px;
     padding-right: 33px;
     background-color: #E1774B;
-    color: #F4DB60;
+    color: #ffffff;
     cursor: pointer;
     border-radius: 100vh;
 }
@@ -49,7 +54,7 @@ body{
     padding-left: 28px;
     padding-right: 28px;
     background-color: #E1774B;
-    color: #F4DB60;
+    color: #ffffff;
     cursor: pointer;
     border-radius: 100vh;
 }
@@ -57,17 +62,17 @@ body{
 /*ラジオボタンにカーソルを合わせたときの装飾*/
 .label:hover {
     background:#e48a64;
-    color: #f3e189;
+    color: #ffffff;
 }
 
 /*ラジオボタンを選択した時の装飾*/
 input[type="radio"]:checked + label {
-    background: #e79f7f;
-    color: #ece0a4;
+    background: #c06a45;
+    color: #cac8c8;
 }
 
 /*formの装飾*/
-#num, #nam {
+#num {
     width: 320px;
     font-size: 1.4em;
     font-weight: bold;
@@ -83,7 +88,6 @@ input[type="radio"]:checked + label {
 /*アプリ名の装飾*/
 #appname{
     font-family: "Nico Moji",'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-
     font-size: 120px;
     padding-top: 30px;
     padding-bottom: 32px;
@@ -140,6 +144,17 @@ input[type="radio"]:checked + label {
 
     color:#E1774B;
 
+}
+
+/* result.html内部 */
+
+#nam, #kalorie, #cnt, #comment{
+    font-size: 1.4em;
+    color: #ffffff;
+}
+#kcal{
+    font-size: 1.8em;
+    color: #F4DB60;
 }
 
 
