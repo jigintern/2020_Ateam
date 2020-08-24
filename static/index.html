@@ -25,10 +25,11 @@
       <!--筋トレの回数を入力する-->
       <p>回数を入力してね</p>
       <input type="number" id="num" name="count" value="10" min="1" max="20" step="1">
-      <br>
+      <br><br>
       <!--スタートボタン-->
       <!--<input type="button" onclick="send()" value="トレーニング画面飛ぶやで">-->
-      <button id="btn" style="visibility:hidden;">トレーニング画面飛ぶやで</button>
+      <button id="btn" style="visibility:hidden;">トレーニング画面飛ぶやで</button><br><br>
+      <input type="button" onclick="location.href='./ranking.html'" value="ランキング見るやで">
     </form>
   </body>
   <script type="module">
@@ -104,6 +105,7 @@
           timer: 1000
         })
         outname.innerHTML = "お名前：" + name + "　";
+        document.cookie = "name=" + name;//cookie保存
         btn.style.visibility = 'visible';
         //console.log(name,gender,age,weight);
       }
@@ -115,10 +117,20 @@
       //サーバーへのユーザーIDと筋トレ回数の送信
       const req = { id: name, num: num.value }
       const res = await fetchJSON("/api/data", req);
-      
+
       //html間のデータ送受
       const path = './training.html?' + 'name=' + name + '&menu=' + start.menu.value +'&number=' + num.value;
       location.href = path;
     };
+
+    //Cookieの呼び出し(名前のみ)
+    const cookie = () => {
+      const cookname = document.cookie;
+      if (cookname) {
+        outname.innerHTML = "お名前：" + cookname.split('=')[1] + "　";
+        btn.style.visibility = 'visible';
+      }
+    }
+    window.onload=cookie;
   </script>
 </html>
