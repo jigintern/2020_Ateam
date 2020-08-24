@@ -1,39 +1,83 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <title>ranking</title>
-    <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="./hoge.css">
-    <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
-  </head>
-  <body>
-    <h1 id="appname">ランキング</h1>
-    <!-- ランキングの表示 -->
-    <table id="t" border="1" align="center">
-      <tr><th>ランク</th><th>名前</th><th>クリア回数</th></tr>
-    </table>
+<head>
+  <title>ranking</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="./hoge.css">
+  <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
 
-      <script type="module">
-        window.onload = async () => {
-          const json = await (await fetch("/api/ranking")).json();
-          for(let i = 0; json.length > i; i++) {
-            var td = document.createElement("td");
-            td.textContent = i + 1;
-            t.appendChild(td);
-            var td = document.createElement("td");
-            td.textContent = json[i].id;
-            t.appendChild(td);
-            var td = document.createElement("td");
-            td.textContent = json[i].cnt;
-            t.appendChild(td);
-            var tr = document.createElement("tr");
-            t.appendChild(tr);
-          }
-        };
-      </script>
+  <style type="text/css">
+    /*ランキング表を装飾*/
+    th,
+    td {
+      border: solid 5px;
+      border-color: #7FC2C2;
+      background-color: azure;
+      text-align: center;
+      padding: 5px;
+      /* 枠線指定 */
+    }
 
-    <br>
-    <input type="button" onclick="location.href='./index.html'" value="スタートに戻る">
-  </body>
+    table {
+      border-collapse: collapse;
+      /* セルの線を重ねる */
+      width: 500px;
+      /* 幅指定 */
+    }
+
+    .midashi {
+      text-align: center;
+      color: azure;
+      background-color: #E1774B;
+      padding: 10px;
+    }
+
+    th {
+      width: 200px;
+      /* 幅指定 */
+      text-align: left;
+      /* 文字の揃え位置指定 */
+
+    }
+  </style>
+
+</head>
+
+<body>
+  <h1 id="appname">ランキング</h1>
+
+  <!-- ランキングの表示 -->
+  <table id="t" border="1" align="center">
+    <tr>
+      <th class="midashi">ランク</th>
+      <th class="midashi">名前</th>
+      <th class="midashi">クリア回数</th>
+    </tr>
+    <!--<tr><th>ランク</th><th>名前</th><th>クリア回数<th></tr>-->
+  </table>
+
+  <script type="module">
+    window.onload = async () => {
+      const json = await (await fetch("/api/ranking")).json();
+      for (let i = 0; json.length > i; i++) {
+        var td = document.createElement("td");
+        td.textContent = i + 1;
+        t.appendChild(td);
+        var td = document.createElement("td");
+        td.textContent = json[i].id;
+        t.appendChild(td);
+        var td = document.createElement("td");
+        td.textContent = json[i].cnt;
+        t.appendChild(td);
+        var tr = document.createElement("tr");
+        t.appendChild(tr);
+      }
+    };
+  </script>
+
+  <br>
+  <input type="button" onclick="location.href='./index.html'" value="スタートに戻る">
+</body>
+
 </html>
