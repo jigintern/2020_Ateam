@@ -298,6 +298,7 @@ th {
 /* スライダー */
 /* 背景色 */
 .rang {
+    -webkit-appearance: none;
     background: linear-gradient(to right, #69c4c3 0%, #69c4c3 20%, #a9a9a9 20%, #a9a9a9 100%);
     border-radius: 8px;
     height: 10px;
@@ -308,6 +309,7 @@ th {
 /* つまみ */
 /* WebKit向け */
 .rang::-webkit-slider-thumb {
+    -webkit-appearance: none;
     background: #69c4c3;
     width: 20px;
     height: 20px;
@@ -325,6 +327,7 @@ th {
 }
 /* Moz向け */
 input[type="range"]::-moz-range-thumb {
+    -moz-appearance: none;
     background: #69c4c3;
     width: 20x;
     height: 20px;

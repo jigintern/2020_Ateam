@@ -1,6 +1,6 @@
 // <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
 
-var param = new Array();
+window.param = new Array();
 
 const ParameterGet = () => {
     var pair = location.search.substring(1).split('&');
@@ -11,7 +11,9 @@ const ParameterGet = () => {
     }
 }
 
-var move = function(place){
+window.onload = ParameterGet();
+
+const move = function(place){
     let Psend = "";
     for(var i = 1; i < arguments.length; ++i){
         if(!param[arguments[i]]) break;
@@ -21,5 +23,3 @@ var move = function(place){
     const path = `./${place}.html${Psend}`;
     location.href=path;
 };
-
-window.onload = ParameterGet();
