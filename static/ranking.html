@@ -6,6 +6,7 @@
   <link rel="stylesheet" type="text/css" href="./hoge.css">
   <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
   <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
+  <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
 </head>
 <body>
   <header>
@@ -52,6 +53,13 @@
   <script>
 
     window.onload = async () => {
+      //Cookieの呼び出し(名前のみ)
+      let name = document.cookie.split('=')[1];
+      //パラメータを優先
+      if (param["name"]) {
+        name=decodeURI(param["name"]);
+      }
+
       const json = await (await fetch("/api/ranking")).json();
 
       let tr, td, fm, data, submit;
