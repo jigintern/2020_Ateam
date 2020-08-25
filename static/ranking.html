@@ -6,10 +6,17 @@
   <link rel="stylesheet" type="text/css" href="./hoge.css">
   <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
   <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
-
 </head>
-
 <body>
+  <header>
+    <ul class="menu-list">
+      <li class="menu-list-item" id="home" onclick="move('index','name')">ホーム</li>
+      <li class="menu-list-item" id="friend">フレンド</li>
+      <li class="menu-list-check" id="rank" onclick="move('ranking','name')">ランキング</li>
+      <li class="menu-list-item" id="mission" onclick="move('mission','name')">ミッション</li>
+      <li class="menu-list-item" id="setup">設定</li>
+    </ul>
+  </header>
   <h1 id="appname">ランキング</h1>
 
   <!-- ランキングの表示 -->
@@ -17,7 +24,7 @@
     <tr>
       <th class="midashi">ランク</th>
       <th class="midashi">名前</th>
-      <th class="midashi">クリア回数</th>
+      <th class="midashi">マッスルレート</th>
       <th class="midashi">友達申請</th>
     </tr>
   </table>
@@ -53,8 +60,7 @@
         td = document.createElement("td");
         td.textContent = json[i].id;
         t.appendChild(td);
-
-        //クリア回数
+        //マッスルレート
         td = document.createElement("td");
         td.textContent = json[i].ratio;
         t.appendChild(td);
