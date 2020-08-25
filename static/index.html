@@ -139,6 +139,7 @@
         //HTML更新
         outname.innerHTML = "お名前：" + name + "　";
         document.cookie = "name=" + name;//cookie保存
+        param["name"] = name;
         btn.style.visibility = 'visible';
       }
     };
