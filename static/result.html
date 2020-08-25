@@ -25,7 +25,8 @@
         <span>
           <p id="cnt">目標達成   回目です！</p><br>
           <p id="comment">おつかれさま<br>
-          よくがんばりました(｡`･ω･´｡)</p>
+            よくがんばりました(｡`･ω･´｡)</p>
+          <p id="ratio">あなたのマッスルレート： ---------------</p>
         </span>
         <form>
           <!--戻るボタン-->
@@ -49,9 +50,12 @@
       document.getElementById("nam").innerHTML = name + " さんの消費したカロリー";
 
       // -> server
-      const req = { id: name };
-      var res = await fetchJSON("/api/result", req);
+      var req = { id: name };
+      const res = await fetchJSON("/api/result", req);
       document.getElementById("cnt").innerHTML = "目標達成 "+ res +" 回目です！";
+      req = { id: name, kal: kalorie };
+      var ratio = await fetchJSON("/api/ratio", req);
+      document.getElementById("ratio").innerHTML = "あなたのマッスルレート： "+ ratio;
     };
 
     //更新検知

@@ -157,4 +157,36 @@ input[type="radio"]:checked + label {
     color: #F4DB60;
 }
 
+/* ranking.html内部 */
+/*ランキング表を装飾*/
+th,
+td {
+  border: solid 5px;
+  border-color: #7FC2C2;
+  background-color: azure;
+  text-align: center;
+  padding: 5px;
+  /* 枠線指定 */
+}
 
+table {
+  border-collapse: collapse;
+  /* セルの線を重ねる */
+  width: 500px;
+  /* 幅指定 */
+}
+
+.midashi {
+  text-align: center;
+  color: azure;
+  background-color: #E1774B;
+  padding: 10px;
+}
+
+th {
+  width: 200px;
+  /* 幅指定 */
+  text-align: left;
+  /* 文字の揃え位置指定 */
+
+}
