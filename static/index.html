@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
     <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
     <script src="./js/sweetalert2.all.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body>
     <p id="outname" style="position:absolute; top:0%; right:0%;">お名前：未設定　</p>
@@ -25,15 +26,31 @@
       <!--筋トレの回数を入力する-->
       <p>回数を入力してね</p>
       <input type="number" id="num" name="count" value="10" min="1" max="20" step="1">
-      <br>
+      <br><br>
       <!--スタートボタン-->
       <!--<input type="button" onclick="send()" value="トレーニング画面飛ぶやで">-->
-      <button id="btn" style="visibility:hidden;">トレーニング画面飛ぶやで</button>
+      <button id="btn" style="visibility:hidden;">トレーニング画面飛ぶやで</button><br><br>
+      <input type="button" onclick="move('ranking','name')" value="ランキング見るやで">
     </form>
   </body>
   <script type="module">
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+
     let name,gender,age,weight;
+    //Cookieの呼び出し(名前のみ)
+    window.onload = async () => {
+      let cookname = document.cookie.split('=')[1];
+      if (cookname) {
+        //パラメータを優先
+        if (param["name"]){
+          cookname=param["name"];
+        }
+        outname.innerHTML = "お名前：" + cookname + "　";
+        btn.style.visibility = 'visible';
+        name = cookname;
+      }
+
+    }
 
     //プロフィール画面表示
     probtn.onclick = async () => {
@@ -47,11 +64,11 @@
           '<div calss="swal2-radio">' +
             '<form id="radi">' +
             '<label>' +
-              '<input type="radio" name="swal2radio" value="man" checked="checked">' +
+              '<input type="radio" name="swal2radio" value="male" checked="checked">' +
               '<span class="swal2-label">男性</span>' +
             '</label>' +
             '<label>' +
-              '<input type="radio" name="swal2radio" value="woman">' +
+              '<input type="radio" name="swal2radio" value="female">' +
               '<span class="swal2-label">女性</span>' +
             '</label>' +
             '</form>' +
@@ -97,25 +114,39 @@
             }
           })
         }
-        Swal.fire({
-          icon: 'success',
-          title: 'わかった！',
+
+        Swal.mixin({
+          toast: true,
+          position: 'top-end',
           showConfirmButton: false,
-          timer: 1000
+          timer: 1500,
+          timerProgressBar: true,
+          onOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        }).fire({
+          icon: 'success',
+          title: 'わかった！'
         })
+
+        //サーバーへのプロフィールの送信
+        const req = { id: name, ftm: gender, age: age, wt: weight };
+        const res = await fetchJSON("/api/user", req);
+        //HTML更新
         outname.innerHTML = "お名前：" + name + "　";
+        document.cookie = "name=" + name;//cookie保存
         btn.style.visibility = 'visible';
         //console.log(name,gender,age,weight);
       }
       //Swal.fire(JSON.stringify(profile))
     }
 
-
     btn.onclick = async () => {
       //サーバーへのユーザーIDと筋トレ回数の送信
-      const req = { id: name, num: num.value }
+      const req = { id: name, num: num.value };
       const res = await fetchJSON("/api/data", req);
-      
+
       //html間のデータ送受
       const path = './training.html?' + 'name=' + name + '&menu=' + start.menu.value +'&number=' + num.value;
       location.href = path;

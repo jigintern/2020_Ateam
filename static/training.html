@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="hoge.css">
     <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
     <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
+    <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
   </head>
   <body id="touch" style="height:100vh;">
     <!--子要素全体を左右中央揃えで表示するwrap_center-->
@@ -26,8 +27,6 @@
   </body>
 
   <script type="text/javascript">
-    //HTMLパラメータの連想配列
-    let param = new Array();
     const target = document.getElementById('target');
     var GOAL;
     let count = 0;
@@ -36,25 +35,16 @@
       target.textContent = count++;
 
       if (target.textContent >= GOAL) {
-        location.href='./result.html?' + 'name=' + param["name"] + '&number='+ GOAL;
+        move("result", "name", "number");
       }
     }, false);
 
-    function get(){
-      //パラメータ受け取って分割
-      var pair = location.search.substring(1).split('&');
-      //連想配列生成工場
-      var temp;
-      for (let index in pair){
-        temp = pair[index].split("=");
-        param[temp[0]] = temp[1];
-      }
+    window.onload = async () => {
       //筋トレを表示
       document.getElementById("kind").innerHTML = "内容：" + param["menu"];
       //目標回数を表示
       document.getElementById("goal").innerHTML = "目標回数：" + param["number"];
       GOAL = parseInt(param["number"]);
     };
-    window.onload = get;
   </script>
 </html>
