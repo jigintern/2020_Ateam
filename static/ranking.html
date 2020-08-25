@@ -31,19 +31,25 @@
 
   <!--関数の宣言-->
   <script>
-    //友達追加用のsubmit()で動作させる関数
-    const AddFriend = async (i) => {
-      //自身のidと申請したい友達のnameを取得
-      const req = { id: "", other: document.getElementById("id" + i).value };
 
-      await fetchJSON("/api/friend", req);
+    import("https://code4sabae.github.io/js/fetchJSON.js").then((module) => {
 
+      //友達追加用のsubmit()で動作させる関数
+      const AddFriend = async (i) => {
+        //自身のidと申請したい友達のnameを取得
+        const req = { id: "", other: document.getElementById("id" + i).value };
 
-    }
+        await module("/api/friend", req);
+
+        //ボタンを非表示
+        ;
+
+      };
+
+    });
   </script>
 
-  <script type="module">
-    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+  <script>
 
     window.onload = async () => {
       const json = await (await fetch("/api/ranking")).json();
