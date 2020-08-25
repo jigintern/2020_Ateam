@@ -162,8 +162,17 @@ class MyServer extends Server {
             while (json.length > i) {
                 //data.json内で一致するユーザーデータを検出
                 if(req.id === json[i].id){
-                    //[frendsdsの大きさ]番目にフレンド追加
-                    json[i].friends[(json[i].friends).length] = req.other;
+                    console.log(req.id, req.other);
+                    //friendsの項目が存在しなかった場合
+                    if(json[i].friends === undefined) {
+                        json[i].friends = [req.other];
+                    }
+                    else {
+                        //[frendsdsの大きさ]番目にフレンド追加
+                        json[i].friends[json[i].friends.length] = req.other;
+                        //重複は削除
+                        json[i].friends = Array.from(new Set(json[i].friends));
+                    }
                     
                     break;
                 }
