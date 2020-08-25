@@ -150,8 +150,9 @@
       const res = await fetchJSON("/api/data", req);
 
       //html間のデータ送受
-      const path = './training.html?' + 'name=' + name + '&menu=' + start.menu.value +'&number=' + num.value;
-      location.href = path;
+      param["menu"]=start.menu.value;
+      param["number"]=num.value;
+      move("training","name","menu","number");
     };
 
   </script>
