@@ -330,3 +330,13 @@ input[type="range"]::-moz-range-thumb {
     color: #ffffff !important;
     border-radius: 2vh !important;
 }
+
+/* ミッションのレート表示に使うclass */
+.rate{
+    width: 50px;
+}
+
+/* クリアしたミッションに使うclass */
+.clear{
+    opacity: 0.7;
+}
