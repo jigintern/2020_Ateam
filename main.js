@@ -76,7 +76,7 @@ class MyServer extends Server {
             while (json.length > i) {
                 //data.json内で一致するユーザーデータを検出
                 if(req.id === json[i].id){
-                    //レートが無い場合にレートを追加(初期値0)
+                    //ratioが無い場合にレートを追加(初期値0)
                     if(json[i].ratio === undefined) {
                         console.log("！初期レート！");
                         json[i].ratio = req.kal;
@@ -85,7 +85,6 @@ class MyServer extends Server {
                     else {
                         console.log("レート更新");
                         json[i].ratio += req.kal;
-                        console.log(json[i].ratio);
                     }
                     break;
                 }
@@ -101,13 +100,12 @@ class MyServer extends Server {
             const json = JSON.parse(Deno.readTextFileSync("./data.json"));
 
             //比較関数
-            /*--- レートが完成したらここで.cntを対応するものに変える ---*/
             function compare( a, b ) {
                 var r = 0;
-                if( a.cnt < b.cnt ) {
+                if( a.ratio < b.ratio ) {
                     r = -1;
                 }
-                else if( a.cnt > b.cnt ) {
+                else if( a.ratio > b.ratio ) {
                     r = 1;
                 }
                 return ( -1 * r );
@@ -155,6 +153,27 @@ class MyServer extends Server {
             }
             return null;
         }
+        //ranking.html -> server　(友達追加)
+        else if (path === "/api/friend") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./data.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                //data.json内で一致するユーザーデータを検出
+                if(req.id === json[i].id){
+                    //[frendsdsの大きさ]番目にフレンド追加
+                    json[i].friends[(json[i].friends).length] = req.other;
+                    
+                    break;
+                }
+                i++;
+            }
+            //data.jsonの更新
+            Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
+            return null;
+        }
+
         return null;
     }
 };
