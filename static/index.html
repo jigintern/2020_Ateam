@@ -37,8 +37,7 @@
       <input type="number" id="num" name="count" value="10" min="1" max="20" step="1">
       <br><br>
       <!--スタートボタン-->
-      <button id="btn" style="visibility:hidden;">トレーニング画面飛ぶやで</button><br><br>
-      <input type="button" onclick="move('ranking','name')" value="ランキング見るやで">
+      <button id="btn" style="visibility:hidden;">レッツトレーニング！</button><br><br>
     </form>
   </body>
   <script type="module">
@@ -48,9 +47,9 @@
     //Cookieの呼び出し(名前のみ)
     window.onload = async () => {
       let cookname = document.cookie.split('=')[1];
-      if (cookname) {
-        //パラメータを優先
-        if (param["name"]){
+      if (cookname||param["name"]) {
+      //パラメータを優先
+        if(param["name"]){
           cookname=decodeURI(param["name"]);
         }
         outname.innerHTML = "お名前：" + cookname + "　";

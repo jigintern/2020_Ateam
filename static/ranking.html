@@ -30,6 +30,20 @@
   </table>
 
   <script type="module">
+    let name;
+    //Cookieの呼び出し(名前のみ)
+    window.onload = async () => {
+      let cookname = document.cookie.split('=')[1];
+      if (cookname||param["name"]) {
+      //パラメータを優先
+        if(param["name"]){
+          cookname=decodeURI(param["name"]);
+        }
+        outname.innerHTML = "お名前：" + cookname + "　";
+        btn.style.visibility = 'visible';
+        name = cookname;
+      }
+    };
     window.onload = async () => {
       const json = await (await fetch("/api/ranking")).json();
       for (let i = 0; json.length > i; i++) {
