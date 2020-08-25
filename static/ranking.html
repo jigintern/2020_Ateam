@@ -7,54 +7,14 @@
   <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
   <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
   <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
-  <style type="text/css">
-  /* ヘッダーの装飾 */
-  header {
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-    background-color: #E1774B;
-  }
-  .menu-list {
-    text-align: center;
-    margin: 0 auto;
-  }
-  .menu-list-item {
-    list-style: none;
-    display: inline-block;
-    padding: 10px 5px;
-    font-size: 1.4em;
-    color: #ffffff;
-    width: 150px;
-    cursor: pointer;
-  }
-  .menu-list-item:hover{
-    color: #F4DB60;
-  }
-  .menu-list-check{
-    list-style: none;
-    display: inline-block;
-    padding: 10px 10px;
-    font-size: 1.4em;
-    color: #F4DB60;
-    background-color: #d66534;
-    border-bottom: solid 1.2px #cac8c8;
-    width: 150px;
-    cursor: pointer;
-  }
-  </style>
 </head>
-
 <body>
   <header>
-    <!-- <h1>
-      <a>sample</a>
-    </h1> -->
     <ul class="menu-list">
       <li class="menu-list-item" id="home" onclick="move('index','name')">ホーム</li>
       <li class="menu-list-item" id="friend">フレンド</li>
       <li class="menu-list-check" id="rank" onclick="move('ranking','name')">ランキング</li>
-      <li class="menu-list-item" id="mission">ミッション</li>
+      <li class="menu-list-item" id="mission" onclick="move('mission','name')">ミッション</li>
       <li class="menu-list-item" id="setup">設定</li>
     </ul>
   </header>
