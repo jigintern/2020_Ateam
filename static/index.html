@@ -3,6 +3,7 @@
   <head>
     <title>start</title>
     <meta charset="utf-8">
+    <link rel="icon" href="./favicon.ico">
     <link rel="stylesheet" type="text/css" href="./hoge.css">
     <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
     <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
@@ -48,7 +49,7 @@
     window.onload = async () => {
       let cookname = document.cookie.split('=')[1];
       if (cookname||param["name"]) {
-      //パラメータを優先
+        //パラメータを優先
         if(param["name"]){
           cookname=decodeURI(param["name"]);
         }

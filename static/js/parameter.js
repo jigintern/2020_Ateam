@@ -1,6 +1,6 @@
 // <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
 
-let param = new Array();
+var param = new Array();
 
 const ParameterGet = () => {
     var pair = location.search.substring(1).split('&');
@@ -11,7 +11,7 @@ const ParameterGet = () => {
     }
 }
 
-const move = function(place){
+var move = function(place){
     let Psend = "";
     for(var i = 1; i < arguments.length; ++i){
         if(!param[arguments[i]]) break;

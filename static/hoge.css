@@ -13,6 +13,12 @@ p{
     font-size: 1.4em;
 }
 
+input, button, textarea, select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
 /* ヘッダーの装飾 */
 header {
     width: 100%;
@@ -292,7 +298,6 @@ th {
 /* スライダー */
 /* 背景色 */
 .rang {
-    -webkit-appearance: none;
     background: linear-gradient(to right, #69c4c3 0%, #69c4c3 20%, #a9a9a9 20%, #a9a9a9 100%);
     border-radius: 8px;
     height: 10px;
@@ -303,7 +308,6 @@ th {
 /* つまみ */
 /* WebKit向け */
 .rang::-webkit-slider-thumb {
-    -webkit-appearance: none;
     background: #69c4c3;
     width: 20px;
     height: 20px;
