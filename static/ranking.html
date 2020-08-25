@@ -6,7 +6,6 @@
   <link rel="stylesheet" type="text/css" href="./hoge.css">
   <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
   <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
-  <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
 
 </head>
 
@@ -19,24 +18,76 @@
       <th class="midashi">ランク</th>
       <th class="midashi">名前</th>
       <th class="midashi">クリア回数</th>
+      <th class="midashi">友達申請</th>
     </tr>
-    <!--<tr><th>ランク</th><th>名前</th><th>クリア回数<th></tr>-->
   </table>
 
+  <!--関数の宣言-->
+  <script>
+    //友達追加用のsubmit()で動作させる関数
+    const AddFriend = async (i) => {
+      //自身のidと申請したい友達のnameを取得
+      const req = { id: "", other: document.getElementById("id" + i).value };
+
+      await fetchJSON("/api/friend", req);
+
+
+    }
+  </script>
+
   <script type="module">
+    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+
     window.onload = async () => {
       const json = await (await fetch("/api/ranking")).json();
+
+      let tr, td, fm, data, submit;
       for (let i = 0; json.length > i; i++) {
-        var td = document.createElement("td");
-        td.textContent = i + 1;
+
+        //ランク
+        td = document.createElement("td");
+        td.textContent = (i + 1);
         t.appendChild(td);
-        var td = document.createElement("td");
+
+        //名前
+        td = document.createElement("td");
         td.textContent = json[i].id;
         t.appendChild(td);
-        var td = document.createElement("td");
-        td.textContent = json[i].cnt;
+
+        //クリア回数
+        td = document.createElement("td");
+        td.textContent = json[i].ratio;
         t.appendChild(td);
-        var tr = document.createElement("tr");
+
+        /*-- |Form部分| --*/
+
+        //input(hidden)ノードの作成・初期化
+        data = document.createElement("input");
+        data.type = "hidden";
+        data.id = "id" + i;
+        data.value = json[i].id;
+
+        //input(submit)ノードの作成・初期化
+        submit = document.createElement("input");
+        submit.type = "submit";
+        submit.value = "申請";
+
+        //formノードの作成・初期化
+        fm = document.createElement("form");
+        fm.id = "f" + i;
+        fm.action = "javascript:AddFriend(" + i + ")";
+
+        //tbノードの作成・初期化
+        td = document.createElement("td");
+
+        //各ノードを入れ子状に追加
+        fm.appendChild(data);
+        fm.appendChild(submit);
+        td.appendChild(fm);
+        t.appendChild(td);
+
+        //trノードの作成・初期化(表の改行)
+        tr = document.createElement("tr");
         t.appendChild(tr);
       }
     };
