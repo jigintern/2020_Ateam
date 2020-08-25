@@ -28,7 +28,6 @@
       <input type="number" id="num" name="count" value="10" min="1" max="20" step="1">
       <br><br>
       <!--スタートボタン-->
-      <!--<input type="button" onclick="send()" value="トレーニング画面飛ぶやで">-->
       <button id="btn" style="visibility:hidden;">トレーニング画面飛ぶやで</button><br><br>
       <input type="button" onclick="move('ranking','name')" value="ランキング見るやで">
     </form>
@@ -43,14 +42,13 @@
       if (cookname) {
         //パラメータを優先
         if (param["name"]){
-          cookname=param["name"];
+          cookname=decodeURI(param["name"]);
         }
         outname.innerHTML = "お名前：" + cookname + "　";
         btn.style.visibility = 'visible';
         name = cookname;
       }
-
-    }
+    };
 
     //プロフィール画面表示
     probtn.onclick = async () => {
@@ -58,31 +56,28 @@
         title: 'プロフィール',
         //入力フォームHTML
         html:
-          '<br>名前' +
-          '<input class="swal2-input" placeholder="Name" id="name">' +
-          '<br>性別' +
+          '<input class="swal2-input" placeholder="名前" id="name">' +
+          '<p class="prop">性別</p>' +
           '<div calss="swal2-radio">' +
             '<form id="radi">' +
             '<label>' +
-              '<input type="radio" name="swal2radio" value="male" checked="checked">' +
-              '<span class="swal2-label">男性</span>' +
+              '<input type="radio" name="swal2radio" value="male" checked="checked" id="man">' +
+              '<span class="swal2-label" id="lman">男性</span>' +
             '</label>' +
             '<label>' +
-              '<input type="radio" name="swal2radio" value="female">' +
-              '<span class="swal2-label">女性</span>' +
+              '<input type="radio" name="swal2radio" value="female" id="woman">' +
+              '<span class="swal2-label" id="lwoman">女性</span>' +
             '</label>' +
             '</form>' +
           '</div>' +
-          '<br>年齢' +
+          '<p class="prop" id="out1">年齢：20歳</p>' +
           '<div calss="swal2-range">' +
-            '<input type="range" value="20" min="10" max="60" step="1" oninput="out1.value=this.value" id="rang1">' +
-            '<output id="out1">20</output>歳' +
+            '<input type="range" value="20" min="10" max="60" step="1" oninput="this.style.background = `linear-gradient(to right, #69c4c3 0%, #69c4c3 ${(this.value-10)*2}%, #a9a9a9 ${(this.value-10)*2}%, #a9a9a9 100%)`;out1.innerHTML=`年齢：${this.value}歳`" id="rang1" class="rang">' +
           '</div>' +
-          '<br>体重' +
+          '<p class="prop" id="out2">体重：40kg</p>' +
           '<div calss="swal2-range">' +
-            '<input type="range" value="50" min="20" max="120" step="1" oninput="out2.value=this.value" id="rang2">' +
-            '<output id="out2">50</output>kg' +
-          '</div>' ,
+            '<input type="range" value="40" min="20" max="120" step="1" oninput="this.style.background = `linear-gradient(to right, #69c4c3 0%, #69c4c3 ${this.value-20}%, #a9a9a9 ${this.value-20}%, #a9a9a9 100%)`;out2.innerHTML=`体重：${this.value}kg`" id="rang2" class="rang">' +
+          '</div><br>' ,
         confirmButtonText: '保存',
         //allowOutsideClick : false,
         preConfirm: () => {
@@ -137,10 +132,8 @@
         outname.innerHTML = "お名前：" + name + "　";
         document.cookie = "name=" + name;//cookie保存
         btn.style.visibility = 'visible';
-        //console.log(name,gender,age,weight);
       }
-      //Swal.fire(JSON.stringify(profile))
-    }
+    };
 
     btn.onclick = async () => {
       //サーバーへのユーザーIDと筋トレ回数の送信
@@ -151,5 +144,6 @@
       const path = './training.html?' + 'name=' + name + '&menu=' + start.menu.value +'&number=' + num.value;
       location.href = path;
     };
+
   </script>
 </html>
