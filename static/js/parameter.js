@@ -21,3 +21,5 @@ const move = function(place){
     const path = `./${place}.html${Psend}`;
     location.href=path;
 };
+
+window.onload = ParameterGet();

@@ -59,8 +59,6 @@
   </table>
 
   <script type="module">
-    //HTMLパラメータ取得
-    window.onload=ParameterGet();
     window.onload = async () => {
       const json = await (await fetch("/api/ranking")).json();
       for (let i = 0; json.length > i; i++) {

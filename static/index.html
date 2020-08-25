@@ -34,8 +34,6 @@
     </form>
   </body>
   <script type="module">
-    //HTMLパラメータ取得
-    window.onload=ParameterGet();
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
     let name,gender,age,weight;
@@ -116,12 +114,22 @@
             }
           })
         }
-        Swal.fire({
-          icon: 'success',
-          title: 'わかった！',
+
+        Swal.mixin({
+          toast: true,
+          position: 'top-end',
           showConfirmButton: false,
-          timer: 1000
+          timer: 1500,
+          timerProgressBar: true,
+          onOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        }).fire({
+          icon: 'success',
+          title: 'わかった！'
         })
+
         //サーバーへのプロフィールの送信
         const req = { id: name, ftm: gender, age: age, wt: weight };
         const res = await fetchJSON("/api/user", req);
