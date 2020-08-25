@@ -47,17 +47,11 @@
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
     window.onload = async () => {
-      let name;
       //Cookieの呼び出し(名前のみ)
-      let cookname = document.cookie.split('=')[1];
-      if (cookname||param["name"]) {
+      let name = document.cookie.split('=')[1];
       //パラメータを優先
-        if(param["name"]){
-          cookname=decodeURI(param["name"]);
-        }
-        outname.innerHTML = "お名前：" + cookname + "　";
-        btn.style.visibility = 'visible';
-        name = cookname;
+      if (param["name"]) {
+        name=decodeURI(param["name"]);
       }
 
       const json = await (await fetch("/api/ranking")).json();
