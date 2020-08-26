@@ -102,7 +102,10 @@ class MyServer extends Server {
             //比較関数
             function compare( a, b ) {
                 var r = 0;
-                if( a.ratio < b.ratio ) {
+                if (a.ratio === undefined || b.ratio === undefined) {
+                    return r = -1;
+                }
+                else if( a.ratio < b.ratio ) {
                     r = -1;
                 }
                 else if( a.ratio > b.ratio ) {
