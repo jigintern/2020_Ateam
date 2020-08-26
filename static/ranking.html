@@ -50,15 +50,21 @@
       };
 
     window.onload = async () => {
-      //Cookieの呼び出し(名前のみ)
-      let name = document.cookie.split('=')[1];
+      let name;
       //パラメータを優先
-      if (param["name"]) {
+      if (!param["name"]) {
+        if (document.cookie){
+          //Cookieの呼び出し(名前のみ)
+          name = document.cookie.split('=')[1].replace("; csrftoken","");
+          param["name"] = name;
+        }
+      }else{
         name = decodeURI(param["name"]);
       }
       if(!name){
         add.style.display = 'none';
       }
+
       const json = await (await fetch("/api/ranking")).json();
 
       let tr, td, fm, data, submit;

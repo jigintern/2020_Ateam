@@ -45,20 +45,21 @@
   <script type="module">
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
-    //Cookieの呼び出し(名前のみ)
     window.onload = async () => {
       let name;
-      //Cookieの呼び出し(名前のみ)
-      if (document.cookie){
-        name = document.cookie.split('=')[1];
-        param["name"] = name;
-      }
       //パラメータを優先
-      if (param["name"]) {
+      if (!param["name"]) {
+        if (document.cookie){
+          //Cookieの呼び出し(名前のみ)
+          name = document.cookie.split('=')[1].replace("; csrftoken","");
+          param["name"] = name;
+        }
+      }else{
         name = decodeURI(param["name"]);
       }
+
       if (name){
-        outname.innerHTML = "お名前：" + name.replace("; csrftoken","") + "　";
+        outname.innerHTML = "お名前：" + name + "　";
         btn.style.visibility = 'visible';
       }
     };

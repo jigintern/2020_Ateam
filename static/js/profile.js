@@ -62,31 +62,35 @@ window.OpenProfile = async (place) => {
             })
         }
 
-        Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 1500,
-            timerProgressBar: true,
-            onOpen: (toast) => {
-                toast.addEventListener('mouseenter', Swal.stopTimer)
-                toast.addEventListener('mouseleave', Swal.resumeTimer)
-            }
-        }).fire({
-            icon: 'success',
-            title: 'わかった！'
-        })
+        // Swal.mixin({
+        //     toast: true,
+        //     position: 'top-end',
+        //     showConfirmButton: false,
+        //     timer: 1500,
+        //     timerProgressBar: true,
+        //     onOpen: (toast) => {
+        //         toast.addEventListener('mouseenter', Swal.stopTimer)
+        //         toast.addEventListener('mouseleave', Swal.resumeTimer)
+        //     }
+        // }).fire({
+        //     icon: 'success',
+        //     title: 'わかった！'
+        // })
 
         //サーバーへのプロフィールの送信
         const req = { id: name, ftm: gender, age: age, wt: weight };
         const res = await fetchJSON("/api/user", req);
+        //パラメータ更新
+        param["name"] = name;
         //cookie保存
         document.cookie = "name=" + name;
-        //HTML更新
-        if(place=="index"){
-            outname.innerHTML = "お名前：" + name + "　";
-            btn.style.visibility = 'visible';
-        }
-        param["name"] = name;
+        //HTMLの更新
+        move(place,"name");
+        // if(place=="index"){
+        //     outname.innerHTML = "お名前：" + name + "　";
+        //     btn.style.visibility = 'visible';
+        // }else if(place=="ranking"){
+        //     move("ranking","name");
+        // }
     }
 };
