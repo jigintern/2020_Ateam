@@ -41,10 +41,10 @@
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
     //友達追加用のsubmit()で動作させる関数
-    const addFriend = async (id, other) => {
+    const addFriend = async (id, other, obj) => {
       console.log("申請");
       //ボタンを非表示
-      document.getElementById("btnof" + other).style.visibility = "hidden";
+      obj.style.visibility = "hidden";
 
       //自身のidと申請したい友達のnameを取得
       const req = { id, other };
@@ -79,47 +79,65 @@
       //jsonをレートの大きい順にソートした物を返す
       const json = await (await fetch("/api/ranking")).json();
 
-      let tr, td, fm, data, submit;
+      //最初は全員表示(false)
+      let frionly = false;
+
+      let tr, td, submit;
       for (let i = 0; json.length > i; i++) {
 
-        //ランク
-        td = document.createElement("td");
-        td.textContent = (i + 1);
-        t.appendChild(td);
+        //友達かどうか判定(no: -1, yes: index_number)
+        let index = arr.indexOf(json[i].id);
 
-        //名前
-        td = document.createElement("td");
-        td.textContent = json[i].id;
-        t.appendChild(td);
-        //マッスルレート
-        td = document.createElement("td");
-        td.textContent = json[i].ratio;
-        t.appendChild(td);
+        if (frionly === false || index != -1) {
 
-        /*-- |送信部分| --*/
-
-        //input(submit)ノードの作成・初期化
-        submit = document.createElement("input");
-        submit.type = "button";
-        submit.id = "btnof" + json[i].id;
-        submit.value = "申請";
-        submit.onclick = () => addFriend(name, json[i].id);
-
-        //tbノードの作成・初期化
-        td = document.createElement("td");
-
-        //各ノードを入れ子状に追加
-        //自分とすでに追加済みの場合は友達申請ボタンを作らない
-        if (name) {
-          if (json[i].id != name && arr.indexOf(json[i].id) === -1) {
-            td.appendChild(submit);
-          }
+          //ランク
+          td = document.createElement("td");
+          td.textContent = (i + 1);
           t.appendChild(td);
+
+          //名前
+          td = document.createElement("td");
+          td.textContent = json[i].id;
+          t.appendChild(td);
+
+          //マッスルレート
+          td = document.createElement("td");
+          td.textContent = json[i].ratio;
+          t.appendChild(td);
+
+          if (frionly === false) {
+            /*-- |送信部分| --*/
+
+            //input(submit)ノードの作成・初期化
+            submit = document.createElement("input");
+            submit.type = "button";
+            submit.value = "申請";
+            submit.onclick = () => addFriend(name, json[i].id, this);
+
+            //tbノードの作成・初期化
+            td = document.createElement("td");
+
+            //各ノードを入れ子状に追加
+            //自分とすでに追加済みの場合は友達申請ボタンを作らない
+            if (name) {
+              if (json[i].id != name && arr.indexOf(json[i].id) === -1) {
+                td.appendChild(submit);
+              }
+              t.appendChild(td);
+            }
+
+          }
+          else if (frionly === true){
+            //列名(友達申請)を削除
+            document.getElementById("add").style.display = "none";
+          }
+
+          //trノードの作成・初期化(表の改行)
+          tr = document.createElement("tr");
+          t.appendChild(tr);
+
         }
 
-        //trノードの作成・初期化(表の改行)
-        tr = document.createElement("tr");
-        t.appendChild(tr);
       }
     };
   </script>

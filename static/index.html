@@ -67,7 +67,7 @@
     btn.onclick = async () => {
       //サーバーへのユーザーIDと筋トレ回数の送信
       const req = { id: iname, num: num.value };
-      const res = await fetchJSON("/api/data", req);
+      await fetchJSON("/api/data", req);
 
       //html間のデータ送受
       param["menu"]=start.menu.value;
