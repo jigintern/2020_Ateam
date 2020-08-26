@@ -50,7 +50,7 @@
     var number = param["number"];
     var kalorie = (METs - 1.0) * wt * TrainingTime * number * 1.05; //森永式カロリー計算
 
-    document.getElementById("kalorie").innerHTML = kalorie + "kcal " + "🎉";
+    document.getElementById("kalorie").innerHTML = kalorie.toFixed(2); + "kcal " + "🎉";
     document.getElementById("nam").innerHTML = name + "さんの消費したカロリー";
 
     // -> server
@@ -59,7 +59,7 @@
     document.getElementById("cnt").innerHTML = "目標達成" + res + "回目です！";
     req = { id: name, kal: kalorie };
     var ratio = await fetchJSON("/api/ratio", req);
-    document.getElementById("ratio").innerHTML = "あなたのマッスルレート：" + ratio;
+    document.getElementById("ratio").innerHTML = "あなたのマッスルレート：" + ratio.toFixed(2);;
 
     if(res===1){
       console.log("🏆");
