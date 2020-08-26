@@ -36,13 +36,8 @@
 
     window.onload = async () => {
       //筋トレを表示
-      if(param["menu"] == "hukkin"){
-        kind.innerHTML = "腹筋";
-      }else if(param["menu"] == "haikin"){
-        kind.innerHTML = "背筋";
-      }else if(param["menu"] == "udetate"){
-        kind.innerHTML = "腕立て";
-      }
+      kind.innerHTML = decodeURI(param["menu"]);
+
       //目標回数を表示
       goal.innerHTML = "/" + param["number"] + "回";
     };
