@@ -25,6 +25,16 @@
   </header>
   <h1 id="appname">ランキング</h1>
 
+  <!-- プルダウンメニューの表示 -->
+  <form>
+    <select name="絞り込み" id="pull">
+      <option value="全員" hidden>絞り込み ▼</option>
+      <option value="all">全員</option>
+      <option value="friend">友だち</option>
+    </select>
+  </form>
+  <br>
+  
   <!-- ランキングの表示 -->
   <table id="t" border="1" align="center">
     <tr>
