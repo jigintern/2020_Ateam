@@ -3,43 +3,66 @@ import { Server } from "https://code4sabae.github.io/js/Server.js"
 let port = 8881;
 
 class MyServer extends Server {
+
     api(path, req) {
         console.log(path); //要求されたpathをコンソールに表示
         //index.htmlからのデータ受け取り&JSONへの保存
         if (path === "/api/data") {
             try{
-                //ここでdata.jsonを読み込むが、無い場合に例外処理としてファイルの初期生成
-                var json = JSON.parse(Deno.readTextFileSync("./data.json"));
-                //fix: for文でデータ参照した時、同じユーザーがいた場合true
-                var fix = false;
-                //for文でデータ参照、同ユーザー検索
-                for(let i = 0; json.length > i; i++){
-                    //req.id(ブラウザから受信したidと、data.json内のユーザーのidが一致した場合)
-                    if(req.id === json[i].id){
-                        console.log("同ユーザーがいます。目標回数の更新");
-                        //そのユーザーの目標回数を最新の物にする、fixをtrueにする
-                        json[i].num = req.num;
-                        fix = true;
-                    }
-                }
-                //fixがtrueでない(同ユーザー非検出の)場合
-                if(fix != true){
-                    console.log("新しいユーザーの登録");
-                    //data.jsonの配列の末尾にreqデータ(json形式)を挿入
-                    json[json.length] = req;
-                }
-                //data.jsonのファイルを書きだして更新 <- 書き出さないと内部変数が変更されているだけで、ファイルは変わらない!!
-                Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
-                //fixをfalseに初期化
-                fix = false;
+                //ここで一度data.jsonを読み込み、無い場合に例外処理としてファイルの初期生成
+                JSON.parse(Deno.readTextFileSync("./data.json"));
             }
             //ファイルが無かった場合の例外処理
             catch(e){
                 console.log("ファイルが見つかりませんでした")
-                //data.jsonの作成
-                Deno.writeTextFileSync("data.json", JSON.stringify([req], null, "\t"));
+                //空のdata.jsonの作成
+                Deno.writeTextFileSync("data.json", JSON.stringify([], null, "\t"));
             }
-            return null;
+
+            //data.jsonの取得
+            var json = JSON.parse(Deno.readTextFileSync("./data.json"));
+            
+            //fix: for文でデータ参照した時、同じユーザーがいた場合true
+            var fix = false;
+            //while用のindexの初期化
+            let i = 0;
+            //while文でデータ参照、同ユーザー検索
+            while (json.length > i) {
+                //req.id(ブラウザから受信したidと、data.json内のユーザーのidが一致した場合)
+                if(req.id === json[i].id){
+                    console.log("同ユーザーがいます。目標回数の更新");
+                    //そのユーザーの目標回数を最新の物にする、fixをtrueにする
+                    json[i].num = req.num;
+                    fix = true;
+                    break;
+                }
+                i++;
+            }
+            //fixがtrueでない(同ユーザー非検出の)場合
+            if(fix != true){
+                console.log("新しいユーザーの登録");
+                //data.jsonの配列の末尾にreqデータ(json形式)を挿入 { id: ~~,num: ~~ }
+                const last = json.length; //末尾
+                json[last] = req;
+                /*--マッスルレートの初期化--*/
+                json[last].ratio = 0;
+                /*--ミッションの追加--*/
+                //乱数
+                const menu = ["腹筋", "背筋", "腕立て"]; //メニュー
+                //select menu : menu[Math.floor(Math.random()*menu.length)]
+                //select var(10~30) : Math.round( Math.random()*20 + 10 )
+                //+rating : 
+                json[last].mission = [
+                    { menu: menu[Math.floor(Math.random()*menu.length)], var: Math.round( Math.random()*20 + 10 ) },
+                    { menu: menu[Math.floor(Math.random()*menu.length)], var: Math.round( Math.random()*20 + 10 ) },
+                    { menu: menu[Math.floor(Math.random()*menu.length)], var: Math.round( Math.random()*20 + 10 ) }
+                ];
+            }
+            //data.jsonのファイルを書きだして更新 <- 書き出さないと内部変数が変更されているだけで、ファイルは変わらない!!
+            Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
+            //fixをfalseに初期化
+            fix = false;
+
         }
         //result.html -> Server
         else if(path === "/api/result") {
@@ -100,18 +123,15 @@ class MyServer extends Server {
             const json = JSON.parse(Deno.readTextFileSync("./data.json"));
 
             //比較関数
-            function compare( a, b ) {
+            const compare = (a, b) => {
                 var r = 0;
-                if (a.ratio === undefined || b.ratio === undefined) {
-                    return r = -1;
-                }
-                else if( a.ratio < b.ratio ) {
+                if(a.ratio < b.ratio) {
                     r = -1;
                 }
-                else if( a.ratio > b.ratio ) {
+                else if(a.ratio > b.ratio) {
                     r = 1;
                 }
-                return ( -1 * r );
+                return (-1 * r);
             }
             //比較関数によって大きい順にソート & 書き出し
             json.sort(compare);
@@ -125,8 +145,10 @@ class MyServer extends Server {
                 var json = JSON.parse(Deno.readTextFileSync("./user.json"));
                 //fix: for文でデータ参照した時、同じユーザーがいた場合true
                 var fix = false;
+                //while用のindexの初期化
+                let i = 0;
                 //for文でデータ参照、同ユーザー検索
-                for(let i = 0; json.length > i; i++){
+                while (json.length > i) {
                     //req.id(ブラウザから受信したidと、data.json内のユーザーのidが一致した場合)
                     if(req.id === json[i].id){
                         console.log("同ユーザーがいます。プロフィールの更新");
@@ -135,7 +157,9 @@ class MyServer extends Server {
                         json[i].age = req.age;
                         json[i].wt = req.wt;
                         fix = true;
+                        break;
                     }
+                    i++;
                 }
                 //fixがtrueでない(同ユーザー非検出の)場合
                 if(fix != true){
@@ -199,6 +223,7 @@ class MyServer extends Server {
                 i++;
             }
         }
+        //フレンド削除
         else if (path === "/api/deletefriend") {
             //json読み込み
             const json = JSON.parse(Deno.readTextFileSync("./data.json"));
@@ -215,6 +240,20 @@ class MyServer extends Server {
             //data.jsonの更新
             Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
         }
+        //idからミッション取得(json配列)
+        else if (path === "/api/getmission") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./data.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                if(req.id === json[i].id) {
+                    //ミッションを配列で返す
+                    return json[i].mission;
+                }
+                i++;
+            }
+        }
         //reqで指定した人の体重を返す
         else if (path === "/api/weight") {
             //json読み込み
@@ -227,6 +266,25 @@ class MyServer extends Server {
                 }
                 i++;
             }
+        }
+        //idとミッション更新
+        else if (path === "/api/mission") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./data.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                if(req.id === json[i].id) {
+                    //レートを加算
+                    json[i].ratio += req.ratio;
+                    //ミッションを更新
+                    json[i].mission[req.num] = { menu: req.menu, var: req.var };
+                    break;
+                }
+                i++;
+            }
+            //data.jsonの更新
+            Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
         }
         return null;
     }

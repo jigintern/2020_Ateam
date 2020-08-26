@@ -24,22 +24,57 @@
     <!--トレーニング終-->
   </body>
 
-  <script type="text/javascript">
-    let count = 0;
-    touch.addEventListener('click', () => {
-      target.textContent = count++;
+  <script type="module">
+    import  { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
-      if (target.textContent >= parseInt(param["number"])) {
+    //parameter
+    const name = param["name"];
+    const mn = decodeURI(param["menu"]);
+    const num = Number(param["number"]);
+
+    //メニュー
+    const menu = ["腹筋", "背筋", "腕立て"];
+
+    let count = 0;
+    touch.addEventListener('click', async () => {
+      target.textContent = count++;
+    
+      //目標到達したら画面遷移
+      if (target.textContent >= num) {
+        //ミッション取得
+        let req = { id: name };
+        const res = await fetchJSON("/api/getmission", req);
+
+        //ミッション更新
+        for (let i = 0; res.length > i; i++) {
+          if (res[i].menu === mn) {
+            const result = res[i].var - num;
+            //新ミッションへの更新
+            if(result < 1){
+              console.log("ミッションクリア")
+              req = { id: name, num: i, menu: menu[Math.floor(Math.random()*menu.length)], var: Math.round( Math.random()*20 + 10 ), ratio: (res[i].var * 10) };
+              await fetchJSON("/api/mission", req);
+            }
+            ////回数の更新
+            else {
+              console.log("ミッション更新")
+              req = { id: name, num: i, menu: res[i].menu, var: result, ratio: (num * 10) };
+              await fetchJSON("/api/mission", req);
+            }
+          }
+        }
+        
+        //画面遷移
         move("result", "name", "number");
       }
     }, false);
 
     window.onload = async () => {
       //筋トレを表示
-      kind.innerHTML = decodeURI(param["menu"]);
+      kind.innerHTML = mn;
 
       //目標回数を表示
-      goal.innerHTML = "/" + param["number"] + "回";
+      goal.innerHTML = "/" + num + "回";
     };
   </script>
 </html>
