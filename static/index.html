@@ -44,7 +44,6 @@
   <script type="module">
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
-    let iname;
     window.onload = async () => {
       if (param["name"]){
         btn.style.visibility = 'visible';
@@ -54,7 +53,7 @@
 
     btn.onclick = async () => {
       //サーバーへのユーザーIDと筋トレ回数の送信
-      const req = { id: iname, num: num.value };
+      const req = { id: param["name"], num: num.value };
       await fetchJSON("/api/data", req);
 
       //html間のデータ送受
