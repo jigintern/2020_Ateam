@@ -201,6 +201,27 @@ input[type="radio"]:checked + label {
 }
 
 /* ranking.html内部 */
+/* プルダウンメニューの装飾 */
+form{
+    text-align: center;
+}
+
+select{
+    width: 180px;
+    font-size: 1.2em;
+    color: azure;
+    background-color: #cc5f35;
+    padding: 5px;
+    margin: 5px;
+}
+
+.pull-menu{
+    text-align: center;
+    color: #555555;
+    background-color: azure;
+
+}
+
 /*ランキング表を装飾*/
 th,
 td {
@@ -232,6 +253,18 @@ th {
   text-align: left;
   /* 文字の揃え位置指定 */
 
+}
+
+#t {
+    font-size: 1.4em;
+    color: #555555;
+}
+
+/* 友達申請&削除ボタン装飾 */
+#t input {
+    width: 80px;
+    padding: 0 0;
+    font-size: 1em;
 }
 
 /* プロフィール用 */
