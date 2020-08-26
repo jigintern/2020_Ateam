@@ -188,12 +188,15 @@ input[type="radio"]:checked + label {
 
 /* result.html内部 */
 
-#nam, #kalorie, #cnt, #comment{
-    font-size: 1.4em;
+.rescom {
+    margin: 0.3em;
+    font-size: 1.8em;
     color: #ffffff;
 }
-#kcal{
-    font-size: 1.8em;
+
+#kalorie, #ratio{
+    margin: 0.3em;
+    font-size: 3em;
     color: #F4DB60;
 }
 
