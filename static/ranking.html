@@ -104,7 +104,7 @@
 
           //マッスルレート
           td = document.createElement("td");
-          td.textContent = json[i].ratio;
+          td.textContent = parseFloat(json[i].ratio).toFixed(2);
           t.appendChild(td);
 
           if (frionly === false) {
