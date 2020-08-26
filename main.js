@@ -44,6 +44,8 @@ class MyServer extends Server {
                 //data.jsonの配列の末尾にreqデータ(json形式)を挿入 { id: ~~,num: ~~ }
                 const last = json.length; //末尾
                 json[last] = req;
+                /*--マッスルレートの初期化--*/
+                json[last].ratio = 0;
                 /*--ミッションの追加--*/
                 //乱数
                 const menu = ["腹筋", "背筋", "腕立て"]; //メニュー
@@ -121,18 +123,15 @@ class MyServer extends Server {
             const json = JSON.parse(Deno.readTextFileSync("./data.json"));
 
             //比較関数
-            function compare( a, b ) {
+            const compare = (a, b) => {
                 var r = 0;
-                if (a.ratio === undefined || b.ratio === undefined) {
-                    return r = -1;
-                }
-                else if( a.ratio < b.ratio ) {
+                if(a.ratio < b.ratio) {
                     r = -1;
                 }
-                else if( a.ratio > b.ratio ) {
+                else if(a.ratio > b.ratio) {
                     r = 1;
                 }
-                return ( -1 * r );
+                return (-1 * r);
             }
             //比較関数によって大きい順にソート & 書き出し
             json.sort(compare);
@@ -276,12 +275,16 @@ class MyServer extends Server {
             let i = 0;
             while (json.length > i) {
                 if(req.id === json[i].id) {
-                    //ミッションを配列で返す
+                    //レートを加算
+                    json[i].ratio += req.ratio;
+                    //ミッションを更新
                     json[i].mission[req.num] = { menu: req.menu, var: req.var };
                     break;
                 }
                 i++;
             }
+            //data.jsonの更新
+            Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
         }
         return null;
     }
