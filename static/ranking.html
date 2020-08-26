@@ -29,7 +29,7 @@
       <th class="midashi">ランク</th>
       <th class="midashi">名前</th>
       <th class="midashi">マッスルレート</th>
-      <th class="midashi">友達申請</th>
+      <th class="midashi" id="add">友達申請</th>
     </tr>
   </table>
 
@@ -56,7 +56,9 @@
       if (param["name"]) {
         name = decodeURI(param["name"]);
       }
-
+      if(!name){
+        add.style.display = 'none';
+      }
       const json = await (await fetch("/api/ranking")).json();
 
       let tr, td, fm, data, submit;
@@ -89,10 +91,12 @@
 
         //各ノードを入れ子状に追加
         //自分には友達申請ボタンを作らない
-        if (json[i].id != name) {
-          td.appendChild(submit);
+        if(name){
+          if (json[i].id != name) {
+            td.appendChild(submit);
+          }
+          t.appendChild(td);
         }
-        t.appendChild(td);
 
         //trノードの作成・初期化(表の改行)
         tr = document.createElement("tr");
