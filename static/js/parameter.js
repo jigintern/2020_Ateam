@@ -9,6 +9,15 @@ const ParameterGet = () => {
         temp = pair[index].split("=");
         param[temp[0]] = temp[1];
     }
+
+    if (!param["name"]) {
+        //Cookieの呼び出し(名前のみ)
+        if (document.cookie){
+            param["name"] = document.cookie.split('=')[1].replace("; csrftoken","");
+        }
+    }else{
+        param["name"] = decodeURI(param["name"]);
+    }
 }
 
 window.onload = ParameterGet();

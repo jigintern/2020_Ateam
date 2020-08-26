@@ -66,5 +66,11 @@
   <br>
   <!-- <input type="button" onclick="move('index', 'name')" value="スタートに戻る"> -->
 </body>
-
+<script>
+  window.onload = async () => {
+    if (param["name"]){
+      setup.innerHTML = param["name"];
+    }
+  };
+</script>
 </html>

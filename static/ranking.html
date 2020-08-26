@@ -51,19 +51,11 @@
     };
 
     window.onload = async () => {
-      let name;
-      //パラメータを優先
-      if (!param["name"]) {
-        if (document.cookie){
-          //Cookieの呼び出し(名前のみ)
-          name = document.cookie.split('=')[1].replace("; csrftoken","");
-          param["name"] = name;
-        }
-      }else{
-        name = decodeURI(param["name"]);
-      }
+      let name = param["name"];
       if(!name){
         add.style.display = 'none';
+      }else{
+        setup.innerHTML = param["name"];
       }
 
       //nameの人のfriendsを配列(tmp ->undifinedでなければ arr)で返す
