@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <title>ranking</title>
   <meta charset="utf-8">
@@ -11,6 +12,7 @@
   <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/profile.js" type="module" charset="utf-8"></script>
 </head>
+
 <body>
   <header>
     <ul class="menu-list">
@@ -54,15 +56,15 @@
       let name;
       //パラメータを優先
       if (!param["name"]) {
-        if (document.cookie){
+        if (document.cookie) {
           //Cookieの呼び出し(名前のみ)
-          name = document.cookie.split('=')[1].replace("; csrftoken","");
+          name = document.cookie.split('=')[1].replace("; csrftoken", "");
           param["name"] = name;
         }
-      }else{
+      } else {
         name = decodeURI(param["name"]);
       }
-      if(!name){
+      if (!name) {
         add.style.display = 'none';
       }
 
@@ -70,7 +72,7 @@
       const req = { id: name };
       let arr = [];
       const tmp = await fetchJSON("/api/getfriend", req)
-      if(tmp != null){
+      if (tmp != null) {
         arr = arr.concat(tmp);
       }
 
@@ -108,7 +110,7 @@
 
         //各ノードを入れ子状に追加
         //自分には友達申請ボタンを作らない
-        if(name){
+        if (name) {
           if (json[i].id != name && arr.indexOf(json[i].id) === -1) {
             td.appendChild(submit);
           }
