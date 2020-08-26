@@ -35,16 +35,17 @@
 
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
-      //友達追加用のsubmit()で動作させる関数
-      const addFriend = async (id, other) => {
-        //自身のidと申請したい友達のnameを取得
-        const req = { id, other };
+    //友達追加用のsubmit()で動作させる関数
+    const addFriend = async (id, other) => {
+      console.log("申請");
+      //ボタンを非表示
+      document.getElementById("btnof" + other).style.visibility = "hidden";
 
-        await fetchJSON("/api/friend", req);
+      //自身のidと申請したい友達のnameを取得
+      const req = { id, other };
 
-        //ボタンを非表示
-
-      };
+      await fetchJSON("/api/addfriend", req);
+    };
 
     window.onload = async () => {
       //Cookieの呼び出し(名前のみ)
@@ -54,6 +55,16 @@
         name = decodeURI(param["name"]);
       }
 
+      //nameの人のfriendsを配列(tmp ->undifinedでなければ arr)で返す
+      const req = { id: name };
+      let arr = [];
+      const tmp = await fetchJSON("/api/getfriend", req)
+      if(tmp != null){
+        arr = arr.concat(tmp);
+        console.log(arr);
+      }
+
+      //jsonをレートの大きい順にソートした物を返す
       const json = await (await fetch("/api/ranking")).json();
 
       let tr, td, fm, data, submit;
@@ -78,6 +89,7 @@
         //input(submit)ノードの作成・初期化
         submit = document.createElement("input");
         submit.type = "button";
+        submit.id = "btnof" + json[i].id;
         submit.value = "申請";
         submit.onclick = () => addFriend(name, json[i].id);
 
@@ -86,7 +98,7 @@
 
         //各ノードを入れ子状に追加
         //自分には友達申請ボタンを作らない
-        if (json[i].id != name) {
+        if (json[i].id != name && arr.indexOf(json[i].id) === -1) {
           td.appendChild(submit);
         }
         t.appendChild(td);
