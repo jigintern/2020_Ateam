@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <title>ranking</title>
   <meta charset="utf-8">
@@ -11,6 +12,7 @@
   <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/profile.js" type="module" charset="utf-8"></script>
 </head>
+
 <body>
   <header>
     <ul class="menu-list">
@@ -62,7 +64,7 @@
       const req = { id: name };
       let arr = [];
       const tmp = await fetchJSON("/api/getfriend", req)
-      if(tmp != null){
+      if (tmp != null) {
         arr = arr.concat(tmp);
       }
 
@@ -99,8 +101,8 @@
         td = document.createElement("td");
 
         //各ノードを入れ子状に追加
-        //自分には友達申請ボタンを作らない
-        if(name){
+        //自分とすでに追加済みの場合は友達申請ボタンを作らない
+        if (name) {
           if (json[i].id != name && arr.indexOf(json[i].id) === -1) {
             td.appendChild(submit);
           }

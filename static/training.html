@@ -15,12 +15,9 @@
       <!--targetとgoalを横並びに表示するwrap-->
       <div class="wrap">
         <!--筋トレの現在の回数を表示する-->
-        <div id="target">0</div>
-
-        <div id="slash">　/　</div>
-
+        <h1 id="target">0 </h1>
         <!--筋トレの目標回数を表示する-->
-        <div id="goal"></div>
+        <h1 id="goal"></h1>
       </div>
       <div id="kind"></div>
     </div>
@@ -28,24 +25,26 @@
   </body>
 
   <script type="text/javascript">
-    const target = document.getElementById('target');
-    var GOAL;
     let count = 0;
-
     touch.addEventListener('click', () => {
       target.textContent = count++;
 
-      if (target.textContent >= GOAL) {
+      if (target.textContent >= parseInt(param["number"])) {
         move("result", "name", "number");
       }
     }, false);
 
     window.onload = async () => {
       //筋トレを表示
-      document.getElementById("kind").innerHTML = "内容：" + param["menu"];
+      if(param["menu"] == "hukkin"){
+        kind.innerHTML = "腹筋";
+      }else if(param["menu"] == "haikin"){
+        kind.innerHTML = "背筋";
+      }else if(param["menu"] == "udetate"){
+        kind.innerHTML = "腕立て";
+      }
       //目標回数を表示
-      document.getElementById("goal").innerHTML = "目標回数：" + param["number"];
-      GOAL = parseInt(param["number"]);
+      goal.innerHTML = "/" + param["number"] + "回";
     };
   </script>
 </html>
