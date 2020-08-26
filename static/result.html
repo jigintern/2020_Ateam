@@ -1,68 +1,71 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <title>result</title>
-    <meta charset="utf-8">
-    <link rel="icon" href="favicon.ico">
-    <link rel="stylesheet" type="text/css" href="hoge.css">
-    <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
-    <script src="./js/sweetalert2.all.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
-    <script src="./js/profile.js" type="module" charset="utf-8"></script>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-  </head>
-  <body>
-    <header>
-      <ul class="menu-list">
-        <li class="menu-list-item" id="home" onclick="move('index','name')">ホーム</li>
-        <li class="menu-list-item" id="friend" onclick="move('friend','name')">フレンド</li>
-        <li class="menu-list-item" id="rank" onclick="move('ranking','name')">ランキング</li>
-        <li class="menu-list-item" id="mission" onclick="move('mission','name')">ミッション</li>
-        <li class="menu-list-item" id="setup" onclick="OpenProfile('index')">設定</li>
-      </ul>
-    </header>
-    <h1 id="appname">リザルト</h1>
-    <p class="rescom">お疲れ様でした！</p>
-    <p id="nam" class="rescom"> さんの消費したカロリー</p>
-    <!--カロリーを表示する-->
-    <p id="kalorie" class="rescom"> kcal</p>
-    <p id="cnt" class="rescom">目標達成 回目です！</p>
-    <p id="ratio" class="rescom">あなたのマッスルレート： </p>
-    <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="きんトレしたぜ！" data-url="https://t2.intern.jigd.info" data-show-count="false">Tweet</a>
-  </body>
-  <script type="module">
-    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-    //JSONdataを受け取り、成功したカウント？
-    window.onload = async () => {
-      if (param["name"]){
-        setup.innerHTML = param["name"];
-      }
-      var number = param["number"];
-      var kalorie = number * 10;
-      var name = param["name"];
 
-      document.getElementById("kalorie").innerHTML =  kalorie + "kcal " + "🎉";
-      document.getElementById("nam").innerHTML = name + "さんの消費したカロリー";
+<head>
+  <title>result</title>
+  <meta charset="utf-8">
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" type="text/css" href="hoge.css">
+  <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
+  <script src="./js/sweetalert2.all.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/profile.js" type="module" charset="utf-8"></script>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</head>
 
-      // -> server
-      var req = { id: name };
-      const res = await fetchJSON("/api/result", req);
-      document.getElementById("cnt").innerHTML = "目標達成"+ res +"回目です！";
-      req = { id: name, kal: kalorie };
-      var ratio = await fetchJSON("/api/ratio", req);
-      document.getElementById("ratio").innerHTML = "あなたのマッスルレート："+ ratio;
-    };
-
-    //更新検知
-    var hash = decodeURIComponent(location.hash.slice(1));
-    if (hash === "reload") {
-      move("index", "name");
+<body>
+  <header>
+    <ul class="menu-list">
+      <li class="menu-list-item" id="home" onclick="move('index','name')">ホーム</li>
+      <li class="menu-list-item" id="friend" onclick="move('friend','name')">フレンド</li>
+      <li class="menu-list-item" id="rank" onclick="move('ranking','name')">ランキング</li>
+      <li class="menu-list-item" id="mission" onclick="move('mission','name')">ミッション</li>
+      <li class="menu-list-item" id="setup" onclick="OpenProfile('index')">設定</li>
+    </ul>
+  </header>
+  <h1 id="appname">リザルト</h1>
+  <p class="rescom">お疲れ様でした！</p>
+  <p id="nam" class="rescom"> さんの消費したカロリー</p>
+  <!--カロリーを表示する-->
+  <p id="kalorie" class="rescom"> kcal</p>
+  <p id="cnt" class="rescom">目標達成 回目です！</p>
+  <p id="ratio" class="rescom">あなたのマッスルレート： </p>
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large"
+    data-text="きんトレしたぜ！" data-url="https://t2.intern.jigd.info" data-show-count="false">Tweet</a>
+</body>
+<script type="module">
+  import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+  //JSONdataを受け取り、成功したカウント？
+  window.onload = async () => {
+    if (param["name"]) {
+      setup.innerHTML = param["name"];
     }
-    else {
-      location.hash = "reload";
-    }
+    var number = param["number"];
+    var kalorie = number * 10;
+    var name = param["name"];
 
-  </script>
+    document.getElementById("kalorie").innerHTML = kalorie + "kcal " + "🎉";
+    document.getElementById("nam").innerHTML = name + "さんの消費したカロリー";
+
+    // -> server
+    var req = { id: name };
+    const res = await fetchJSON("/api/result", req);
+    document.getElementById("cnt").innerHTML = "目標達成" + res + "回目です！";
+    req = { id: name, kal: kalorie };
+    var ratio = await fetchJSON("/api/ratio", req);
+    document.getElementById("ratio").innerHTML = "あなたのマッスルレート：" + ratio;
+  };
+
+  //更新検知
+  var hash = decodeURIComponent(location.hash.slice(1));
+  if (hash === "reload") {
+    move("index", "name");
+  }
+  else {
+    location.hash = "reload";
+  }
+
+</script>
 
 </html>
