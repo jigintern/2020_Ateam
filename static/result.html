@@ -41,8 +41,11 @@
     if (param["name"]) {
       setup.innerHTML = param["name"];
     }
+    const METs = 2.0;
+    const Weight = 1.0;
+    const TrainingTime = 1.0; //筋トレ一回に何秒かかるか？(Trainingからtime持って来れたらいいね)
     var number = param["number"];
-    var kalorie = number * 10;
+    var kalorie = (METs - 1.0) * Weight * TrainingTime * number; //カロリー計算
     var name = param["name"];
 
     document.getElementById("kalorie").innerHTML = kalorie + "kcal " + "🎉";
