@@ -243,7 +243,7 @@ class MyServer extends Server {
             Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
         }
         //idからミッション取得(json配列)
-        else if (path === "/api/mission") {
+        else if (path === "/api/getmission") {
             //json読み込み
             const json = JSON.parse(Deno.readTextFileSync("./data.json"));
             //while用のindexの初期化
@@ -252,6 +252,21 @@ class MyServer extends Server {
                 if(req.id === json[i].id) {
                     //ミッションを配列で返す
                     return json[i].mission;
+                }
+                i++;
+            }
+        }
+        //idとミッション更新
+        else if (path === "/api/mission") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./data.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                if(req.id === json[i].id) {
+                    //ミッションを配列で返す
+                    json[i].mission[req.num] = { menu: req.menu, var: req.var };
+                    break;
                 }
                 i++;
             }

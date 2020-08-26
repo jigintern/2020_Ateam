@@ -24,25 +24,57 @@
     <!--トレーニング終-->
   </body>
 
-  <script type="text/javascript">
+  <script type="module">
+    import  { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+
+    //非同期でのサーバーへJSONデータを送信する処理関数
+    const mission = async (req) => {
+      if (req.length === 1) {
+        //取得
+        return await fetchJSON("/api/getmission", req);
+      }
+      else {
+        //更新
+        return await fetchJSON("/api/mission", req);
+      }
+    }
+
     let count = 0;
     touch.addEventListener('click', () => {
       target.textContent = count++;
-
+    
+      //目標到達したら画面遷移
       if (target.textContent >= parseInt(param["number"])) {
+        //ミッション取得
+        let req = { id: param["name"] };
+        let res = mission(req);
+
+        //ミッション更新
+        for (let i = 0; res.length > i; i++) {
+          if (res[i].menu === decodeURI(param["menu"])) {
+            const result = res.var - param["number"];
+            //新ミッションへの更新
+            if(result < 1){
+              const menu = ["腹筋", "背筋", "腕立て"]; //メニュー
+              req = { id: param["name"], num: i, menu: menu[Math.floor(Math.random()*menu.length)], var: Math.round( Math.random()*20 + 10 ) };
+              mission(req);
+            }
+            ////回数の更新
+            else {
+              req = { id: param["name"], num: i, menu: res[i].menu, var: result };
+              mission(req);
+            }
+          }
+        }
+        
+        //画面遷移
         move("result", "name", "number");
       }
     }, false);
 
     window.onload = async () => {
       //筋トレを表示
-      if(param["menu"] == "hukkin"){
-        kind.innerHTML = "腹筋";
-      }else if(param["menu"] == "haikin"){
-        kind.innerHTML = "背筋";
-      }else if(param["menu"] == "udetate"){
-        kind.innerHTML = "腕立て";
-      }
+      kind.innerHTML = decodeURI(param["menu"]);
       //目標回数を表示
       goal.innerHTML = "/" + param["number"] + "回";
     };

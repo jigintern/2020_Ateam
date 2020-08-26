@@ -39,7 +39,7 @@
 
       const req = { id: param["name"] };
       //ミッションをjsonNo配列で返す
-      const res = await fetchJSON("/api/mission", req);
+      const res = await fetchJSON("/api/getmission", req);
 
       let tr, td;
       for (let i = 0; res.length > i; i++) {
