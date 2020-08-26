@@ -30,26 +30,35 @@
       <th class="midashi">内容</th>
       <th class="midashi rate">レート</th>
     </tr>
-    <tr>
-        <td>腹筋を10回する</td>
-        <td class="midashi rate">+100</td>
-    </tr>
-    <tr>
-        <td>背筋を10回する</td>
-        <td class="midashi rate">+100</td>
-    </tr>
-    <tr>
-        <td class="clear">腕立てを10回する</td>
-        <td class="midashi rate clear">+100</td>
-    </tr>
   </table>
 
   <script type="module">
+    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+
     window.onload = async () => {
-      //ランク
-      //td = document.createElement("td");
-      //td.textContent = (i + 1);
-      //t.appendChild(td);
+
+      const req = { id: param["name"] };
+      //ミッションをjsonNo配列で返す
+      const res = await fetchJSON("/api/mission", req);
+
+      let tr, td;
+      for (let i = 0; res.length > i; i++) {
+        
+        //ミッション
+        td = document.createElement("td");
+        td.textContent = res[i].menu + "を" + res[i].var + "回する";
+        t.appendChild(td);
+        
+        //+レート
+        td = document.createElement("td");
+        td.textContent = "+" + res[i].var * 10;
+        t.appendChild(td);
+        
+        //改行
+        tr = document.createElement("tr");
+        t.appendChild(tr);
+
+      }
 
       if (param["name"]){
         setup.innerHTML = param["name"];
