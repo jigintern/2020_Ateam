@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>log</title>
+    <meta charset="utf-8">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" type="text/css" href="./hoge.css">
+    <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
+    <script src="./js/sweetalert2.all.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/profile.js" type="module" charset="utf-8"></script>
+  </head>
+  <body>
+    <header>
+      <ul class="menu-list">
+        <li class="menu-list-item" id="home" onclick="move('index','name')">ホーム</li>
+        <li class="menu-list-check" id="friend" onclick="move('friend','name')">フレンド</li>
+        <li class="menu-list-item" id="rank" onclick="move('ranking','name')">ランキング</li>
+        <li class="menu-list-item" id="mission" onclick="move('mission','name')">ミッション</li>
+        <li class="menu-list-item" id="setup" onclick="OpenProfile('friend')">設定</li>
+      </ul>
+    </header>
+    <h1 id="appname">きんとれログ</h1>
+    <table id="t" border="1" align="center">
+      <tr>
+        <th class="dow" style="color:#F0703E">日</th>
+        <th class="dow">月</th>
+        <th class="dow">火</th>
+        <th class="dow">水</th>
+        <th class="dow">木</th>
+        <th class="dow">金</th>
+        <th class="dow" style="color:#6360FD">土</th>
+      </tr>
+      <tr>
+        <td class="dowl" id="sun"></td>
+        <td class="dowl" id="mon"></td>
+        <td class="dowl" id="tue"></td>
+        <td class="dowl" id="wed"></td>
+        <td class="dowl" id="thu"></td>
+        <td class="dowl" id="fri">💪</td>
+        <td class="dowl" id="sat"></td>
+      </tr>
+    </table>
+    <!-- <h3>トロフィー</h3>
+    <table id="t" align="center">
+      <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </table> -->
+  </body>
+  <script type="module">
+
+  </script>
+</html>

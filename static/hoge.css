@@ -391,3 +391,20 @@ input[type="range"]::-moz-range-thumb {
 .clear{
     opacity: 0.7;
 }
+
+/* log.html */
+.dow {
+    font-size: 1.4em;
+    border-color: transparent !important;
+    background-color: transparent !important;
+    text-align: center;
+    padding: 5px;
+}
+
+.dowl {
+    border-radius: 20px;
+    font-size: 1.5em;
+
+    text-align: center;
+    /* padding: 5px; */
+}

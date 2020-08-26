@@ -51,14 +51,27 @@
     };
 
     btn.onclick = async () => {
-      //サーバーへのユーザーIDと筋トレ回数の送信
-      const req = { id: param["name"], num: num.value };
-      await fetchJSON("/api/data", req);
-
-      //html間のデータ送受
-      param["menu"]=start.menu.value;
-      param["number"]=num.value;
-      move("training","name","menu","number");
+      const pattern = new RegExp('^[0-9]+$');
+      if(21>num.value>0&&pattern.test(num.value)){
+        //サーバーへのユーザーIDと筋トレ回数の送信
+        const req = { id: param["name"], num: num.value };
+        await fetchJSON("/api/data", req);
+        //html間のデータ送受
+        param["menu"]=start.menu.value;
+        param["number"]=num.value;
+        move("training","name","menu","number");
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: '1以上の20以下の整数を入力してください。',
+          timer: 2000,
+          timerProgressBar: true,
+          onOpen: (err) => {
+            err.addEventListener('mouseenter', Swal.stopTimer)
+            err.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+      }
     };
 
   </script>

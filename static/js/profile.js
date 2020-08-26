@@ -54,7 +54,7 @@ window.OpenProfile = async (place) => {
                 Swal.fire({
                     icon: 'error',
                     title: '記号は入力できません。',
-                    timer: 1500,
+                    timer: 2000,
                     timerProgressBar: true,
                     onOpen: (err) => {
                         err.addEventListener('mouseenter', Swal.stopTimer)
