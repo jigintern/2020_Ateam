@@ -34,27 +34,27 @@
   </table>
 
   <!--関数の宣言-->
-  <script>
-    //友達追加用のsubmit()で動作させる関数
-    const AddFriend = async (i) => {
-      //自身のidと申請したい友達のnameを取得
-      const req = { id: "", other: document.getElementById("id" + i).value };
-
-      await fetchJSON("/api/friend", req);
-
-
-    }
-  </script>
-
   <script type="module">
+
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+
+      //友達追加用のsubmit()で動作させる関数
+      const addFriend = async (id, other) => {
+        //自身のidと申請したい友達のnameを取得
+        const req = { id, other };
+
+        await fetchJSON("/api/friend", req);
+
+        //ボタンを非表示
+
+      };
 
     window.onload = async () => {
       //Cookieの呼び出し(名前のみ)
       let name = document.cookie.split('=')[1];
       //パラメータを優先
       if (param["name"]) {
-        name=decodeURI(param["name"]);
+        name = decodeURI(param["name"]);
       }
 
       const json = await (await fetch("/api/ranking")).json();
@@ -76,31 +76,22 @@
         td.textContent = json[i].ratio;
         t.appendChild(td);
 
-        /*-- |Form部分| --*/
-
-        //input(hidden)ノードの作成・初期化
-        data = document.createElement("input");
-        data.type = "hidden";
-        data.id = "id" + i;
-        data.value = json[i].id;
+        /*-- |送信部分| --*/
 
         //input(submit)ノードの作成・初期化
         submit = document.createElement("input");
-        submit.type = "submit";
+        submit.type = "button";
         submit.value = "申請";
-
-        //formノードの作成・初期化
-        fm = document.createElement("form");
-        fm.id = "f" + i;
-        fm.action = "javascript:AddFriend(" + i + ")";
+        submit.onclick = () => addFriend(name, json[i].id);
 
         //tbノードの作成・初期化
         td = document.createElement("td");
 
         //各ノードを入れ子状に追加
-        fm.appendChild(data);
-        fm.appendChild(submit);
-        td.appendChild(fm);
+        //自分には友達申請ボタンを作らない
+        if (json[i].id != name) {
+          td.appendChild(submit);
+        }
         t.appendChild(td);
 
         //trノードの作成・初期化(表の改行)
