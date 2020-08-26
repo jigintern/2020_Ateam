@@ -13,7 +13,7 @@ const ParameterGet = () => {
 
 window.onload = ParameterGet();
 
-const move = function(place){
+window.move = function(place){
     let Psend = "";
     for(var i = 1; i < arguments.length; ++i){
         if(!param[arguments[i]]) break;

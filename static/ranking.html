@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <title>ranking</title>
   <meta charset="utf-8">
@@ -11,6 +12,7 @@
   <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
   <script src="./js/profile.js" type="module" charset="utf-8"></script>
 </head>
+
 <body>
   <header>
     <ul class="menu-list">
@@ -29,7 +31,7 @@
       <th class="midashi">ランク</th>
       <th class="midashi">名前</th>
       <th class="midashi">マッスルレート</th>
-      <th class="midashi">友達申請</th>
+      <th class="midashi" id="add">友達申請</th>
     </tr>
   </table>
 
@@ -51,18 +53,26 @@
     };
 
     window.onload = async () => {
-      //Cookieの呼び出し(名前のみ)
-      let name = document.cookie.split('=')[1];
+      let name;
       //パラメータを優先
-      if (param["name"]) {
+      if (!param["name"]) {
+        if (document.cookie) {
+          //Cookieの呼び出し(名前のみ)
+          name = document.cookie.split('=')[1].replace("; csrftoken", "");
+          param["name"] = name;
+        }
+      } else {
         name = decodeURI(param["name"]);
+      }
+      if (!name) {
+        add.style.display = 'none';
       }
 
       //nameの人のfriendsを配列(tmp ->undifinedでなければ arr)で返す
       const req = { id: name };
       let arr = [];
       const tmp = await fetchJSON("/api/getfriend", req)
-      if(tmp != null){
+      if (tmp != null) {
         arr = arr.concat(tmp);
       }
 
@@ -100,10 +110,12 @@
 
         //各ノードを入れ子状に追加
         //自分には友達申請ボタンを作らない
-        if (json[i].id != name && arr.indexOf(json[i].id) === -1) {
-          td.appendChild(submit);
+        if (name) {
+          if (json[i].id != name && arr.indexOf(json[i].id) === -1) {
+            td.appendChild(submit);
+          }
+          t.appendChild(td);
         }
-        t.appendChild(td);
 
         //trノードの作成・初期化(表の改行)
         tr = document.createElement("tr");
@@ -111,7 +123,6 @@
       }
     };
   </script>
-
 </body>
 
 </html>
