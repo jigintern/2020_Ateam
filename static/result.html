@@ -1,77 +1,93 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <title>result</title>
-    <meta charset="utf-8">
-    <link rel="icon" href="favicon.ico">
-    <link rel="stylesheet" type="text/css" href="hoge.css">
-    <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
-    <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
-  </head>
-  <body>
-    <p>
-      <div class = "calorie">
-        <div style ="text-align:center;">
-          <br>
-          <span>
-            <p id="nam">      さんの消費したカロリー</p><br>
-            <!--カロリーを表示する-->
-            <p id="kalorie">0kcal</p><br>
-          </span>
-          <br>
-        </div>
-      </div>
-      <div style="text-align:center;">
-        <span>
-          <p id="cnt">目標達成   回目です！</p><br>
-          <p id="comment">おつかれさま<br>
-            よくがんばりました(｡`･ω･´｡)</p>
-          <p id="ratio">あなたのマッスルレート： ---------------</p>
-        </span>
-        <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" data-text="きんトレしたぜ！" data-url="https://t2.intern.jigd.info/musuke/" data-show-count="false">Tweet</a>
-        <br><br>
-        <form>
-          <!--戻るボタン-->
-          <input type="button" onclick="move('index','name')" value="戻るやで">
-          <br><br>
-          <!--ランキングボタン -->
-          <input type="button" onclick="move('ranking','name')" value="ランキング見るやで">
-        </form>
-      </div>
-    </p>
-  </body>
-  <script type="module">
-    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-    //JSONdataを受け取り、成功したカウント？
-    window.onload = async () => {
-      var number = param["number"];
-      var kalorie = number * 10;
-      var name = decodeURI(param["name"]);
 
-      document.getElementById("kalorie").innerHTML = "<span id='kcal'>" + kalorie + " " + "</span>" + "kcal" + "<span id='kcal'>" + " 🎉" + "</span>";
-      document.getElementById("nam").innerHTML = name + " さんの消費したカロリー";
-
-      // -> server
-      var req = { id: name };
-      const res = await fetchJSON("/api/result", req);
-      document.getElementById("cnt").innerHTML = "目標達成 "+ res +" 回目です！";
-      req = { id: name, kal: kalorie };
-      var ratio = await fetchJSON("/api/ratio", req);
-      document.getElementById("ratio").innerHTML = "あなたのマッスルレート： "+ ratio;
-    };
-
-    //更新検知
-    var hash = decodeURIComponent(location.hash.slice(1));
-    if (hash === "reload") {
-      move("index", "name");
-    }
-    else {
-      location.hash = "reload";
-    }
-
-  </script>
-
+<head>
+  <title>result</title>
+  <meta charset="utf-8">
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" type="text/css" href="hoge.css">
+  <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
+  <script src="./js/sweetalert2.all.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/profile.js" type="module" charset="utf-8"></script>
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</head>
+
+<body>
+  <header>
+    <ul class="menu-list">
+      <li class="menu-list-item" id="home" onclick="move('index','name')">ホーム</li>
+      <li class="menu-list-item" id="friend" onclick="move('friend','name')">フレンド</li>
+      <li class="menu-list-item" id="rank" onclick="move('ranking','name')">ランキング</li>
+      <li class="menu-list-item" id="mission" onclick="move('mission','name')">ミッション</li>
+      <li class="menu-list-item" id="setup" onclick="OpenProfile('index')">設定</li>
+    </ul>
+  </header>
+  <h1 id="appname">リザルト</h1>
+  <p class="rescom">お疲れ様でした！</p>
+  <p id="nam" class="rescom"> さんの消費したカロリー</p>
+  <!--カロリーを表示する-->
+  <p id="kalorie" class="rescom"> kcal</p>
+  <p id="cnt" class="rescom">目標達成 回目です！</p>
+  <p id="ratio" class="rescom">あなたのマッスルレート： </p>
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large"
+    data-text="きんトレしたぜ！" data-url="https://t2.intern.jigd.info" data-show-count="false">Tweet</a>
+</body>
+<script type="module">
+  import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+
+  window.onload = async () => {
+    if (param["name"]) {
+      setup.innerHTML = param["name"];
+    }
+    var name = param["name"];
+
+    var req = { id: name };
+    const wt = await fetchJSON("/api/weight", req);
+    const METs = 3.8;
+    const TrainingTime = 0.0008; //筋トレ一回に何秒かかるか？(Trainingからtime持って来れたらいいね)
+    var number = param["number"];
+    var kalorie = (METs - 1.0) * wt * TrainingTime * number * 1.05; //森永式カロリー計算
+
+    document.getElementById("kalorie").innerHTML = kalorie.toFixed(2); + "kcal " + "🎉";
+    document.getElementById("nam").innerHTML = name + "さんの消費したカロリー";
+
+    // -> server
+    req = { id: name };
+    const res = await fetchJSON("/api/result", req);
+    document.getElementById("cnt").innerHTML = "目標達成" + res + "回目です！";
+    req = { id: name, kal: kalorie };
+    var ratio = await fetchJSON("/api/ratio", req);
+    document.getElementById("ratio").innerHTML = "あなたのマッスルレート：" + ratio.toFixed(2);;
+
+    if(res===1){
+      console.log("🏆");
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        icon: 'success',
+        title: 'トロフィー🏆「はじめての筋トレ」を獲得しました！',
+        timer: 3500,
+        timerProgressBar: true,
+        onOpen: (get) => {
+            get.addEventListener('mouseenter', Swal.stopTimer)
+            get.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+    }
+  };
+
+  //更新検知
+  var hash = decodeURIComponent(location.hash.slice(1));
+  if (hash === "reload") {
+    move("index", "name");
+  }
+  else {
+    location.hash = "reload";
+  }
+
+</script>
 
 </html>

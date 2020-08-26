@@ -201,7 +201,6 @@ class MyServer extends Server {
                         //重複は削除
                         json[i].friends = Array.from(new Set(json[i].friends));
                     }
-                    
                     break;
                 }
                 i++;
@@ -256,6 +255,19 @@ class MyServer extends Server {
                 i++;
             }
         }
+        //reqで指定した人の体重を返す
+        else if (path === "/api/weight") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./user.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                if(req.id === json[i].id) {
+                    return json[i].wt;
+                }
+                i++;
+            }
+        }
         //idとミッション更新
         else if (path === "/api/mission") {
             //json読み込み
@@ -271,7 +283,6 @@ class MyServer extends Server {
                 i++;
             }
         }
-
         return null;
     }
 };

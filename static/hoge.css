@@ -1,4 +1,3 @@
-
 /*全体に適応されるやつ*/
 body{
     text-align: center;
@@ -188,16 +187,40 @@ input[type="radio"]:checked + label {
 
 /* result.html内部 */
 
-#nam, #kalorie, #cnt, #comment{
-    font-size: 1.4em;
+.rescom {
+    margin: 0.3em;
+    font-size: 1.8em;
     color: #ffffff;
 }
-#kcal{
-    font-size: 1.8em;
+
+#kalorie, #ratio{
+    margin: 0.3em;
+    font-size: 3em;
     color: #F4DB60;
 }
 
 /* ranking.html内部 */
+/* プルダウンメニューの装飾 */
+form{
+    text-align: center;
+}
+
+select{
+    width: 180px;
+    font-size: 1.2em;
+    color: azure;
+    background-color: #cc5f35;
+    padding: 5px;
+    margin: 5px;
+}
+
+.pull-menu{
+    text-align: center;
+    color: #555555;
+    background-color: azure;
+
+}
+
 /*ランキング表を装飾*/
 th,
 td {
@@ -231,6 +254,18 @@ th {
 
 }
 
+#t {
+    font-size: 1.4em;
+    color: #555555;
+}
+
+/* 友達申請&削除ボタン装飾 */
+#t input {
+    width: 80px;
+    padding: 0 0;
+    font-size: 1em;
+}
+
 /* プロフィール用 */
 /* pタグ */
 .prop {
@@ -240,6 +275,7 @@ th {
 
 /* input type=text */
 #name {
+    text-align: center;
     width: 320px;
     font-size: 1em;
     font-weight: bold;
