@@ -45,28 +45,28 @@
   <script type="module">
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
+    let iname;
     window.onload = async () => {
-      let name;
       //パラメータを優先
       if (!param["name"]) {
         if (document.cookie){
           //Cookieの呼び出し(名前のみ)
-          name = document.cookie.split('=')[1].replace("; csrftoken","");
-          param["name"] = name;
+          iname = document.cookie.split('=')[1].replace("; csrftoken","");
+          param["name"] = iname;
         }
       }else{
-        name = decodeURI(param["name"]);
+        iname = decodeURI(param["name"]);
       }
 
-      if (name){
-        outname.innerHTML = "お名前：" + name + "　";
+      if (iname){
+        outname.innerHTML = "お名前：" + iname + "　";
         btn.style.visibility = 'visible';
       }
     };
 
     btn.onclick = async () => {
       //サーバーへのユーザーIDと筋トレ回数の送信
-      const req = { id: name, num: num.value };
+      const req = { id: iname, num: num.value };
       const res = await fetchJSON("/api/data", req);
 
       //html間のデータ送受
