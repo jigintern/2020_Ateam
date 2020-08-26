@@ -27,26 +27,31 @@
   <table id="t" border="1" align="center">
     <tr>
       <th class="midashi">フレンド</th>
-      <th class="midashi">マッスルレート</th>
       <th class="midashi">友達やめる</th>
     </tr>
   </table>
 
   <!--関数の宣言-->
-  <!-- <script type="module">
+  <script type="module">
 
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
-      //友達追加用のsubmit()で動作させる関数
-      const addFriend = async (id, other) => {
-        //自身のidと申請したい友達のnameを取得
-        const req = { id, other };
+    let delcount = 0;
 
-        await fetchJSON("/api/friend", req);
+    //友達削除用のsubmit()で動作させる関数
+    const deleteFriend = async (id, other, i) => {
+      console.log("削除");
+      //i+1行目を削除
+      document.getElementById("t").deleteRow(i + 1 + delcount);
+      delcount++;
+      //自身のidと削除したい友達のnameを取得
+      const req = { id, other };
 
-        //ボタンを非表示
+      await fetchJSON("/api/deletefriend", req);
 
-      };
+      //reload
+      location.reload();
+    };
 
     window.onload = async () => {
       //Cookieの呼び出し(名前のみ)
@@ -56,39 +61,41 @@
         name = decodeURI(param["name"]);
       }
 
-      const json = await (await fetch("/api/ranking")).json();
+      //nameの人のfriendsを配列(tmp ->nullでなければ arr)で返す
+      const req = { id: name };
+      let arr = [];
+      const tmp = await fetchJSON("/api/getfriend", req)
+      if(tmp != null){
+        arr = arr.concat(tmp);
+      }
 
       let tr, td, fm, data, submit;
-      for (let i = 0; json.length > i; i++) {
-
-        //ランク
-        td = document.createElement("td");
-        td.textContent = (i + 1);
-        t.appendChild(td);
+      for (let i = 0; arr.length > i; i++) {
 
         //名前
         td = document.createElement("td");
-        td.textContent = json[i].id;
+        td.textContent = arr[i];
         t.appendChild(td);
+
         //マッスルレート
-        td = document.createElement("td");
-        td.textContent = json[i].ratio;
-        t.appendChild(td);
+        //td = document.createElement("td");
+        //td.textContent = json[i].ratio;
+        //t.appendChild(td);
 
         /*-- |送信部分| --*/
 
         //input(submit)ノードの作成・初期化
         submit = document.createElement("input");
         submit.type = "button";
-        submit.value = "申請";
-        submit.onclick = () => addFriend(name, json[i].id);
+        submit.value = "削除";
+        submit.onclick = () => deleteFriend(name, arr[i], i);
 
         //tbノードの作成・初期化
         td = document.createElement("td");
 
         //各ノードを入れ子状に追加
-        //自分には友達申請ボタンを作らない
-        if (json[i].id != name) {
+        //自分は友達削除ボタンを作らない
+        if (arr[i] != name) {
           td.appendChild(submit);
         }
         t.appendChild(td);
@@ -100,8 +107,6 @@
     };
   </script>
 
-  <br>
-  <input type="button" onclick="move('index', 'name')" value="スタートに戻る"> -->
 </body>
 
 </html>
