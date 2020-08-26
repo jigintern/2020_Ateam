@@ -64,7 +64,6 @@
       const tmp = await fetchJSON("/api/getfriend", req)
       if(tmp != null){
         arr = arr.concat(tmp);
-        console.log(arr);
       }
 
       //jsonをレートの大きい順にソートした物を返す
