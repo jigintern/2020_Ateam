@@ -48,8 +48,7 @@
     const METs = 2.0;
     const TrainingTime = 0.0008; //筋トレ一回に何秒かかるか？(Trainingからtime持って来れたらいいね)
     var number = param["number"];
-    var kalorie = (METs - 1.0) * wt * TrainingTime * number; //カロリー計算
-
+    var kalorie = (METs - 1.0) * wt * TrainingTime * number * 1.05; //森永式カロリー計算
 
     document.getElementById("kalorie").innerHTML = kalorie + "kcal " + "🎉";
     document.getElementById("nam").innerHTML = name + "さんの消費したカロリー";
@@ -72,7 +71,11 @@
     location.hash = "reload";
   }
 
-  console.log("ここにトロフィーのプログラムありけり");
+  //ここから先トロフィーのプログラムありけり
+  window.addEventListener('load', (event) => {
+    console.log("🏆")
+    window.alert("トロフィー🏆「はじめての筋トレ」を獲得しました！")
+  });
 
 </script>
 
