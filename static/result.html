@@ -36,7 +36,7 @@
 </body>
 <script type="module">
   import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-  //JSONdataを受け取り、成功したカウント？
+
   window.onload = async () => {
     if (param["name"]) {
       setup.innerHTML = param["name"];
@@ -60,6 +60,23 @@
     req = { id: name, kal: kalorie };
     var ratio = await fetchJSON("/api/ratio", req);
     document.getElementById("ratio").innerHTML = "あなたのマッスルレート：" + ratio;
+
+    if(res===1){
+      console.log("🏆");
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        icon: 'success',
+        title: 'トロフィー🏆「はじめての筋トレ」を獲得しました！',
+        timer: 3500,
+        timerProgressBar: true,
+        onOpen: (get) => {
+            get.addEventListener('mouseenter', Swal.stopTimer)
+            get.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+    }
   };
 
   //更新検知
@@ -70,12 +87,6 @@
   else {
     location.hash = "reload";
   }
-
-  //ここから先トロフィーのプログラムありけり
-  window.addEventListener('load', (event) => {
-    console.log("🏆")
-    window.alert("トロフィー🏆「はじめての筋トレ」を獲得しました！")
-  });
 
 </script>
 

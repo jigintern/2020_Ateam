@@ -224,7 +224,6 @@ class MyServer extends Server {
             while (json.length > i) {
                 if(req.id === json[i].id) {
                     return json[i].wt;
-                    break;
                 }
                 i++;
             }
