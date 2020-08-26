@@ -180,7 +180,6 @@ class MyServer extends Server {
             }
             //data.jsonの更新
             Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
-            return null;
         }
         //reqで指定した人のfriendsの配列を返す
         else if (path === "/api/getfriend") {
@@ -191,7 +190,6 @@ class MyServer extends Server {
             while (json.length > i) {
                 if(req.id === json[i].id) {
                     if (json[i].friends != undefined) {
-                        console.log(json[i].friends); /*-------*/
                         return json[i].friends;
                     }
                     break;
@@ -207,13 +205,13 @@ class MyServer extends Server {
             while (json.length > i) {
                 if(req.id === json[i].id) {
                     //otherの人のインデックス番号を削除
-                    console.log(json[i].friends); /*-------*/
                     (json[i].friends).splice( (json[i].friends).indexOf(req.other), 1);
-                    console.log(json[i].friends); /*-------*/
                     break;
                 }
                 i++;
             }
+            //data.jsonの更新
+            Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
         }
 
         return null;

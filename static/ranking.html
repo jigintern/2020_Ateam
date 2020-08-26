@@ -109,7 +109,7 @@
         td = document.createElement("td");
 
         //各ノードを入れ子状に追加
-        //自分には友達申請ボタンを作らない
+        //自分とすでに追加済みの場合は友達申請ボタンを作らない
         if (name) {
           if (json[i].id != name && arr.indexOf(json[i].id) === -1) {
             td.appendChild(submit);
