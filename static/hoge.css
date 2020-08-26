@@ -13,6 +13,12 @@ p{
     font-size: 1.4em;
 }
 
+input, button, textarea, select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
 /* ヘッダーの装飾 */
 header {
     width: 100%;
@@ -321,6 +327,7 @@ th {
 }
 /* Moz向け */
 input[type="range"]::-moz-range-thumb {
+    -moz-appearance: none;
     background: #69c4c3;
     width: 20x;
     height: 20px;
