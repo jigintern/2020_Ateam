@@ -48,31 +48,33 @@ window.OpenProfile = async (place) => {
         age = profile[2];
         weight = profile[3];
         const pattern = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]/g);
-        console.log(pattern.test(name));
-        if (pattern.test(name)) {
-            Swal.fire({
-                icon: 'error',
-                title: '記号は入力できません。',
-                timer: 1500,
-                timerProgressBar: true,
-                onOpen: (err) => {
-                    err.addEventListener('mouseenter', Swal.stopTimer)
-                    err.addEventListener('mouseleave', Swal.resumeTimer)
-                }
-            })
-        }else{
-            //サーバーへのユーザーIDの送信
-            const req1 = { id: name, num: 0 };
-            await fetchJSON("/api/data", req1);
-            //サーバーへのプロフィールの送信
-            const req2 = { id: name, ftm: gender, age: age, wt: weight };
-            await fetchJSON("/api/user", req2);
-            //パラメータ更新
-            param["name"] = name;
-            //cookie保存
-            document.cookie = "name=" + name;
-            //HTMLの更新
-            move(place,"name");
+        //console.log(pattern.test(name));
+        if(name){
+            if (pattern.test(name)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: '記号は入力できません。',
+                    timer: 1500,
+                    timerProgressBar: true,
+                    onOpen: (err) => {
+                        err.addEventListener('mouseenter', Swal.stopTimer)
+                        err.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+            }else{
+                //サーバーへのユーザーIDの送信
+                const req1 = { id: name, num: 0 };
+                await fetchJSON("/api/data", req1);
+                //サーバーへのプロフィールの送信
+                const req2 = { id: name, ftm: gender, age: age, wt: weight };
+                await fetchJSON("/api/user", req2);
+                //パラメータ更新
+                param["name"] = name;
+                //cookie保存
+                document.cookie = "name=" + name;
+                //HTMLの更新
+                move(place,"name");
+            }
         }
     }
 };
