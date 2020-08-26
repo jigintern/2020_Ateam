@@ -3,20 +3,22 @@
   <head>
     <title>start</title>
     <meta charset="utf-8">
+    <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" type="text/css" href="./hoge.css">
     <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
     <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
     <script src="./js/sweetalert2.all.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/profile.js" type="module" charset="utf-8"></script>
   </head>
   <body>
     <header>
       <ul class="menu-list">
         <li class="menu-list-check" id="home" onclick="move('index','name')">ホーム</li>
-        <li class="menu-list-item" id="friend">フレンド</li>
+        <li class="menu-list-item" id="friend" onclick="move('friend','name')">フレンド</li>
         <li class="menu-list-item" id="rank" onclick="move('ranking','name')">ランキング</li>
         <li class="menu-list-item" id="mission" onclick="move('mission','name')">ミッション</li>
-        <li class="menu-list-item" id="setup">設定</li>
+        <li class="menu-list-item" id="setup" onclick="OpenProfile('index')">設定</li>
       </ul>
     </header>
     <p id="outname" style="position:absolute; right:0%;">お名前：未設定　</p>
@@ -24,7 +26,7 @@
     <form id="start">
       <!--プロフィール設定-->
       <p>プロフィールを設定してね</p>
-      <input type="button" id="probtn" value="画面開くやで">
+      <input type="button" id="probtn" value="画面開くやで" onclick="OpenProfile('index')">
       <br>
       <!--筋トレメニュー選択する機能-->
       <p>どの筋トレする？</p>
@@ -43,103 +45,20 @@
   <script type="module">
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
-    let name,gender,age,weight;
     //Cookieの呼び出し(名前のみ)
     window.onload = async () => {
-      let cookname = document.cookie.split('=')[1];
-      if (cookname||param["name"]) {
-      //パラメータを優先
-        if(param["name"]){
-          cookname=decodeURI(param["name"]);
-        }
-        outname.innerHTML = "お名前：" + cookname + "　";
-        btn.style.visibility = 'visible';
-        name = cookname;
-      }
-    };
-
-    //プロフィール画面表示
-    probtn.onclick = async () => {
-      const { value: profile } = await Swal.fire({
-        title: 'プロフィール',
-        //入力フォームHTML
-        html:
-          '<input class="swal2-input" placeholder="名前" id="name">' +
-          '<p class="prop">性別</p>' +
-          '<div calss="swal2-radio">' +
-            '<form id="radi">' +
-            '<label>' +
-              '<input type="radio" name="swal2radio" value="male" checked="checked" id="man">' +
-              '<span class="swal2-label" id="lman">男性</span>' +
-            '</label>' +
-            '<label>' +
-              '<input type="radio" name="swal2radio" value="female" id="woman">' +
-              '<span class="swal2-label" id="lwoman">女性</span>' +
-            '</label>' +
-            '</form>' +
-          '</div>' +
-          '<p class="prop" id="out1">年齢：20歳</p>' +
-          '<div calss="swal2-range">' +
-            '<input type="range" value="20" min="10" max="60" step="1" oninput="this.style.background = `linear-gradient(to right, #69c4c3 0%, #69c4c3 ${(this.value-10)*2}%, #a9a9a9 ${(this.value-10)*2}%, #a9a9a9 100%)`;out1.innerHTML=`年齢：${this.value}歳`" id="rang1" class="rang">' +
-          '</div>' +
-          '<p class="prop" id="out2">体重：40kg</p>' +
-          '<div calss="swal2-range">' +
-            '<input type="range" value="40" min="20" max="120" step="1" oninput="this.style.background = `linear-gradient(to right, #69c4c3 0%, #69c4c3 ${this.value-20}%, #a9a9a9 ${this.value-20}%, #a9a9a9 100%)`;out2.innerHTML=`体重：${this.value}kg`" id="rang2" class="rang">' +
-          '</div><br>' ,
-        confirmButtonText: '保存',
-        //allowOutsideClick : false,
-        preConfirm: () => {
-          return [
-            document.getElementById('name').value,
-            document.getElementById('radi').swal2radio.value,
-            document.getElementById('rang1').value,
-            document.getElementById('rang2').value
-          ]
-        },
-      })
-      //取得値表示
-      if (profile) {
-        name = profile[0];
-        gender = profile[1];
-        age = profile[2];
-        weight = profile[3];
-        if (!profile[0]) {
-          const { value: morename } = await Swal.fire({
-            icon: 'error',
-            title: '名前を入力してください。',
-            input: 'text',
-            allowOutsideClick : false,
-            inputValidator: (value) => {
-              if (!value) {
-                return '見えません...'
-              }
-              name = value;
-            }
-          })
-        }
-
-        Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 1500,
-          timerProgressBar: true,
-          onOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        }).fire({
-          icon: 'success',
-          title: 'わかった！'
-        })
-
-        //サーバーへのプロフィールの送信
-        const req = { id: name, ftm: gender, age: age, wt: weight };
-        const res = await fetchJSON("/api/user", req);
-        //HTML更新
-        outname.innerHTML = "お名前：" + name + "　";
-        document.cookie = "name=" + name;//cookie保存
+      let name;
+      //Cookieの呼び出し(名前のみ)
+      if (document.cookie){
+        name = document.cookie.split('=')[1];
         param["name"] = name;
+      }
+      //パラメータを優先
+      if (param["name"]) {
+        name = decodeURI(param["name"]);
+      }
+      if (name){
+        outname.innerHTML = "お名前：" + name.replace("; csrftoken","") + "　";
         btn.style.visibility = 'visible';
       }
     };
@@ -150,8 +69,9 @@
       const res = await fetchJSON("/api/data", req);
 
       //html間のデータ送受
-      const path = './training.html?' + 'name=' + name + '&menu=' + start.menu.value +'&number=' + num.value;
-      location.href = path;
+      param["menu"]=start.menu.value;
+      param["number"]=num.value;
+      move("training","name","menu","number");
     };
 
   </script>
