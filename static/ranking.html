@@ -41,10 +41,10 @@
     import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
     //友達追加用のsubmit()で動作させる関数
-    const addFriend = async (id, other, obj) => {
+    const addFriend = async (id, other) => {
       console.log("申請");
       //ボタンを非表示
-      obj.style.visibility = "hidden";
+      document.getElementById("btnof" + other).style.visibility = "hidden";
 
       //自身のidと申請したい友達のnameを取得
       const req = { id, other };
@@ -104,7 +104,8 @@
             submit = document.createElement("input");
             submit.type = "button";
             submit.value = "申請";
-            submit.onclick = () => addFriend(name, json[i].id, this);
+            submit.id = "btnof" + json[i].id;
+            submit.onclick = () => addFriend(name, json[i].id);
 
             //tbノードの作成・初期化
             td = document.createElement("td");
