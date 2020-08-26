@@ -77,9 +77,13 @@ window.OpenProfile = async (place) => {
         //     title: 'わかった！'
         // })
 
+
+        //サーバーへのユーザーIDの送信
+        const req1 = { id: name, num: 0 };
+        await fetchJSON("/api/data", req1);
         //サーバーへのプロフィールの送信
-        const req = { id: name, ftm: gender, age: age, wt: weight };
-        const res = await fetchJSON("/api/user", req);
+        const req2 = { id: name, ftm: gender, age: age, wt: weight };
+        await fetchJSON("/api/user", req2);
         //パラメータ更新
         param["name"] = name;
         //cookie保存
