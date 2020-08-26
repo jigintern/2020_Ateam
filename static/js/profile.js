@@ -8,7 +8,7 @@ window.OpenProfile = async (place) => {
         title: 'プロフィール',
         //入力フォームHTML
         html:
-        '<input class="swal2-input" placeholder="名前" id="name">' +
+        '<input class="swal2-input" placeholder="名前" id="name" maxlength="10" autocapitalize="off" autocorrect="off">' +
         '<p class="prop">性別</p>' +
         '<div calss="swal2-radio">' +
             '<form id="radi">' +
@@ -33,68 +33,46 @@ window.OpenProfile = async (place) => {
         confirmButtonText: '保存',
         //allowOutsideClick : false,
         preConfirm: () => {
-        return [
-            document.getElementById('name').value,
-            document.getElementById('radi').swal2radio.value,
-            document.getElementById('rang1').value,
-            document.getElementById('rang2').value
-        ]
+            return [
+                document.getElementById('name').value,
+                document.getElementById('radi').swal2radio.value,
+                document.getElementById('rang1').value,
+                document.getElementById('rang2').value
+            ]
         },
-    })
+    });
     //取得値表示
     if (profile) {
         name = profile[0];
         gender = profile[1];
         age = profile[2];
         weight = profile[3];
-        if (!profile[0]) {
-            const { value: morename } = await Swal.fire({
+        const pattern = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]/g);
+        console.log(pattern.test(name));
+        if (pattern.test(name)) {
+            Swal.fire({
                 icon: 'error',
-                title: '名前を入力してください。',
-                input: 'text',
-                allowOutsideClick : false,
-                inputValidator: (value) => {
-                if (!value) {
-                    return '見えません...'
-                }
-                name = value;
+                title: '記号は入力できません。',
+                timer: 1500,
+                timerProgressBar: true,
+                onOpen: (err) => {
+                    err.addEventListener('mouseenter', Swal.stopTimer)
+                    err.addEventListener('mouseleave', Swal.resumeTimer)
                 }
             })
+        }else{
+            //サーバーへのユーザーIDの送信
+            const req1 = { id: name, num: 0 };
+            await fetchJSON("/api/data", req1);
+            //サーバーへのプロフィールの送信
+            const req2 = { id: name, ftm: gender, age: age, wt: weight };
+            await fetchJSON("/api/user", req2);
+            //パラメータ更新
+            param["name"] = name;
+            //cookie保存
+            document.cookie = "name=" + name;
+            //HTMLの更新
+            move(place,"name");
         }
-
-        // Swal.mixin({
-        //     toast: true,
-        //     position: 'top-end',
-        //     showConfirmButton: false,
-        //     timer: 1500,
-        //     timerProgressBar: true,
-        //     onOpen: (toast) => {
-        //         toast.addEventListener('mouseenter', Swal.stopTimer)
-        //         toast.addEventListener('mouseleave', Swal.resumeTimer)
-        //     }
-        // }).fire({
-        //     icon: 'success',
-        //     title: 'わかった！'
-        // })
-
-
-        //サーバーへのユーザーIDの送信
-        const req1 = { id: name, num: 0 };
-        await fetchJSON("/api/data", req1);
-        //サーバーへのプロフィールの送信
-        const req2 = { id: name, ftm: gender, age: age, wt: weight };
-        await fetchJSON("/api/user", req2);
-        //パラメータ更新
-        param["name"] = name;
-        //cookie保存
-        document.cookie = "name=" + name;
-        //HTMLの更新
-        move(place,"name");
-        // if(place=="index"){
-        //     outname.innerHTML = "お名前：" + name + "　";
-        //     btn.style.visibility = 'visible';
-        // }else if(place=="ranking"){
-        //     move("ranking","name");
-        // }
     }
 };
