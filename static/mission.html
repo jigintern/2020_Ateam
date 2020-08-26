@@ -50,15 +50,13 @@
       //td = document.createElement("td");
       //td.textContent = (i + 1);
       //t.appendChild(td);
+
+      if (param["name"]){
+        setup.innerHTML = param["name"];
+      }
+
     }
   </script>
 
 </body>
-<script>
-  window.onload = async () => {
-    if (param["name"]){
-      setup.innerHTML = param["name"];
-    }
-  };
-</script>
 </html>
