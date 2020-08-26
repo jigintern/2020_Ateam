@@ -21,7 +21,6 @@
         <li class="menu-list-item" id="setup" onclick="OpenProfile('index')">設定</li>
       </ul>
     </header>
-    <p id="outname" style="position:absolute; right:0%;">お名前：未設定　</p>
     <h1 id="appname">きんにくアプリ</h1>
     <form id="start">
       <!--プロフィール設定-->
@@ -47,20 +46,9 @@
 
     let iname;
     window.onload = async () => {
-      //パラメータを優先
-      if (!param["name"]) {
-        if (document.cookie){
-          //Cookieの呼び出し(名前のみ)
-          iname = document.cookie.split('=')[1].replace("; csrftoken","");
-          param["name"] = iname;
-        }
-      }else{
-        iname = decodeURI(param["name"]);
-      }
-
-      if (iname){
-        outname.innerHTML = "お名前：" + iname + "　";
+      if (param["name"]){
         btn.style.visibility = 'visible';
+        setup.innerHTML = param["name"];
       }
     };
 
