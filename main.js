@@ -154,7 +154,7 @@ class MyServer extends Server {
             return null;
         }
         //ranking.html -> server　(友達追加)
-        else if (path === "/api/friend") {
+        else if (path === "/api/addfriend") {
             //json読み込み
             const json = JSON.parse(Deno.readTextFileSync("./data.json"));
             //while用のindexの初期化
@@ -181,6 +181,22 @@ class MyServer extends Server {
             //data.jsonの更新
             Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
             return null;
+        }
+        //reqで指定した人のインデックス番号を返す
+        else if (path === "/api/getfriend") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./data.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                if(req.id === json[i].id) {
+                    if (json[i].friends != undefined) {
+                        return json[i].friends;
+                    }
+                    break;
+                }
+                i++;
+            }
         }
 
         return null;
