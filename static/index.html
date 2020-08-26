@@ -24,19 +24,16 @@
     <h1 id="appname">きんにくアプリ</h1>
     <form id="start">
       <!--プロフィール設定-->
-      <p>プロフィールを設定してね</p>
-      <input type="button" id="probtn" value="画面開くやで" onclick="OpenProfile('index')">
-      <br>
+      <input type="button" id="probtn" value="プロフィールを設定してね" onclick="OpenProfile('index')">
+      <br id="br1"><br id="br2"><br id="br3">
       <!--筋トレメニュー選択する機能-->
-      <p>どの筋トレする？</p>
       <input type="radio" name="menu" id="hukkin" value="腹筋" checked="checked"><label for="hukkin" class="label1">腹筋</label>
       <input type="radio" name="menu" id="haikin" value="背筋"><label for="haikin" class="label1">背筋</label>
       <input type="radio" name="menu" id="udetate" value="腕立て"><label for="udetate" class="label2">腕立て</label>
-      <br>
+      <br><br><br>
       <!--筋トレの回数を入力する-->
-      <p>回数を入力してね</p>
-      <input type="number" id="num" name="count" value="10" min="1" max="20" step="1">
-      <br><br>
+      <input type="number" id="num" name="count" min="1" max="20" step="1" placeholder="目標回数">
+      <br><br><br>
       <!--スタートボタン-->
       <button id="btn" style="visibility:hidden;">レッツトレーニング！</button><br><br>
     </form>
@@ -48,6 +45,8 @@
       if (param["name"]){
         btn.style.visibility = 'visible';
         setup.innerHTML = param["name"];
+        probtn.style.display = 'none';
+        br1.style.display = 'none';br2.style.display = 'none';br3.style.display = 'none';
       }
     };
 
