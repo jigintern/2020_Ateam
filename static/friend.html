@@ -18,7 +18,7 @@
       <li class="menu-list-check" id="friend" onclick="move('friend','name')">フレンド</li>
       <li class="menu-list-item" id="rank" onclick="move('ranking','name')">ランキング</li>
       <li class="menu-list-item" id="mission" onclick="move('mission','name')">ミッション</li>
-      <li class="menu-list-item" id="setup" onclick="OpenProfile('ranking')">設定</li>
+      <li class="menu-list-item" id="setup" onclick="OpenProfile('friend')">設定</li>
     </ul>
   </header>
   <h1 id="appname">フレンド</h1>
@@ -54,11 +54,9 @@
     };
 
     window.onload = async () => {
-      //Cookieの呼び出し(名前のみ)
-      let name = document.cookie.split('=')[1];
-      //パラメータを優先
-      if (param["name"]) {
-        name = decodeURI(param["name"]);
+      let name = param["name"];
+      if (name) {
+        setup.innerHTML = param["name"];
       }
 
       //nameの人のfriendsを配列(tmp ->nullでなければ arr)で返す
@@ -106,7 +104,5 @@
       }
     };
   </script>
-
 </body>
-
 </html>
