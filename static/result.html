@@ -45,7 +45,7 @@
 
     var req = { id: name };
     const wt = await fetchJSON("/api/weight", req);
-    const METs = 2.0;
+    const METs = 3.8;
     const TrainingTime = 0.0008; //筋トレ一回に何秒かかるか？(Trainingからtime持って来れたらいいね)
     var number = param["number"];
     var kalorie = (METs - 1.0) * wt * TrainingTime * number * 1.05; //森永式カロリー計算
