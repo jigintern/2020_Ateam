@@ -21,7 +21,7 @@ class MyServer extends Server {
 
             //data.jsonの取得
             var json = JSON.parse(Deno.readTextFileSync("./data.json"));
-            
+
             //fix: for文でデータ参照した時、同じユーザーがいた場合true
             var fix = false;
             //while用のindexの初期化
@@ -51,7 +51,7 @@ class MyServer extends Server {
                 const menu = ["腹筋", "背筋", "腕立て"]; //メニュー
                 //select menu : menu[Math.floor(Math.random()*menu.length)]
                 //select var(10~30) : Math.round( Math.random()*20 + 10 )
-                //+rating : 
+                //+rating :
                 json[last].mission = [
                     { menu: menu[Math.floor(Math.random()*menu.length)], var: Math.round( Math.random()*20 + 10 ) },
                     { menu: menu[Math.floor(Math.random()*menu.length)], var: Math.round( Math.random()*20 + 10 ) },
@@ -139,46 +139,60 @@ class MyServer extends Server {
 
             return json;
         }
-        else if (path === "/api/user") {
+        //profileからのデータ受け取り&JSONへの保存
+        if (path === "/api/user") {
             try{
-                //ここでuser.jsonを読み込むが、無い場合に例外処理としてファイルの初期生成
-                var json = JSON.parse(Deno.readTextFileSync("./user.json"));
-                //fix: for文でデータ参照した時、同じユーザーがいた場合true
-                var fix = false;
-                //while用のindexの初期化
-                let i = 0;
-                //for文でデータ参照、同ユーザー検索
-                while (json.length > i) {
-                    //req.id(ブラウザから受信したidと、data.json内のユーザーのidが一致した場合)
-                    if(req.id === json[i].id){
-                        console.log("同ユーザーがいます。プロフィールの更新");
-                        //そのユーザーの目標回数を最新の物にする、fixをtrueにする
-                        json[i].ftm = req.ftm;
-                        json[i].age = req.age;
-                        json[i].wt = req.wt;
-                        fix = true;
-                        break;
-                    }
-                    i++;
-                }
-                //fixがtrueでない(同ユーザー非検出の)場合
-                if(fix != true){
-                    console.log("新しいユーザーの登録");
-                    //data.jsonの配列の末尾にreqデータ(json形式)を挿入
-                    json[json.length] = req;
-                }
-                //data.jsonのファイルを書きだして更新 <- 書き出さないと内部変数が変更されているだけで、ファイルは変わらない!!
-                Deno.writeTextFileSync("user.json", JSON.stringify(json, null, "\t"));
-                //fixをfalseに初期化
-                fix = false;
+                //ここで一度user.jsonを読み込み、無い場合に例外処理としてファイルの初期生成
+                JSON.parse(Deno.readTextFileSync("./user.json"));
             }
             //ファイルが無かった場合の例外処理
             catch(e){
                 console.log("ファイルが見つかりませんでした")
-                //data.jsonの作成
-                Deno.writeTextFileSync("user.json", JSON.stringify([req], null, "\t"));
+                //空のuser.jsonの作成
+                Deno.writeTextFileSync("user.json", JSON.stringify([], null, "\t"));
             }
-            return null;
+            //user.jsonの取得
+            var json = JSON.parse(Deno.readTextFileSync("./user.json"));
+            //fix: for文でデータ参照した時、同じユーザーがいた場合true
+            var fix = false;
+            //while用のindexの初期化
+            let i = 0;
+            //while文でデータ参照、同ユーザー検索
+            while (json.length > i) {
+                //req.id(ブラウザから受信したidと、user.json内のユーザーのidが一致した場合)
+                if(req.id === json[i].id){
+                    console.log("同ユーザーがいます。目標回数の更新");
+                    //そのユーザーの目標回数を最新の物にする、fixをtrueにする
+                    json[i].ftm = req.ftm;
+                    json[i].age = req.age;
+                    json[i].wt = req.wt;
+                    fix = true;
+                    break;
+                }
+                i++;
+            }
+            //fixがtrueでない(同ユーザー非検出の)場合
+            if(fix != true){
+                console.log("新しいユーザーの登録");
+                //user.jsonの配列の末尾にreqデータ(json形式)を挿入
+                const last = json.length; //末尾
+                json[last] = req;
+                json[last].log = [
+                    {
+                        sun: 0,
+                        mon: 0,
+                        tue: 0,
+                        wed: 0,
+                        thu: 0,
+                        fri: 0,
+                        sat: 0
+                    }
+                ];
+            }
+            //user.jsonのファイルを書きだして更新 <- 書き出さないと内部変数が変更されているだけで、ファイルは変わらない!!
+            Deno.writeTextFileSync("user.json", JSON.stringify(json, null, "\t"));
+            //fixをfalseに初期化
+            fix = false;
         }
         //ranking.html -> server　(友達追加)
         else if (path === "/api/addfriend") {
