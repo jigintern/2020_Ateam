@@ -68,7 +68,7 @@ function detectPoseInRealTime(video, net) {
                 count = 1;
             }
             //上から1/4以下の時(+ textが"none"でないとき)
-            if ( (contentHeight/2) > keypoints[0].position.y && (count === 1 || count === 3) ) {  //keypoints[0]には鼻の予測結果が格納されている 
+            if ( (contentHeight/3) > keypoints[0].position.y && (count === 1 || count === 3) ) {  //keypoints[0]には鼻の予測結果が格納されている 
                 if (count === 3) {
                     console.log("良いね！");
                     event();
