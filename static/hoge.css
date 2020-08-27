@@ -394,7 +394,7 @@ input[type="range"]::-moz-range-thumb {
 
 /* log.html */
 .dow {
-    font-size: 1.4em;
+    font-size: 2.5em;
     border-color: transparent !important;
     background-color: transparent !important;
     text-align: center;
@@ -403,7 +403,7 @@ input[type="range"]::-moz-range-thumb {
 
 .dowl {
     border-radius: 20px;
-    font-size: 1.5em;
+    font-size: 2.5em;
 
     text-align: center;
     /* padding: 5px; */
@@ -412,14 +412,14 @@ input[type="range"]::-moz-range-thumb {
 #trophytag{
     font-family: "Nico Moji",'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 80px;
-    margin-top: 50px;
+    margin-top: 30px;
     margin-bottom: 30px;
     color: #F4DB60;
 }
 
 .trophy {
     border-radius: 20px;
-    font-size: 5em;
+    font-size: 6em;
     text-align: center;
 }
 
