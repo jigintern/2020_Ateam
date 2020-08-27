@@ -38,6 +38,29 @@
 <script type="module">
   import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
 
+  const Salert = (textarr) => {
+    if (!textarr[0]){
+      return;
+    }
+    Swal.fire({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        icon: 'success',
+        title: textarr[0],
+        timer: 3000,
+        timerProgressBar: true,
+        onOpen: (get) => {
+            get.addEventListener('mouseenter', Swal.stopTimer)
+            get.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+    }).then(function(){
+      textarr.shift();
+      Salert(textarr);
+    })
+    return;
+  }
+
   window.onload = async () => {
     if (param["name"]) {
       setup.innerHTML = param["name"];
@@ -49,7 +72,7 @@
     await fetchJSON("/api/log", req);
     const METs = 3.8;
     const TrainingTime = 0.0008; //筋トレ一回に何秒かかるか？(Trainingからtime持って来れたらいいね)
-    var number = param["number"];
+    var number = Number(param["number"]);
     var kalorie = (METs - 1.0) * wt * TrainingTime * number * 1.05; //森永式カロリー計算
 
     document.getElementById("kalorie").innerHTML = kalorie.toFixed(2); + "kcal " + "🎉";
@@ -58,32 +81,53 @@
     // -> server
     req = { id: name };
     const res = await fetchJSON("/api/result", req);
+    const res2 = await fetchJSON("/api/getmedal", req);
     document.getElementById("cnt").innerHTML = "目標達成" + res + "回目です！";
     req = { id: name, kal: kalorie };
     var ratio = await fetchJSON("/api/ratio", req);
-    document.getElementById("ratio").innerHTML = "あなたのマッスルレート：" + ratio.toFixed(2);;
-
+    document.getElementById("ratio").innerHTML = "あなたのマッスルレート：" + ratio.toFixed(2);
+    let comment = "";
     if(res===1){
       req = { id: name , menu: "fir"};
       await fetchJSON("/api/medal", req);
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        icon: 'success',
-        title: 'トロフィー🏆「はじめての筋トレ」を獲得しました！',
-        timer: 3500,
-        timerProgressBar: true,
-        onOpen: (get) => {
-            get.addEventListener('mouseenter', Swal.stopTimer)
-            get.addEventListener('mouseleave', Swal.resumeTimer)
-        }
-      })
-      // 終了処理
-      // .then(function(){
-      //   console.log("done");
-      // })
+      comment += 'トロフィー🏆「はじめての筋トレ」を獲得しました！@';
     }
+    //メダルの形式変換(json->id)
+    const mus = {
+      huk: "腹筋",
+      hai: "背筋",
+      ude: "腕立て"
+    };
+    for(let key in res2){
+      if(mus[key]===decodeURI(param["menu"])){
+        let medal = "　";
+        let cnt = 0;
+        console.log(res2[key],res2[key]-number);
+        if(res2[key]>=100&&res2[key]-number<100){
+          medal="🏆";
+          cnt=100;
+        }else if(res2[key]>=70&&res2[key]-number<70){
+          medal="🎖";
+          cnt=70;
+        }else if(res2[key]>=50&&res2[key]-number<50){
+          medal="🥇";
+          cnt=50;
+        }else if(res2[key]>=30&&res2[key]-number<30){
+          medal="🥈";
+          cnt=30;
+        }else if(res2[key]>=10&&res2[key]-number<10){
+          medal="🥉";
+          cnt=10;
+        }else{
+          break;
+        }
+        comment += 'トロフィー' + medal + '「' + mus[key] + cnt + '回」' + 'を獲得しました！@';
+      }
+    }
+    if(param["mission"]){
+      comment += 'ミッションをクリアしました！@';
+    }
+    Salert(comment.split('@'));
   };
 
   //更新検知
