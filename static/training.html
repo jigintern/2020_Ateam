@@ -8,8 +8,20 @@
     <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
     <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
     <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <!--追加-->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+
+    <h1 id="wait">Now Loading....</h1>
+
+    <div id="tex"></div>
+    <!--追加-->
   </head>
   <body id="touch" style="height:100vh;">
+    <!--追加-->
+    <video id="video" width="800px" height="600px" autoplay="1" style="display: none"></video>
+    <!--追加-->
+
     <!--子要素全体を左右中央揃えで表示するwrap_center-->
     <div class="wrap_center">
       <!--targetとgoalを横並びに表示するwrap-->
@@ -22,23 +34,32 @@
       <div id="kind"></div>
     </div>
     <!--トレーニング終-->
+
   </body>
 
   <script type="module">
     import  { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+    import { setEventFunction } from "./js/video.js";
 
     //parameter
     const name = param["name"];
     const mn = decodeURI(param["menu"]);
     const num = Number(param["number"]);
 
+    //筋トレを表示
+    kind.innerHTML = mn;
+
+    //目標回数を表示
+    goal.innerHTML = "/" + num + "回";
+
     //メニュー
     const menu = ["腹筋", "背筋", "腕立て"];
 
-    let count = 0;
-    touch.addEventListener('click', async () => {
-      target.textContent = count++;
-
+    let counter = 0;
+    //event
+    const event = async () => {
+      target.textContent = ++counter;
+      
       //目標到達したら画面遷移
       if (target.textContent >= num) {
         //累計回数を更新
@@ -54,13 +75,13 @@
             const result = res[i].var - num;
             //新ミッションへの更新
             if(result < 1){
-              console.log("ミッションクリア")
+              console.log("ミッションクリア");
               req = { id: name, num: i, menu: menu[Math.floor(Math.random()*menu.length)], var: Math.round( Math.random()*20 + 10 ), ratio: (res[i].var * 10) };
               await fetchJSON("/api/mission", req);
             }
             ////回数の更新
             else {
-              console.log("ミッション更新")
+              console.log("ミッション更新");
               req = { id: name, num: i, menu: res[i].menu, var: result, ratio: (num * 10) };
               await fetchJSON("/api/mission", req);
             }
@@ -70,14 +91,13 @@
         //画面遷移
         move("result", "name", "number");
       }
-    }, false);
-
-    window.onload = async () => {
-      //筋トレを表示
-      kind.innerHTML = mn;
-
-      //目標回数を表示
-      goal.innerHTML = "/" + num + "回";
     };
+
+    /*--タッチでもカウント可能にする--*/
+    touch.addEventListener('click', () => event() );
+
+    setEventFunction(event);
+
   </script>
+
 </html>
