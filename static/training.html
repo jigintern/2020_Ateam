@@ -56,15 +56,17 @@
     const menu = ["腹筋", "背筋", "腕立て"];
 
     let counter = 0;
-
     //event
     const event = async () => {
       target.textContent = ++counter;
-    
+      
       //目標到達したら画面遷移
       if (target.textContent >= num) {
+        //累計回数を更新
+        let req = { id: name , menu: mn, num: num};
+        await fetchJSON("/api/medal", req);
         //ミッション取得
-        let req = { id: name };
+        req = { id: name };
         const res = await fetchJSON("/api/getmission", req);
 
         //ミッション更新
@@ -85,7 +87,7 @@
             }
           }
         }
-        
+
         //画面遷移
         move("result", "name", "number");
       }

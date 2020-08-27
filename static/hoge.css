@@ -86,8 +86,7 @@ header {
 .label1 {
     font-size: 1.4em;
     font-weight: bold;
-    padding-left: 33px;
-    padding-right: 33px;
+    padding: 10px 33px;
     background-color: #E1774B;
     color: #ffffff;
     cursor: pointer;
@@ -96,8 +95,7 @@ header {
 .label2 {
     font-size: 1.4em;
     font-weight: bold;
-    padding-left: 28px;
-    padding-right: 28px;
+    padding: 10px 28px;
     background-color: #E1774B;
     color: #ffffff;
     cursor: pointer;
@@ -118,16 +116,19 @@ input[type="radio"]:checked + label {
 
 /*formの装飾*/
 #num {
+    text-align: center;
     width: 320px;
     font-size: 1.4em;
     font-weight: bold;
     padding: 5px 15px;
-    color: #999999;
+    color: #696969;
     border-radius: 100vh;
     border-style: none;
     outline: none;
 }
-
+#num::placeholder{
+    color:#b5b5b5
+}
 /*---index.html内部----*/
 
 /*アプリ名の装飾*/
@@ -219,6 +220,43 @@ select{
     color: #555555;
     background-color: azure;
 
+}
+
+/* やりたかった方のプルダウンメニューの装飾 */
+#pull{
+    margin: 0 auto;
+    width: 180px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+#pulldown_menu{
+    list-style: none;
+    color: azure;
+    background-color: #cc5f35;
+    padding: 0;
+}
+
+#pulldown_menu:hover{
+    color: #f5e287;
+    cursor: pointer;
+}
+
+#pulldown_list{
+    display: none;
+    list-style: none;
+    padding: 0;
+}
+
+.pulldown_list_item{
+    color: #555555;
+    background-color: azure;
+}
+
+.pulldown_list_item:hover{
+    color: #cc5f35;
+    background-color: #f5e9af;
+    cursor: pointer;
 }
 
 /*ランキング表を装飾*/
@@ -389,4 +427,48 @@ input[type="range"]::-moz-range-thumb {
 /* クリアしたミッションに使うclass */
 .clear{
     opacity: 0.7;
+}
+
+/* log.html */
+.dow {
+    font-size: 2.5em;
+    border-color: transparent !important;
+    background-color: transparent !important;
+    text-align: center;
+    padding: 5px;
+}
+
+.dowl {
+    border-radius: 20px;
+    font-size: 2.5em;
+
+    text-align: center;
+    /* padding: 5px; */
+}
+
+#trophytag{
+    font-family: "Nico Moji",'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 80px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    color: #F4DB60;
+}
+
+.trophy {
+    border-radius: 20px;
+    font-size: 6em;
+    text-align: center;
+}
+
+.tippy-box{
+    background-color:#E1774B;
+}
+
+.tippy-arrow::before{
+    color: #E1774B;
+
+}
+
+.tippy-content {
+    font-size: 2em;
 }

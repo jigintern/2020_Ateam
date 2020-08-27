@@ -21,7 +21,7 @@ class MyServer extends Server {
 
             //data.jsonの取得
             var json = JSON.parse(Deno.readTextFileSync("./data.json"));
-            
+
             //fix: for文でデータ参照した時、同じユーザーがいた場合true
             var fix = false;
             //while用のindexの初期化
@@ -51,7 +51,7 @@ class MyServer extends Server {
                 const menu = ["腹筋", "背筋", "腕立て"]; //メニュー
                 //select menu : menu[Math.floor(Math.random()*menu.length)]
                 //select var(10~30) : Math.round( Math.random()*20 + 10 )
-                //+rating : 
+                //+rating :
                 json[last].mission = [
                     { menu: menu[Math.floor(Math.random()*menu.length)], var: Math.round( Math.random()*20 + 10 ) },
                     { menu: menu[Math.floor(Math.random()*menu.length)], var: Math.round( Math.random()*20 + 10 ) },
@@ -73,7 +73,7 @@ class MyServer extends Server {
             while (json.length > i) {
                 //data.json内で一致するユーザーデータを検出
                 if(req.id === json[i].id){
-                    //目標達成が初めての場合cutを追加し、1を代入
+                    //目標達成が初めての場合cntを追加し、1を代入
                     if(json[i].cnt === undefined){
                         console.log("！初目標達成！");
                         json[i].cnt = 1;
@@ -139,46 +139,64 @@ class MyServer extends Server {
 
             return json;
         }
-        else if (path === "/api/user") {
+        //profileからのデータ受け取り&JSONへの保存
+        if (path === "/api/user") {
             try{
-                //ここでuser.jsonを読み込むが、無い場合に例外処理としてファイルの初期生成
-                var json = JSON.parse(Deno.readTextFileSync("./user.json"));
-                //fix: for文でデータ参照した時、同じユーザーがいた場合true
-                var fix = false;
-                //while用のindexの初期化
-                let i = 0;
-                //for文でデータ参照、同ユーザー検索
-                while (json.length > i) {
-                    //req.id(ブラウザから受信したidと、data.json内のユーザーのidが一致した場合)
-                    if(req.id === json[i].id){
-                        console.log("同ユーザーがいます。プロフィールの更新");
-                        //そのユーザーの目標回数を最新の物にする、fixをtrueにする
-                        json[i].ftm = req.ftm;
-                        json[i].age = req.age;
-                        json[i].wt = req.wt;
-                        fix = true;
-                        break;
-                    }
-                    i++;
-                }
-                //fixがtrueでない(同ユーザー非検出の)場合
-                if(fix != true){
-                    console.log("新しいユーザーの登録");
-                    //data.jsonの配列の末尾にreqデータ(json形式)を挿入
-                    json[json.length] = req;
-                }
-                //data.jsonのファイルを書きだして更新 <- 書き出さないと内部変数が変更されているだけで、ファイルは変わらない!!
-                Deno.writeTextFileSync("user.json", JSON.stringify(json, null, "\t"));
-                //fixをfalseに初期化
-                fix = false;
+                //ここで一度user.jsonを読み込み、無い場合に例外処理としてファイルの初期生成
+                JSON.parse(Deno.readTextFileSync("./user.json"));
             }
             //ファイルが無かった場合の例外処理
             catch(e){
                 console.log("ファイルが見つかりませんでした")
-                //data.jsonの作成
-                Deno.writeTextFileSync("user.json", JSON.stringify([req], null, "\t"));
+                //空のuser.jsonの作成
+                Deno.writeTextFileSync("user.json", JSON.stringify([], null, "\t"));
             }
-            return null;
+            //user.jsonの取得
+            var json = JSON.parse(Deno.readTextFileSync("./user.json"));
+            //fix: for文でデータ参照した時、同じユーザーがいた場合true
+            var fix = false;
+            //while用のindexの初期化
+            let i = 0;
+            //while文でデータ参照、同ユーザー検索
+            while (json.length > i) {
+                //req.id(ブラウザから受信したidと、user.json内のユーザーのidが一致した場合)
+                if(req.id === json[i].id){
+                    console.log("同ユーザーがいます。目標回数の更新");
+                    //そのユーザーの目標回数を最新の物にする、fixをtrueにする
+                    json[i].ftm = req.ftm;
+                    json[i].age = req.age;
+                    json[i].wt = req.wt;
+                    fix = true;
+                    break;
+                }
+                i++;
+            }
+            //fixがtrueでない(同ユーザー非検出の)場合
+            if(fix != true){
+                console.log("新しいユーザーの登録");
+                //user.jsonの配列の末尾にreqデータ(json形式)を挿入
+                const last = json.length; //末尾
+                json[last] = req;
+                json[last].log = {
+                    sun: 0,
+                    mon: 0,
+                    tue: 0,
+                    wed: 0,
+                    thu: 0,
+                    fri: 0,
+                    sat: 0
+                };
+                json[last].medal = {
+                    fir: 0,
+                    huk: 0,
+                    hai: 0,
+                    ude: 0
+                };
+            }
+            //user.jsonのファイルを書きだして更新 <- 書き出さないと内部変数が変更されているだけで、ファイルは変わらない!!
+            Deno.writeTextFileSync("user.json", JSON.stringify(json, null, "\t"));
+            //fixをfalseに初期化
+            fix = false;
         }
         //ranking.html -> server　(友達追加)
         else if (path === "/api/addfriend") {
@@ -285,6 +303,106 @@ class MyServer extends Server {
             }
             //data.jsonの更新
             Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
+        }
+        //result.html -> Server ログ
+        else if(path === "/api/log") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./user.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                //user.json内で一致するユーザーデータを検出
+                if(req.id === json[i].id){
+                    //当週の日-土を取得
+                    let today = new Date();
+                    let this_year = today.getFullYear();
+                    let this_month = today.getMonth();
+                    let date = today.getDate();
+                    let day_num = today.getDay();
+                    let this_week_ary = new Array;
+                    for(let step = 0; step < 7; step++){
+                      let tmp = new Date(this_year, this_month, date - day_num + step);
+                      this_week_ary[step] = String(tmp.getFullYear()) + String(tmp.getMonth() + 1) + String(tmp.getDate());
+                    }
+
+                    //当週の日付と判別
+                    let j = 0;
+                    for(let key in json[i].log){
+                        if(json[i].log[key] != this_week_ary[j]){
+                            json[i].log[key] = 0;
+                        }
+                        //当日のログを更新
+                        if(j === day_num){
+                            json[i].log[key] = String(this_year) + String(this_month+1) + String(date);
+                        }
+                        j++;
+                    }
+                    break;
+                }
+                i++;
+            }
+            //user.jsonの更新
+            Deno.writeTextFileSync("user.json", JSON.stringify(json, null, "\t"));
+        }
+        //reqで指定した人のlogを返す
+        else if (path === "/api/getlog") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./user.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                if(req.id === json[i].id) {
+                    return json[i].log;
+                }
+                i++;
+            }
+        }
+        //result.html -> Server ログ
+        else if(path === "/api/medal") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./user.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                //user.json内で一致するユーザーデータを検出
+                if(req.id === json[i].id){
+                    //メダルの形式変換(param->json)
+                    const mus = {
+                        fir: "fir",
+                        腹筋: "huk",
+                        背筋: "hai",
+                        腕立て: "ude"
+                    };
+                    for(let key in mus){
+                        if(req.menu === key){
+                            if(key === "fir"){
+                                let today = new Date();
+                                json[i].medal[mus[key]] = String(today.getFullYear()) + "/" + String(today.getMonth() + 1) + "/" + String(today.getDate());
+                            }else{
+                                json[i].medal[mus[key]] += req.num;
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+                i++;
+            }
+            //user.jsonの更新
+            Deno.writeTextFileSync("user.json", JSON.stringify(json, null, "\t"));
+        }
+        //reqで指定した人のlogを返す
+        else if (path === "/api/getmedal") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./user.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                if(req.id === json[i].id) {
+                    return json[i].medal;
+                }
+                i++;
+            }
         }
         return null;
     }
