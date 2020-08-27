@@ -49,8 +49,6 @@ async function setupCamera() {
 // 取得したストリームをestimateSinglePose()に渡して姿勢予測を実行
 // requestAnimationFrameによってフレームを再描画し続ける
 function detectPoseInRealTime(video, net) {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
     const text = document.createElement("p");//text
     let count = 0; //計測用
 
@@ -58,13 +56,6 @@ function detectPoseInRealTime(video, net) {
         let poses = [];
         const pose = await net.estimateSinglePose(video, imageScaleFactor, flipHorizontal, outputStride);
         poses.push(pose);
-
-        ctx.clearRect(0, 0, contentWidth,contentHeight);
-
-        ctx.save();
-        ctx.scale(-1, 1);
-        ctx.translate(-contentWidth, 0);
-        ctx.restore();
 
         poses.forEach(({ score, keypoints }) => {
             //最初だけ実効
@@ -77,7 +68,7 @@ function detectPoseInRealTime(video, net) {
                 count = 1;
             }
             //上から1/4以下の時(+ textが"none"でないとき)
-            if ( (contentHeight/3) > keypoints[0].position.y && (count === 1 || count === 3) ) {
+            if ( (contentHeight/2) > keypoints[0].position.y && (count === 1 || count === 3) ) {  //keypoints[0]には鼻の予測結果が格納されている 
                 if (count === 3) {
                     console.log("良いね！");
                     event();
@@ -92,14 +83,12 @@ function detectPoseInRealTime(video, net) {
                 count = 2;
             }
             //
-            else if ((contentHeight* 2/3) < keypoints[0].position.y && count === 2) {
+            else if ((contentHeight* 4/5) < keypoints[0].position.y && count === 2) {
                 //計測経過
                 text.textContent = "ゆっくり戻しましょう"
                 document.getElementById("tex").appendChild(text);
                 count = 3;
             }
-            // keypoints[0]には鼻の予測結果が格納されている 
-            drawWristPoint(keypoints[0],ctx);
         });
 
         requestAnimationFrame(poseDetectionFrame);
@@ -107,12 +96,10 @@ function detectPoseInRealTime(video, net) {
     poseDetectionFrame();
 }
 
-// 与えられたKeypointをcanvasに描画する
-function drawWristPoint(ear,ctx){
-    ctx.beginPath();
-    ctx.arc(ear.position.x , ear.position.y, 3, 0, 2 * Math.PI);
-    ctx.fillStyle = "red";
-    ctx.fill();
-}
-
 window.onload = bindPage;
+
+let event = null;
+
+const setEventFunction = (e) => event = e;
+
+export { setEventFunction };
