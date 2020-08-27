@@ -222,6 +222,43 @@ select{
 
 }
 
+/* やりたかった方のプルダウンメニューの装飾 */
+#pull{
+    margin: 0 auto;
+    width: 180px;
+    font-size: 1.2em;
+    text-align: center;
+}
+
+#pulldown_menu{
+    list-style: none;
+    color: azure;
+    background-color: #cc5f35;
+    padding: 0;
+}
+
+#pulldown_menu:hover{
+    color: #f5e287;
+    cursor: pointer;
+}
+
+#pulldown_list{
+    display: none;
+    list-style: none;
+    padding: 0;
+}
+
+.pulldown_list_item{
+    color: #555555;
+    background-color: azure;
+}
+
+.pulldown_list_item:hover{
+    color: #cc5f35;
+    background-color: #f5e9af;
+    cursor: pointer;
+}
+
 /*ランキング表を装飾*/
 th,
 td {
