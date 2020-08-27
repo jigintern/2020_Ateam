@@ -64,7 +64,8 @@
     document.getElementById("ratio").innerHTML = "あなたのマッスルレート：" + ratio.toFixed(2);;
 
     if(res===1){
-      console.log("🏆");
+      req = { id: name , menu: "fir"};
+      await fetchJSON("/api/medal", req);
       Swal.fire({
         toast: true,
         position: 'top-end',
@@ -78,6 +79,10 @@
             get.addEventListener('mouseleave', Swal.resumeTimer)
         }
       })
+      // 終了処理
+      // .then(function(){
+      //   console.log("done");
+      // })
     }
   };
 

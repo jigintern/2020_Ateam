@@ -73,7 +73,7 @@ class MyServer extends Server {
             while (json.length > i) {
                 //data.json内で一致するユーザーデータを検出
                 if(req.id === json[i].id){
-                    //目標達成が初めての場合cutを追加し、1を代入
+                    //目標達成が初めての場合cntを追加し、1を代入
                     if(json[i].cnt === undefined){
                         console.log("！初目標達成！");
                         json[i].cnt = 1;
@@ -185,6 +185,12 @@ class MyServer extends Server {
                     thu: 0,
                     fri: 0,
                     sat: 0
+                };
+                json[last].medal = {
+                    fir: 0,
+                    huk: 0,
+                    hai: 0,
+                    ude: 0
                 };
             }
             //user.jsonのファイルを書きだして更新 <- 書き出さないと内部変数が変更されているだけで、ファイルは変わらない!!
@@ -347,6 +353,53 @@ class MyServer extends Server {
             while (json.length > i) {
                 if(req.id === json[i].id) {
                     return json[i].log;
+                }
+                i++;
+            }
+        }
+        //result.html -> Server ログ
+        else if(path === "/api/medal") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./user.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                //user.json内で一致するユーザーデータを検出
+                if(req.id === json[i].id){
+                    //メダルの形式変換(param->json)
+                    const mus = {
+                        fir: "fir",
+                        腹筋: "huk",
+                        背筋: "hai",
+                        腕立て: "ude"
+                    };
+                    for(let key in mus){
+                        if(req.menu === key){
+                            if(key === "fir"){
+                                let today = new Date();
+                                json[i].medal[mus[key]] = String(today.getFullYear()) + "/" + String(today.getMonth() + 1) + "/" + String(today.getDate());
+                            }else{
+                                json[i].medal[mus[key]] += req.num;
+                            }
+                            break;
+                        }
+                    }
+                    break;
+                }
+                i++;
+            }
+            //user.jsonの更新
+            Deno.writeTextFileSync("user.json", JSON.stringify(json, null, "\t"));
+        }
+        //reqで指定した人のlogを返す
+        else if (path === "/api/getmedal") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./user.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                if(req.id === json[i].id) {
+                    return json[i].medal;
                 }
                 i++;
             }
