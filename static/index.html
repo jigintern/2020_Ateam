@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="./hoge.css">
     <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
     <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
-    <script src="./js/sweetalert2.all.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/libraries.js" type="text/javascript" charset="utf-8"></script>
     <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
     <script src="./js/profile.js" type="module" charset="utf-8"></script>
   </head>
@@ -18,27 +18,25 @@
         <li class="menu-list-item" id="friend" onclick="move('friend','name')">フレンド</li>
         <li class="menu-list-item" id="rank" onclick="move('ranking','name')">ランキング</li>
         <li class="menu-list-item" id="mission" onclick="move('mission','name')">ミッション</li>
+        <li class="menu-list-item" id="log" onclick="move('log','name')">実績</li>
         <li class="menu-list-item" id="setup" onclick="OpenProfile('index')">設定</li>
       </ul>
     </header>
-    <h1 id="appname">きんにくアプリ</h1>
+    <h1 id="appname">きんにくサプリ</h1>
     <form id="start">
       <!--プロフィール設定-->
-      <p>プロフィールを設定してね</p>
-      <input type="button" id="probtn" value="画面開くやで" onclick="OpenProfile('index')">
-      <br>
+      <input type="button" id="probtn" value="プロフィールを設定してね" onclick="OpenProfile('index')">
+      <br id="br1"><br id="br2"><br id="br3">
       <!--筋トレメニュー選択する機能-->
-      <p>どの筋トレする？</p>
       <input type="radio" name="menu" id="hukkin" value="腹筋" checked="checked"><label for="hukkin" class="label1">腹筋</label>
       <input type="radio" name="menu" id="haikin" value="背筋"><label for="haikin" class="label1">背筋</label>
       <input type="radio" name="menu" id="udetate" value="腕立て"><label for="udetate" class="label2">腕立て</label>
-      <br>
+      <br><br><br>
       <!--筋トレの回数を入力する-->
-      <p>回数を入力してね</p>
-      <input type="number" id="num" name="count" value="10" min="1" max="20" step="1">
-      <br><br>
+      <input type="number" id="num" name="count" min="1" max="30" step="1" placeholder="目標回数">
+      <br><br><br>
       <!--スタートボタン-->
-      <button id="btn" style="visibility:hidden;">レッツトレーニング！</button><br><br>
+      <button id="btn" style="visibility:hidden;">レッツトレーニング！</button>
     </form>
   </body>
   <script type="module">
@@ -48,18 +46,34 @@
       if (param["name"]){
         btn.style.visibility = 'visible';
         setup.innerHTML = param["name"];
+        probtn.style.display = 'none';
+        br1.style.display = 'none';br2.style.display = 'none';br3.style.display = 'none';
       }
     };
 
-    btn.onclick = async () => {
-      //サーバーへのユーザーIDと筋トレ回数の送信
-      const req = { id: param["name"], num: num.value };
-      await fetchJSON("/api/data", req);
-
-      //html間のデータ送受
-      param["menu"]=start.menu.value;
-      param["number"]=num.value;
-      move("training","name","menu","number");
+    btn.onclick = async (e) => {
+      e.preventDefault();
+      const pattern = new RegExp('^[0-9]+$');
+      if(30>=num.value&&num.value>0&&pattern.test(num.value)){
+        //サーバーへのユーザーIDと筋トレ回数の送信
+        const req = { id: param["name"], num: num.value };
+        await fetchJSON("/api/data", req);
+        //html間のデータ送受
+        param["menu"]=start.menu.value;
+        param["number"]=num.value;
+        move("training","name","menu","number");
+      }else{
+        Swal.fire({
+          icon: 'error',
+          title: '1以上の30以下の整数を入力してください。',
+          timer: 2000,
+          timerProgressBar: true,
+          onOpen: (err) => {
+            err.addEventListener('mouseenter', Swal.stopTimer)
+            err.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+      }
     };
 
   </script>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <title>log</title>
+    <meta charset="utf-8">
+    <link rel="icon" href="favicon.ico">
+    <link rel="stylesheet" type="text/css" href="./hoge.css">
+    <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
+    <script src="./js/libraries.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/profile.js" type="module" charset="utf-8"></script>
+  </head>
+  <body>
+    <header>
+      <ul class="menu-list">
+        <li class="menu-list-item" id="home" onclick="move('index','name')">ホーム</li>
+        <li class="menu-list-item" id="friend" onclick="move('friend','name')">フレンド</li>
+        <li class="menu-list-item" id="rank" onclick="move('ranking','name')">ランキング</li>
+        <li class="menu-list-item" id="mission" onclick="move('mission','name')">ミッション</li>
+        <li class="menu-list-check" id="log" onclick="move('log','name')">実績</li>
+        <li class="menu-list-item" id="setup" onclick="OpenProfile('log')">設定</li>
+      </ul>
+    </header>
+    <h1 id="appname">きんとれログ</h1>
+    <table border="1" align="center">
+      <tr>
+        <th class="dow" style="color:#F0703E">日</th>
+        <th class="dow">月</th>
+        <th class="dow">火</th>
+        <th class="dow">水</th>
+        <th class="dow">木</th>
+        <th class="dow">金</th>
+        <th class="dow" style="color:#6360FD">土</th>
+      </tr>
+      <tr>
+        <td class="dowl" id="sun">　</td>
+        <td class="dowl" id="mon">　</td>
+        <td class="dowl" id="tue">　</td>
+        <td class="dowl" id="wed">　</td>
+        <td class="dowl" id="thu">　</td>
+        <td class="dowl" id="fri">　</td>
+        <td class="dowl" id="sat">　</td>
+      </tr>
+    </table>
+    <h1 id="trophytag">トロフィー</h1>
+    <table align="center">
+      <tr>
+        <th class="trophy" id="fir">　</th>
+        <th class="trophy" id="huk">　</th>
+        <th class="trophy" id="hai">　</th>
+        <th class="trophy" id="ude">　</th>
+      </tr>
+    </table>
+    <!-- <script src="./js/tippy.min.js"></script> -->
+    <script type="module">
+      import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+      window.onload = async () => {
+        if (param["name"]){
+          setup.innerHTML = param["name"];
+        }
+        //nameの人のlogを返す
+        const req = { id: param["name"] };
+        const res1 = await fetchJSON("/api/getlog", req);
+        for(let key in res1){
+          if(res1[key]){
+            document.getElementById(key).innerHTML="💪";
+          }
+        }
+        const res2 = await fetchJSON("/api/getmedal", req);
+        //メダルの形式変換(json->id)
+        const mus = {
+          huk: "腹筋",
+          hai: "背筋",
+          ude: "腕立て"
+        };
+        for(let key in res2){
+          if (key==="fir"){
+            if(res2["fir"]!=0){
+              document.getElementById("fir").innerHTML="🏆";
+              const text = res2["fir"] + "<br>はじめての筋トレ";
+              tippy('#'+key, {
+                content: text,
+                placement: 'bottom',
+                allowHTML: true,
+              });
+            }
+          }else{
+            let medal = "　";
+            let comment = "　";
+            if(res2[key]>=100){
+              medal="🏆";
+            }else if(res2[key]>=70){
+              medal="🎖";
+            }else if(res2[key]>=50){
+              medal="🥇";
+            }else if(res2[key]>=30){
+              medal="🥈";
+            }else if(res2[key]>=5){
+              medal="🥉";
+            }else{
+              continue;
+            }
+            document.getElementById(key).innerHTML=medal;
+            comment = mus[key] + "を累計" + res2[key] + "回達成！";
+            tippy('#'+key, {
+                content: comment,
+                placement: 'bottom',
+                allowHTML: true,
+            });
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
