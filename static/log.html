@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="./hoge.css">
     <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
     <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
-    <script src="./js/sweetalert2.all.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/libraries.js" type="text/javascript" charset="utf-8"></script>
     <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
     <script src="./js/profile.js" type="module" charset="utf-8"></script>
   </head>
@@ -43,33 +43,33 @@
         <td class="dowl" id="sat">　</td>
       </tr>
     </table>
-    <!-- <h3>トロフィー</h3>
+    <h1 id="trophytag">トロフィー</h1>
     <table id="t" align="center">
       <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
+        <th class="trophy" id="one">🏆</th>
+        <th class="trophy">　</th>
+        <th class="trophy">　</th>
       </tr>
-    </table> -->
-  </body>
-  <script type="module">
-    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
-    window.onload = async () => {
-      if (param["name"]){
-        setup.innerHTML = param["name"];
-      }
-      //nameの人のlogを返す
-      const req = { id: param["name"] };
-      const res = await fetchJSON("/api/getlog", req);
-      for(let key in res){
-        if(res[key]){
-          document.getElementById(key).innerHTML="💪";
+    </table>
+    <!-- <script src="./js/tippy.min.js"></script> -->
+    <script type="module">
+      import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+      window.onload = async () => {
+        if (param["name"]){
+          setup.innerHTML = param["name"];
+        }
+        //nameの人のlogを返す
+        const req = { id: param["name"] };
+        const res = await fetchJSON("/api/getlog", req);
+        for(let key in res){
+          if(res[key]){
+            document.getElementById(key).innerHTML="💪";
+          }
         }
       }
-    }
-  </script>
+      tippy('#one', {
+        content: "I'm a Tippy tooltip!",
+      });
+    </script>
+  </body>
 </html>
