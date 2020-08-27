@@ -28,21 +28,12 @@
   <h1 id="appname">ランキング</h1>
 
   <!-- プルダウンメニューの表示 -->
-  <form>
-    <select name="絞り込み" id="pull">
-      <option value="" disabled selected>絞り込み ▼</option>
-      <option value="all" class="pull-menu">全員 ▼</option>
-      <option value="friend" class="pull-menu">友だち ▼</option>
-    </select>
-  </form>
-  <br>
-  <!-- やりたかったプルダウンメニュー -->
   <div>
     <ul id="pulldown_menu" id="pull">
       <li>絞り込み ▼
         <ul id="pulldown_list">
-          <li id="all" class="pulldown_list_item">全員</li>
-          <li id="friend" class="pulldown_list_item">友だち</li>
+          <li id="al" class="pulldown_list_item">全員</li>
+          <li id="fri" class="pulldown_list_item">友だち</li>
         </ul>
       </li>
     </ul>
@@ -75,13 +66,17 @@
       await fetchJSON("/api/addfriend", req);
     };
 
-    document.getElementById("pull").onchange = async () => {
-
+    //ランキングの絞り込み
+    document.getElementById("al").onclick = () => {
       //ハッシュ
-      location.hash = document.getElementById("pull").value;
+      location.hash = "all";
       location.reload();
-
-    }
+    };
+    document.getElementById("fri").onclick = () => {
+      //ハッシュ
+      location.hash = "friend";
+      location.reload();
+    };
 
     //ランキング表作成関数
     window.onload = async () => {
