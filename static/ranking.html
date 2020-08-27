@@ -35,7 +35,18 @@
     </select>
   </form>
   <br>
-
+  <!-- やりたかったプルダウンメニュー -->
+  <div>
+    <ul id="pulldown_menu" id="pull">
+      <li>絞り込み ▼
+        <ul id="pulldown_list">
+          <li id="all" class="pulldown_list_item">全員</li>
+          <li id="friend" class="pulldown_list_item">友だち</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <br>
   <!-- ランキングの表示 -->
   <table id="t" border="1" align="center">
     <tr>
@@ -165,6 +176,18 @@
 
       }
     };
+    
+    //プルダウンメニューの動き
+    $(function(){
+      $("#pulldown_menu").click(function(){
+        if ($("#pulldown_list").css("display").indexOf("none") != -1) {
+          $("#pulldown_list").css("display", "block");
+        } else {
+          $("#pulldown_list").css("display", "none");
+        }
+      })
+    });
+    
   </script>
 
 </body>
