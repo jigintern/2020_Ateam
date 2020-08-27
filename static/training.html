@@ -38,7 +38,7 @@
     let count = 0;
     touch.addEventListener('click', async () => {
       target.textContent = count++;
-    
+
       //目標到達したら画面遷移
       if (target.textContent >= num) {
         //ミッション取得
@@ -63,7 +63,7 @@
             }
           }
         }
-        
+
         //画面遷移
         move("result", "name", "number");
       }

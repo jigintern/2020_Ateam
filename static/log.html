@@ -15,10 +15,11 @@
     <header>
       <ul class="menu-list">
         <li class="menu-list-item" id="home" onclick="move('index','name')">ホーム</li>
-        <li class="menu-list-check" id="friend" onclick="move('friend','name')">フレンド</li>
+        <li class="menu-list-item" id="friend" onclick="move('friend','name')">フレンド</li>
         <li class="menu-list-item" id="rank" onclick="move('ranking','name')">ランキング</li>
         <li class="menu-list-item" id="mission" onclick="move('mission','name')">ミッション</li>
-        <li class="menu-list-item" id="setup" onclick="OpenProfile('friend')">設定</li>
+        <li class="menu-list-check" id="log" onclick="move('log','name')">ログ</li>
+        <li class="menu-list-item" id="setup" onclick="OpenProfile('log')">設定</li>
       </ul>
     </header>
     <h1 id="appname">きんとれログ</h1>
@@ -33,13 +34,13 @@
         <th class="dow" style="color:#6360FD">土</th>
       </tr>
       <tr>
-        <td class="dowl" id="sun"></td>
-        <td class="dowl" id="mon"></td>
-        <td class="dowl" id="tue"></td>
-        <td class="dowl" id="wed"></td>
-        <td class="dowl" id="thu"></td>
-        <td class="dowl" id="fri">💪</td>
-        <td class="dowl" id="sat"></td>
+        <td class="dowl" id="sun">　</td>
+        <td class="dowl" id="mon">　</td>
+        <td class="dowl" id="tue">　</td>
+        <td class="dowl" id="wed">　</td>
+        <td class="dowl" id="thu">　</td>
+        <td class="dowl" id="fri">　</td>
+        <td class="dowl" id="sat">　</td>
       </tr>
     </table>
     <!-- <h3>トロフィー</h3>
@@ -56,6 +57,19 @@
     </table> -->
   </body>
   <script type="module">
-
+    import { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
+    window.onload = async () => {
+      if (param["name"]){
+        setup.innerHTML = param["name"];
+      }
+      //nameの人のlogを返す
+      const req = { id: param["name"] };
+      const res = await fetchJSON("/api/getlog", req);
+      for(let key in res){
+        if(res[key]){
+          document.getElementById(key).innerHTML="💪";
+        }
+      }
+    }
   </script>
 </html>

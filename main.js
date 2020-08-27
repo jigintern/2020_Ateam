@@ -177,17 +177,15 @@ class MyServer extends Server {
                 //user.jsonの配列の末尾にreqデータ(json形式)を挿入
                 const last = json.length; //末尾
                 json[last] = req;
-                json[last].log = [
-                    {
-                        sun: 0,
-                        mon: 0,
-                        tue: 0,
-                        wed: 0,
-                        thu: 0,
-                        fri: 0,
-                        sat: 0
-                    }
-                ];
+                json[last].log = {
+                    sun: 0,
+                    mon: 0,
+                    tue: 0,
+                    wed: 0,
+                    thu: 0,
+                    fri: 0,
+                    sat: 0
+                };
             }
             //user.jsonのファイルを書きだして更新 <- 書き出さないと内部変数が変更されているだけで、ファイルは変わらない!!
             Deno.writeTextFileSync("user.json", JSON.stringify(json, null, "\t"));
@@ -299,6 +297,59 @@ class MyServer extends Server {
             }
             //data.jsonの更新
             Deno.writeTextFileSync("data.json", JSON.stringify(json, null, "\t"));
+        }
+        //result.html -> Server ログ
+        else if(path === "/api/log") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./user.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                //user.json内で一致するユーザーデータを検出
+                if(req.id === json[i].id){
+                    //当週の日-土を取得
+                    let today = new Date();
+                    let this_year = today.getFullYear();
+                    let this_month = today.getMonth();
+                    let date = today.getDate();
+                    let day_num = today.getDay();
+                    let this_week_ary = new Array;
+                    for(let step = 0; step < 7; step++){
+                      let tmp = new Date(this_year, this_month, date - day_num + step);
+                      this_week_ary[step] = String(tmp.getFullYear()) + String(tmp.getMonth() + 1) + String(tmp.getDate());
+                    }
+
+                    //当週の日付と判別
+                    let j = 0;
+                    for(let key in json[i].log){
+                        if(json[i].log[key] != this_week_ary[j]){
+                            json[i].log[key] = 0;
+                        }
+                        //当日のログを更新
+                        if(j === day_num){
+                            json[i].log[key] = String(this_year) + String(this_month+1) + String(date);
+                        }
+                        j++;
+                    }
+                    break;
+                }
+                i++;
+            }
+            //user.jsonの更新
+            Deno.writeTextFileSync("user.json", JSON.stringify(json, null, "\t"));
+        }
+        //reqで指定した人のlogを返す
+        else if (path === "/api/getlog") {
+            //json読み込み
+            const json = JSON.parse(Deno.readTextFileSync("./user.json"));
+            //while用のindexの初期化
+            let i = 0;
+            while (json.length > i) {
+                if(req.id === json[i].id) {
+                    return json[i].log;
+                }
+                i++;
+            }
         }
         return null;
     }

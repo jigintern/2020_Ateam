@@ -21,6 +21,7 @@
       <li class="menu-list-item" id="friend" onclick="move('friend','name')">フレンド</li>
       <li class="menu-list-item" id="rank" onclick="move('ranking','name')">ランキング</li>
       <li class="menu-list-item" id="mission" onclick="move('mission','name')">ミッション</li>
+      <li class="menu-list-item" id="log" onclick="move('log','name')">ログ</li>
       <li class="menu-list-item" id="setup" onclick="OpenProfile('index')">設定</li>
     </ul>
   </header>
@@ -45,6 +46,7 @@
 
     var req = { id: name };
     const wt = await fetchJSON("/api/weight", req);
+    await fetchJSON("/api/log", req);
     const METs = 3.8;
     const TrainingTime = 0.0008; //筋トレ一回に何秒かかるか？(Trainingからtime持って来れたらいいね)
     var number = param["number"];
