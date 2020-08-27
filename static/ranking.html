@@ -28,13 +28,13 @@
   <!-- プルダウンメニューの表示 -->
   <form>
     <select name="絞り込み" id="pull">
-      <option value="全員" hidden>絞り込み ▼</option>
-      <option value="all">全員</option>
-      <option value="friend">友だち</option>
+      <option value="" disabled selected>絞り込み ▼</option>
+      <option value="all" class="pull-menu">全員 ▼</option>
+      <option value="friend" class="pull-menu">友だち ▼</option>
     </select>
   </form>
   <br>
-  
+
   <!-- ランキングの表示 -->
   <table id="t" border="1" align="center">
     <tr>
@@ -62,7 +62,29 @@
       await fetchJSON("/api/addfriend", req);
     };
 
+    document.getElementById("pull").onchange = async () => {
+
+      //ハッシュ
+      location.hash = document.getElementById("pull").value;
+      location.reload();
+
+    }
+
+    //ランキング表作成関数
     window.onload = async () => {
+
+      let select;
+      //ハッシュ
+      var hash = decodeURIComponent(location.hash.slice(1));
+      if (hash === "friend") {
+        //全員(all)かフレンドのみ(friend)
+        select = "friend";
+      }
+      else {
+        select = "all";
+      }
+
+      //名前未設定の場合は友達申請列を表示しない
       let name = param["name"];
       if(!name){
         add.style.display = 'none';
@@ -81,17 +103,12 @@
       //jsonをレートの大きい順にソートした物を返す
       const json = await (await fetch("/api/ranking")).json();
 
-      //最初は全員表示(false)
-      let frionly = false;
-
       let tr, td, submit;
       for (let i = 0; json.length > i; i++) {
 
         //友達かどうか判定(no: -1, yes: index_number)
         let index = arr.indexOf(json[i].id);
-
-        if (frionly === false || index != -1) {
-
+        if (select === "all" || index != -1 || name === json[i].id) {
           //ランク
           td = document.createElement("td");
           td.textContent = (i + 1);
@@ -100,6 +117,9 @@
           //名前
           td = document.createElement("td");
           td.textContent = json[i].id;
+          if(name === json[i].id) {
+            td.textContent = json[i].id + " (自分)";
+          }
           t.appendChild(td);
 
           //マッスルレート
@@ -107,7 +127,7 @@
           td.textContent = parseFloat(json[i].ratio).toFixed(2);
           t.appendChild(td);
 
-          if (frionly === false) {
+          if (select === "all") {
             /*-- |送信部分| --*/
 
             //input(submit)ノードの作成・初期化
@@ -130,13 +150,14 @@
             }
 
           }
-          else if (frionly === true){
+          else if (select === "friend"){
             //列名(友達申請)を削除
             document.getElementById("add").style.display = "none";
           }
 
           //trノードの作成・初期化(表の改行)
           tr = document.createElement("tr");
+          tr.id="row" + i;
           t.appendChild(tr);
 
         }
@@ -144,6 +165,7 @@
       }
     };
   </script>
+
 </body>
 
 </html>
