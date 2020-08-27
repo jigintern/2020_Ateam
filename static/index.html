@@ -32,10 +32,10 @@
       <input type="radio" name="menu" id="udetate" value="腕立て"><label for="udetate" class="label2">腕立て</label>
       <br><br><br>
       <!--筋トレの回数を入力する-->
-      <input type="number" id="num" name="count" min="1" max="20" step="1" placeholder="目標回数">
+      <input type="number" id="num" min="1" max="30" step="1" placeholder="目標回数">
       <br><br><br>
       <!--スタートボタン-->
-      <button id="btn" style="visibility:hidden;">レッツトレーニング！</button><br><br>
+      <button id="btn" style="visibility:hidden;">レッツトレーニング！</button>
     </form>
   </body>
   <script type="module">
@@ -50,9 +50,11 @@
       }
     };
 
-    btn.onclick = async () => {
+    btn.onclick = async (e) => {
+      e.preventDefault();
       const pattern = new RegExp('^[0-9]+$');
-      if(21>num.value>0&&pattern.test(num.value)){
+      if(30>=num.value&&num.value>0&&pattern.test(num.value)){
+        console.log("go");
         //サーバーへのユーザーIDと筋トレ回数の送信
         const req = { id: param["name"], num: num.value };
         await fetchJSON("/api/data", req);
@@ -63,7 +65,7 @@
       }else{
         Swal.fire({
           icon: 'error',
-          title: '1以上の20以下の整数を入力してください。',
+          title: '1以上の30以下の整数を入力してください。',
           timer: 2000,
           timerProgressBar: true,
           onOpen: (err) => {
