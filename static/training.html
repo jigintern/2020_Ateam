@@ -10,6 +10,7 @@
     <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ismobilejs@1/dist/isMobile.min.js"></script>
 
     <h1 id="wait">Now Loading....</h1>
 
@@ -33,13 +34,18 @@
 
   </body>
 
+  <script>
+    //isMobile
+    const mob = isMobile.any;
+    const mn = decodeURI(param["menu"]);
+  </script>
+
   <script type="module">
     import  { fetchJSON } from "https://code4sabae.github.io/js/fetchJSON.js";
     import { setEventFunction } from "./js/video.js";
 
     //parameter
     const name = param["name"];
-    const mn = decodeURI(param["menu"]);
     const num = Number(param["number"]);
 
     //筋トレを表示
