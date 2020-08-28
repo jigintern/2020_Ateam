@@ -18,7 +18,7 @@ async function bindPage() {
 
     //腕立ての時以外はカメラ使わない
     if(mn != "腕立て") {
-        document.getElementById("wait").style.display = "none";
+        wait.style.display = "none";
         console.log(mn);
         return;
     }
