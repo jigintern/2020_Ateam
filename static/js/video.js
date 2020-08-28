@@ -1,10 +1,18 @@
 const imageScaleFactor = 0.2;
 const outputStride = 16;
 const flipHorizontal = true;
-const contentWidth = 800;
 const contentHeight = 600;
+const men = decodeURI(param["menu"]);
 
 async function bindPage() {
+
+    //
+    if(men != "腕立て") {
+        document.getElementById("wait").style.display = "none";
+        console.log(men)
+        return;
+    }
+
     const net = await posenet.load(); // posenetの呼び出し
     let video;
     try {
@@ -67,8 +75,11 @@ function detectPoseInRealTime(video, net) {
                 document.getElementById("tex").appendChild(text);
                 count = 1;
             }
-            //上から1/4以下の時(+ textが"none"でないとき)
-            if ( (contentHeight/3) > keypoints[0].position.y && (count === 1 || count === 3) ) {  //keypoints[0]には鼻の予測結果が格納されている 
+
+            //上から1/4以下の時(+ score(認識制度)が0.8点以上の時)(+ textが"none"でないとき)
+            console.log(keypoints[0]);
+            if ( (contentHeight*2/5) > keypoints[0].position.y && keypoints[0].score > 0.8 && (count === 1 || count === 3) ) {  //keypoints[0]には鼻の予測結果が格納されている 
+
                 if (count === 3) {
                     console.log("良いね！");
                     event();
@@ -82,8 +93,8 @@ function detectPoseInRealTime(video, net) {
                 document.getElementById("tex").appendChild(text);
                 count = 2;
             }
-            //
-            else if ((contentHeight* 4/5) < keypoints[0].position.y && count === 2) {
+            //下から1/5以下の時
+            else if ((contentHeight* 4/5) < keypoints[0].position.y && keypoints[0].score > 0.8 && count === 2) {
                 //計測経過
                 text.textContent = "ゆっくり戻しましょう"
                 document.getElementById("tex").appendChild(text);
