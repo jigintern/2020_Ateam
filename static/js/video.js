@@ -8,7 +8,13 @@ const flipHorizontal = mob ? false : true;
 const contentWidth = 800;
 const contentHeight = 600;
 
+//text
+const wait = document.getElementById("wait");
+const text = document.createElement("p");
+
 async function bindPage() {
+
+    wait.textContent = "Now Loading....00%";
 
     //腕立ての時以外はカメラ使わない
     if(mn != "腕立て") {
@@ -26,6 +32,8 @@ async function bindPage() {
         quantBytes: quantBytes
     });
 
+    wait.textContent = "Now Loading....30%";
+
     let video;
     try {
         video = await loadVideo(); // video属性をロード
@@ -33,12 +41,18 @@ async function bindPage() {
         console.error(e);
         return;
     }
+
+    wait.textContent = "Now Loading....80%";
+
     detectPoseInRealTime(video, net);
 }
 
 // video属性のロード
 async function loadVideo() {
     const video = await setupCamera(); // カメラのセットアップ
+
+    wait.textContent = "Now Loading....60%";
+
     video.play();
     return video;
 }
@@ -79,10 +93,10 @@ async function setupCamera() {
 // 取得したストリームをestimateSinglePose()に渡して姿勢予測を実行
 // requestAnimationFrameによってフレームを再描画し続ける
 function detectPoseInRealTime(video, net) {
-    const text = document.createElement("p");//text
     let count = 0; //計測用
 
     async function poseDetectionFrame() {
+
         let poses = [];
         const pose = await net.estimateSinglePose(video, imageScaleFactor, flipHorizontal, outputStride);
         poses.push(pose);
@@ -90,15 +104,14 @@ function detectPoseInRealTime(video, net) {
         poses.forEach(({ score, keypoints }) => {
             //最初だけ実効
             if (count === 0) {
-                //点描が可能になったので"loadingを消す"
-                document.getElementById("wait").style.display = "none";
+                wait.textContent = "セットアップ";
                 /*--初期位置への誘導--*/
                 text.textContent = "鼻の位置を画面上部に持ってきてください"
                 document.getElementById("tex").appendChild(text);
                 count = 1;
             }
 
-            //上から1/4以下の時(+ score(認識制度)が0.8点以上の時)(+ textが"none"でないとき)
+            //上から1/4以下の時(+ score(認識制度)が0.8点以上の時)(+ countが 1 or 2 のとき)
             if ( (contentHeight*2/5) > keypoints[0].position.y && keypoints[0].score > 0.7 && (count === 1 || count === 3) ) {  //keypoints[0]には鼻の予測結果が格納されている 
 
                 if (count === 3) {
@@ -106,7 +119,7 @@ function detectPoseInRealTime(video, net) {
                     event();
                 }
                 else {
-                    text.textContent = "トレーニング開始!!"
+                    wait.textContent = "トレーニング開始!!"
                     document.getElementById("tex").appendChild(text);
                 }
                 //計測開始
