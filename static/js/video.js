@@ -13,7 +13,7 @@ async function bindPage() {
     //腕立ての時以外はカメラ使わない
     if(mn != "腕立て") {
         document.getElementById("wait").style.display = "none";
-        console.log(mn)
+        console.log(mn);
         return;
     }
 
@@ -88,7 +88,6 @@ function detectPoseInRealTime(video, net) {
         poses.push(pose);
 
         poses.forEach(({ score, keypoints }) => {
-            console.log(keypoints[0]);
             //最初だけ実効
             if (count === 0) {
                 //点描が可能になったので"loadingを消す"
