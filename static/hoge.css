@@ -351,6 +351,23 @@ th {
     }
 }
 
+#mis {
+    width: 400px;
+}
+
+.mid {
+    border-color: #E1774B;
+    text-align: center;
+    color: azure;
+    background-color: #E1774B;
+    padding: 10px;
+}
+
+.nai {
+    border-color: #E1774B;
+    background-color: white;
+}
+
 /* プロフィール用 */
 /* pタグ */
 .prop {
