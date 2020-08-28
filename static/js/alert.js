@@ -78,3 +78,33 @@ window.OpenProfile = async (place) => {
         }
     }
 };
+
+window.OpenMission = async () => {
+    const req = { id: param["name"] };
+    //ミッションをjsonNo配列で返す
+    const res = await fetchJSON("/api/getmission", req);
+    let html =
+    '<table id="mis" align="center">' +
+    '<tr>' +
+        '<th class="mid">内容</th>' +
+        '<th class="mid rate">レート</th>' +
+    '</tr>';
+
+    let tr, td;
+    for (let i = 0; res.length > i; i++) {
+    html += `<td class="nai">${res[i].menu}を${res[i].var}回する</td>`;
+    html += `<td class="nai">+${res[i].var * 10}</td>`;
+    html += '<tr></tr>';
+    }
+    html += '</table>';
+
+    if (param["name"]){
+    setup.innerHTML = param["name"];
+    }
+
+    Swal.fire({
+    title: 'ミッション',
+    html: html,
+    confirmButtonText: 'OK',
+    })
+};
