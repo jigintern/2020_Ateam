@@ -75,9 +75,11 @@ function detectPoseInRealTime(video, net) {
                 document.getElementById("tex").appendChild(text);
                 count = 1;
             }
+
             //上から1/4以下の時(+ score(認識制度)が0.8点以上の時)(+ textが"none"でないとき)
             console.log(keypoints[0]);
             if ( (contentHeight*2/5) > keypoints[0].position.y && keypoints[0].score > 0.8 && (count === 1 || count === 3) ) {  //keypoints[0]には鼻の予測結果が格納されている 
+
                 if (count === 3) {
                     console.log("良いね！");
                     event();
