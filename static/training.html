@@ -9,8 +9,9 @@
     <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
     <script src="./js/parameter.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tensorflow/2.3.0/tf.min.js.map"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ismobilejs@1/dist/isMobile.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ismobilejs@1.1.1/dist/isMobile.min.js"></script>
 
     <h1 id="wait">Now Loading....</h1>
 
@@ -58,7 +59,7 @@
       target.textContent = ++counter;
 
       //目標到達したら画面遷移
-      if (target.textContent >= num) {
+      if (counter >= num) {
         //累計回数を更新
         let req = { id: name , menu: mn, num: num};
         await fetchJSON("/api/medal", req);
