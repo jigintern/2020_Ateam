@@ -1,8 +1,12 @@
+//isMobile
+const mob = isMobile.any;
+const men = decodeURI(param["menu"]);
+
 const imageScaleFactor = 0.2;
 const architecture = 'MobileNetV1'; // 'MobileNetV1'(精度:低, 速度:高) or 'ResNet50'(精度:高, 速度:低)
 const outputStride = 8; // MobileNetv1: 8, 16, 32、ResNet: 16, 32 (大きくなるほど 精度：高, 速度：低)
 const inputResolution = 200; // 入力解像度：(default:257) (大きくなるほど 精度：高, 速度：低)
-const  multiplier = mob ? 0.50 : 0.75; // (MobileNetV1のみ) 畳み込み演算の深さ（チャネル数）の浮動小数点乗数：-1.01, 1.0, 0.75, 0.50 (大きくなるほど 精度：高, 速度：低)
+const multiplier = mob ? 0.50 : 0.75; // (MobileNetV1のみ) 畳み込み演算の深さ（チャネル数）の浮動小数点乗数：-1.01, 1.0, 0.75, 0.50 (大きくなるほど 精度：高, 速度：低)
 const quantBytes = 2; // 重みの量子化に使用されるバイト：1, 2, 4 (大きくなるほど 精度：高, 速度：低)
 const flipHorizontal = mob ? false : true;
 const contentWidth = 800;
@@ -17,9 +21,9 @@ async function bindPage() {
     wait.textContent = "Now Loading....00%";
 
     //腕立ての時以外はカメラ使わない
-    if(mn != "腕立て") {
+    if(men != "腕立て") {
         wait.style.display = "none";
-        console.log(mn);
+        console.log(men);
         return;
     }
 
