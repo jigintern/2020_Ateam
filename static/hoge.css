@@ -36,10 +36,10 @@ header {
 .menu-list-item {
     list-style: none;
     display: inline-block;
-    padding: 10px 5px;
+    padding: 20px 3px;
     font-size: 1.4em;
     color: #ffffff;
-    width: 150px;
+    width: 120px;
     cursor: pointer;
 }
 .menu-list-item:hover{
@@ -48,20 +48,34 @@ header {
 .menu-list-check{
     list-style: none;
     display: inline-block;
-    padding: 10px 10px;
+    padding: 20px 3px;
     font-size: 1.4em;
     color: #F4DB60;
     background-color: #d66534;
     border-bottom: solid 1.2px #cac8c8;
-    width: 150px;
+    width: 120px;
     cursor: pointer;
+}
+
+@media screen and (min-width: 1000px){
+    .menu-list-item {
+        padding: 10px 5px;
+        font-size: 1.4em;
+        width: 150px;
+    }
+    .menu-list-check{
+        padding: 10px 5px;
+        font-size: 1.4em;
+        width: 150px;
+
+    }
 }
 
 /*ボタンの装飾*/
 #btn, input[type="button"]{
     outline: none;
-    width: 360px;
-    font-size: 1.4em;
+    width: 460px;
+    font-size: 2.1em;
     font-weight: bold;
     padding: 10px 30px;
     background-color:#E1774B;
@@ -71,11 +85,19 @@ header {
     border-style: none;
 }
 
+@media screen and (min-width: 1000px){
+    #btn, input[type="button"]{
+        width: 360px;
+        font-size: 1.4em;
+    }
+}
+
 /*ボタンにカーソルを合わせたときの装飾*/
 #btn:hover, input[type="button"]:hover{
     background:#e48a64;
     color: #ffffff;
 }
+
 
 /*ラジオボタンの非表示*/
 #hukkin, #haikin, #udetate{
@@ -84,7 +106,7 @@ header {
 
 /*ラジオのラベルの装飾*/
 .label1 {
-    font-size: 1.4em;
+    font-size: 2.3em;
     font-weight: bold;
     padding: 10px 33px;
     background-color: #E1774B;
@@ -93,13 +115,24 @@ header {
     border-radius: 100vh;
 }
 .label2 {
-    font-size: 1.4em;
+    font-size: 2.3em;
     font-weight: bold;
     padding: 10px 28px;
     background-color: #E1774B;
     color: #ffffff;
     cursor: pointer;
     border-radius: 100vh;
+}
+
+@media screen and (min-width: 1000px){
+    .label1 {
+        font-size: 1.4em;
+        padding: 10px 33px;
+    }
+    .label2 {
+        font-size: 1.4em;
+        padding: 10px 28px;
+    }
 }
 
 /*ラジオボタンにカーソルを合わせたときの装飾*/
@@ -117,18 +150,28 @@ input[type="radio"]:checked + label {
 /*formの装飾*/
 #num {
     text-align: center;
-    width: 320px;
-    font-size: 1.4em;
+    width: 420px;
+    font-size: 2.1em;
     font-weight: bold;
-    padding: 5px 15px;
+    padding: 10px 15px;
     color: #696969;
     border-radius: 100vh;
     border-style: none;
     outline: none;
 }
+
 #num::placeholder{
     color:#b5b5b5
 }
+
+@media screen and (min-width: 1000px){
+    #num {
+        width: 320px;
+        font-size: 1.4em;
+        padding: 5px 15px;
+    }
+}
+
 /*---index.html内部----*/
 
 /*アプリ名の装飾*/
@@ -141,6 +184,7 @@ input[type="radio"]:checked + label {
 }
 
 /*---training.html内部----*/
+
 .wrap_center{
     padding-top: 100px;
     align-items: center;
@@ -205,8 +249,8 @@ input[type="radio"]:checked + label {
 #pulldown_menu{
     margin: 0 auto;
     list-style: none;
-    width: 180px;
-    font-size: 1.2em;
+    width: 210px;
+    font-size: 1.8em;
     text-align: center;
     color: azure;
     background-color: #cc5f35;
@@ -235,6 +279,13 @@ input[type="radio"]:checked + label {
     cursor: pointer;
 }
 
+@media screen and (min-width: 1000px){
+    #pulldown_menu{
+        width: 180px;
+        font-size: 1.2em;
+    }
+}
+
 /*ランキング表を装飾*/
 th,
 td {
@@ -249,8 +300,17 @@ td {
 table {
   border-collapse: collapse;
   /* セルの線を重ねる */
-  width: 500px;
+  width: 700px;
   /* 幅指定 */
+}
+
+@media screen and (min-width: 1000px){
+    table {
+        border-collapse: collapse;
+        /* セルの線を重ねる */
+        width: 500px;
+        /* 幅指定 */
+      }      
 }
 
 .midashi {
@@ -269,15 +329,43 @@ th {
 }
 
 #t {
-    font-size: 1.4em;
+    font-size: 1.8em;
     color: #555555;
 }
 
 /* 友達申請&削除ボタン装飾 */
 #t input {
-    width: 80px;
-    padding: 0 0;
-    font-size: 1em;
+    width: 100px;
+    font-size: 1.2em;
+    padding: 0;
+}
+
+@media screen and (min-width: 1000px){
+    #t {
+        font-size: 1.4em;
+    }
+    
+    #t input {
+        width: 80px;
+        font-size: 1em;
+    }
+}
+
+#mis {
+    width: 400px;
+}
+
+.mid {
+    border-color: #E1774B;
+    text-align: center;
+    color: azure;
+    background-color: #E1774B;
+    padding: 10px;
+}
+
+.nai {
+    border-color: #E1774B;
+    background-color: white;
 }
 
 /* プロフィール用 */
